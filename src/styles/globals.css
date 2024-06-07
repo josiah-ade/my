@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-label{
+/* label{
   @apply block mb-1  text-lg  font-semibold text-gray-900 dark:text-white
 }
 
 input{
   @apply py-3 px-10 outline-none w-full text-sm rounded-md
-}
+} */
