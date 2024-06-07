@@ -6,7 +6,6 @@ import { FcGoogle } from "react-icons/fc";
 import { IoPersonOutline } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaRegEye, FaRegEyeSlash} from "react-icons/fa";
-import gab from "../images/gab.jpeg"
 import { GrFacebookOption } from "react-icons/gr";
 
 
@@ -28,16 +27,15 @@ export default function LoginPage() {
 
   return (
     <div
-   
      className="flex flex-col items-center justify-center min-h-[100vh] w-full px-6 md:px-0">
-      <form className="w-full width-[100%] max-w-[600px] mx-auto py-10 rounded-md bg-white  border-blue-400  border-solid border-4 px-6 md:px-0 ">
+      <form className="w-full width-[100%] max-w-[600px] mx-auto py-10 rounded-md bg-white  border-primary border-solid border-4 px-6 md:px-0 ">
           <div className="w-full max-w-[500px] mx-auto align-center">
-            <div className="text-4xl text-center font-bold text-blue-400">
+            <div className="text-4xl text-center font-bold text-primary">
               Login
             </div>
             <p className="text-2xl mt-2 text-center ">
              Don't have an account? Create your account!{" "}	
-              <span className="text-blue-400">
+              <span className="text-primary">
                 <Link href="/signup">Signup</Link>
               </span>
             </p>
@@ -79,7 +77,7 @@ export default function LoginPage() {
               <Link href="/">
               <button
                 type="submit"
-                className="items-center text-2xl bg-blue-500 hover:bg-blue-400 py-5 px-7 rounded-2xl text-white  max-w-[400px]"
+                className="items-center text-2xl bg-primary py-5 px-7 rounded-2xl text-white  max-w-[400px]"
               >
                 Login
               </button>

@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import UserLayout from "@/layout/user";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main
-      className={`flex flex-col items-center justify-between p-24 bg-gray-600 ${inter.className} `}
-    >
+    <UserLayout>
+      <div className="pt-10  ">
       <h1>
         Hi Welcome to ExpertNaire.
       </h1>
@@ -15,8 +15,10 @@ export default function Home() {
       Marketplace
       </h3>
       <p>
-      Mobile Marketplace App UI Design + Prototype
+      Mobile Marketplace AppUI Design + Prototype
       </p>
-    </main>
+
+      </div>
+      </UserLayout>
   );
 }

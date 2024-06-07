@@ -5,7 +5,6 @@ import { useState } from "react";
 import { IoPersonOutline } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaRegEye, FaRegEyeSlash} from "react-icons/fa";
-import gab from "../images/gab.jpeg"
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebookOption } from "react-icons/gr";
 
@@ -30,14 +29,14 @@ export default function LoginPage() {
     className="flex flex-col items-center 
     justify-center min-h-[100vh] w-full px-6 md:px-0">
       <form className="w-full width-[100%] max-w-[600px] mx-auto py-10 rounded-md bg-white 
-       border-blue-400 border-solid border-4 px-6 md:px-0 ">
+       border-primary border-solid border-4 px-6 md:px-0 ">
           <div className="w-full max-w-[500px] mx-auto align-center">
-          <div className="text-4xl text-center font-bold text-blue-400">
+          <div className="text-4xl text-center font-bold text-primary">
               SignUp
             </div>
             <p className="text-[1.2rem] mt-2 text-center ">
             Already have an account?{" "}	
-              <span className="text-blue-400 text-2xl">
+              <span className="text-primary text-2xl">
                 <Link href="/login">Login</Link>
               </span>
             </p>
@@ -79,7 +78,7 @@ export default function LoginPage() {
             <Link href="/login">
               <button
                 type="submit"
-                className="items-center text-2xl bg-blue-500 hover:bg-blue-400 py-5 px-7 rounded-2xl text-white  max-w-[400px]"
+                className="items-center text-2xl bg-primary py-5 px-7 rounded-2xl text-white  max-w-[400px]"
               >
               Signup
               </button>
@@ -89,10 +88,6 @@ export default function LoginPage() {
               <p className="text-1xl">Or signup with</p><button className="pl-2"><FcGoogle size={18} /></button>
               <button><GrFacebookOption  size={25} className="pl-3a text-blue-800"/></button>
               </div>
-              {/* <button className="text-2xl mt-8 bg-slate-500 hover:bg-slate-400 py-3 px-7 rounded-2xl text-white w-full max-w-[700px] items-center on">
-               Signup using Google
-              </button> */}
-          
           </div>
       </form>
     </div>
