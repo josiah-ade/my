@@ -12,12 +12,16 @@ const config: Config = {
       },
       colors: {
         background: "rgb(59 130 246 / var(--tw-bg-opacity));",
-        black: "#000",
+        "black": "#000000",
         primary: "#0D1A4F",
         "primary-1": "#253572",
         "primary-2": "#4A5995",
         "primary-3": "#7B87B9",
         "primary-4": "#D9DDED",
+        "gray-600": "#475367",
+        "green-50": "#E7F6EC",
+        "gray-900": "#101928",
+        "gray-500": "#667185"
       },
       screens: {
         'xs': "475px",
