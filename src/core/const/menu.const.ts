@@ -19,6 +19,12 @@ export const UserMenus: Menu[] = [
     img: "./assets/icons/dashboard.svg",
     path: "/login",
   },
+  {
+    title: "Accounts",
+    id: "1",
+    img: "./assets/icons/dashboard.svg",
+    path: "/user/account",
+  },
 ];
 
 export const UserMenuLookup = UserMenus.reduce<{ [key: string]: Menu }>((val, item) => {
