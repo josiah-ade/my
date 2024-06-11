@@ -1,24 +1,21 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import UserLayout from "@/layout/user";
+import DashBoardItems from "@/components/dashboard/dashboarditem/dashboarditem";
+import DashBoardAction from "@/components/dashboard/dashboarditem/dashboardactons";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
     <UserLayout>
-      <div className="pt-10  ">
-      <h1>
-        Hi Welcome to ExpertNaire.
-      </h1>
-      <h3 className=" text center">
-      Marketplace
-      </h3>
-      <p>
-      Mobile Marketplace AppUI Design + Prototype
-      </p>
-
+      <div>
+        <DashBoardItems />
       </div>
+      <div>
+        <DashBoardAction />
+      </div>
+      
       </UserLayout>
   );
 }

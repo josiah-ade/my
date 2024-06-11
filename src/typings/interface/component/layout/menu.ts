@@ -1,6 +1,15 @@
+import { ReactElement } from "react";
+import { IconType } from "react-icons";
+
 export interface Menu {
   title: string;
   id: string;
-  img?: string;
+  icon?: IconType;
   path: string;
+}
+export interface dashboard {
+  title: string;
+  id: string;
+ amount:string;
+ total:string
 }
