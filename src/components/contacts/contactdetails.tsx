@@ -5,9 +5,12 @@ import { Tabdetails } from "@/typings/interface/component/tab/tabdetails"
 
 
 export default function TabDetails(props:Tabdetails){
-    const {icon, phone, description}=props
+    const {icon, phone, description, onClick}=props
+        const handleRedirect=()=>{
+            onClick && onClick();
+        }
     return(
-        <div className="border py-5 px-4 rounded  w-full max-w-[220px]">
+        <div className="border py-5 px-4 rounded  w-full max-w-[320px]">
             <div className="py-3">
             <Image src={profile} alt="contact" height={30} width={30} />
             </div>
@@ -23,9 +26,9 @@ export default function TabDetails(props:Tabdetails){
                 <div className="py-4 mt-7">
                 <hr />
                 </div>
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-row justify-between flex-wrap">
                     <p className="text-primary-6">{props.total}</p>
-                    <p className="text-success font-bold">{props.totaldescription} </p>
+                    <button className="text-success font-bold" >{props.totaldescription} </button>
                 </div>
 
         </div>

@@ -6,5 +6,6 @@ export interface Tabdetails{
     description:string,
     total:string,
     totaldescription:string,
-    
+    onClick?:()=>void,
+    path?:string;
 }

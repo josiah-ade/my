@@ -9,9 +9,9 @@ interface TableHeader {
 interface TableProps<T = unknown> {
   headers: TableHeader[];
   data: T[];
-  actions: { text: string; icon?: JSX.Element }[];
-  isOpen: boolean;
-  setIsOpen: (x: boolean) => void;
+  actions?: { text: string; icon?: JSX.Element }[];
+  isOpen?: boolean ,
+  setIsOpen?: (x:boolean)=>void ;
 }
 
 export default function Table<T>(props: TableProps<T>) {
@@ -20,8 +20,8 @@ export default function Table<T>(props: TableProps<T>) {
   const [selectAll, setSelectAll] = useState(false);
 
   const handleOpen = () => {
-    setIsOpen(true);
-  };
+    setIsOpen &&  setIsOpen(true)
+  }
 
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
@@ -103,7 +103,7 @@ export default function Table<T>(props: TableProps<T>) {
                       <Menu.Items className="origin-top-right z-40 absolute right-0 mt-2 w-56 max-h-40 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div className="py-4">
                           <p className="text-center text-sm text-primary-base p-4">Start Service</p>
-                          {actions.map((action, actionIndex) => (
+                          {actions && actions.map((action, actionIndex) => (
                             <Menu.Item key={actionIndex}>
                               {({ active }) => (
                                 <a

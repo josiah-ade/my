@@ -19,13 +19,13 @@ export const BroadcastMenus: Menu[] = [
         title: "Broadcast Messages",
         id: "3",
         icon: MdOutlineFormatAlignJustify,
-        path: "/user/broadcast",
+        path: "/userss/",
       },
     {
         title: "Broadcast Reports",
         id: "3",
         icon: MdOutlineFormatAlignJustify,
-        path: "/user/broadcast",
+        path: "/usersss/",
       },
 ];
 
