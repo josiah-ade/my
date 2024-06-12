@@ -38,6 +38,20 @@ export default function User() {
       'expiry': '22 February 2024',
       'serviceStatus': 'Disabled',
     },
+    {
+        'whatsAppNumber': '+234 915 632 9332',
+        'purpose': 'For RJStores',
+        'plan': 'Free Plan',
+        'expiry': '22 February 2024',
+        'serviceStatus': 'Disabled',
+      },
+      {
+        'whatsAppNumber': '+234 915 632 9332',
+        'purpose': 'For RJStores',
+        'plan': 'Free Plan',
+        'expiry': '22 February 2024',
+        'serviceStatus': 'Disabled',
+      },
   ];
   const actions: Data[] = [
     { text: 'Link with pairing code', icon: <Link className="h-4 w-4" /> },
