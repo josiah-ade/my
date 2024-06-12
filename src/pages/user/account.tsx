@@ -7,8 +7,9 @@ import Button from "@/components/button/button";
 import { GoPlus } from "react-icons/go";
 
 import Table from "@/components/table/table";
-import { TableHeader } from "@/core/table.interface";
 import Tabs from "@/components/tab/Tab";
+import { Bin, Qr, Circle, Message, Hash, Repeat, Home, Link } from "@/core/const/icons/icons";
+import { AccountData, Data, TableHeader } from "@/core/types/data.interface";
 
 export default function User() {
   const [isOpen, setIsOpen ] = useState(false)
@@ -29,7 +30,7 @@ export default function User() {
     {field:'serviceStatus',title:"Service Status"},
   
   ];
-  const data = [
+  const data: AccountData[] = [
     {
       'whatsAppNumber': '+234 915 632 9332',
       'purpose': 'For RJStores',
@@ -38,22 +39,21 @@ export default function User() {
       'serviceStatus': 'Disabled',
     },
   ];
-  const actions = [
-    { text: 'Start Service', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Link with pairing code', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Link with QR code', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Disconnect', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Send test message', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Unsubscribe Keyword', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Trigger Word To Move To Another List', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Transfer License', icon: <GoPlus className="h-5 w-5" /> },
-    { text: 'Delete', icon: <GoPlus className="h-5 w-5 text-red-600" /> },
+  const actions: Data[] = [
+    { text: 'Link with pairing code', icon: <Link className="h-4 w-4" /> },
+    { text: 'Link with QR code', icon: <Qr className="h-4 w-4" /> },
+    { text: 'Disconnect', icon: <Circle className="h-4 w-4" /> },
+    { text: 'Send test message', icon: <Message className="h-4 w-4" /> },
+    { text: 'Unsubscribe Keyword', icon: <Hash className="h-4 w-4" /> },
+    { text: 'Trigger Word To Move To Another List', icon: <Hash className="h-4 w-4" /> },
+    { text: 'Transfer License', icon: <Repeat className="h-4 w-4" /> },
+    { text: 'Delete', icon: <Bin className="h-4 w-4 text-red-600" /> },
   ];
 
   const tabs = [
     {
       label: 'Link with Pairing Code',
-      icon: <GoPlus />,
+      icon: <Home />,
       content: (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg">
           <h2 className="text-black text-[1.2rem] font-semibold mb-4">How to Link with pairing code</h2>
@@ -93,7 +93,7 @@ export default function User() {
     },
     {
       label: 'Link with QR Code',
-      icon: <GoPlus />,
+      icon: <Qr />,
       content: (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg">
           <h2 className="text-black text-[1.2rem] font-semibold mb-4">How to Link with QR code</h2>
@@ -156,9 +156,9 @@ export default function User() {
               <section className="px-4 py-4 mt-4 lg:mt-0 lg:w-[50%] border-2 border-[#F7F9F] rounded-lg"> 
                 <div className="rounded-lg">
                   <p className="text-[0.9] text-gray-500 font-bold">Account Usage</p>
-                  <p className="text-[1rem] font-bold text-gray-900">0/1</p>
+                  <p className="text-[1rem] font-bold text-gray-900 mt-1">0/1</p>
                 </div>
-                <div className="mt-4">
+                <div className="mt-8">
                   <Button primary>
                     Upgrade
                 </Button>

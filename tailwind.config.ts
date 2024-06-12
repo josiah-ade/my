@@ -26,6 +26,7 @@ const config: Config = {
         "primary-6": "#667185",
         "primary-7": "#98A2B3",
         "success": "#0F973D",
+        "primary-base": "#F56630",
       },
       screens: {
         'xs': "10px",

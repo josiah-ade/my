@@ -1,13 +1,13 @@
 import React from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import { TableHeader } from '@/core/table.interface';
+import { TableHeader } from '@/core/types/data.interface';
 
 
 
 
 interface TableProps<T=unknown> {
-  headers: TableHeader[];
+  headers: TableHeader;
   data: T[];
   actions: { text: string; icon?: JSX.Element }[];
   isOpen: boolean;
@@ -32,7 +32,7 @@ export default function Table<T>(props: TableProps<T>) {
                   <th
                     key={header.title}
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
                   >
                     {header.title}
                   </th>
@@ -51,7 +51,7 @@ export default function Table<T>(props: TableProps<T>) {
                     return (
                       <td
                         key={rowIndex}
-                        className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                        className={`px-6 py-1 whitespace-nowrap text-sm text-gray-900 ${row[header.field as keyof typeof row] === "Disabled" ? '' : ''}`}
                       >
                         {`${row[header.field as keyof typeof row]}`}
                       </td>
@@ -78,15 +78,16 @@ export default function Table<T>(props: TableProps<T>) {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <div className="py-1">
+                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 max-h-40 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-4">
+                            <p className='text-center text-sm text-primary-base p-4'>Start Service</p>
                             {actions.map(function (action, actionIndex) {
                               return (
                                 <Menu.Item key={actionIndex}>
                                   {({ active }) => (
                                     <a
                                       href="#"
-                                      className={`${
+                                      className={`text-center text-sm flex items-center space-x-2 ${
                                         active ? 'bg-gray-100' : ''
                                       } flex items-center px-4 py-2 text-sm ${
                                         action.text === 'Delete'
@@ -100,7 +101,13 @@ export default function Table<T>(props: TableProps<T>) {
                                           {action.icon}
                                         </span>
                                       )}
+                                      <span className={`text-gray-500 tex-sm ${
+                                        action.text === 'Delete'
+                                          ? 'text-red-600'
+                                          : 'text-gray-500'
+                                      }`}>
                                       {action.text}
+                                      </span>
                                     </a>
                                   )}
                                 </Menu.Item>
