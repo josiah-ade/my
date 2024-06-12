@@ -36,7 +36,7 @@ export default function TabComponent(){
         </div>
         <div className="p-4">
         {content.map((cont, index) => (
-          <Link href={cont.path} key={cont.path} >
+          <Link href={cont.path || ""} key={cont.path} >
           <div
             className={`${activeTab === index ? "block" : "hidden"}`}
           >
