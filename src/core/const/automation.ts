@@ -19,13 +19,13 @@ export const AutomationMenus: Menu[] = [
         title: "Group Automations",
         id: "3",
         icon: MdOutlineFormatAlignJustify,
-        path: "/user/broadcast",
+        path: "/users",
       },
     {
         title: "Group Templates",
         id: "3",
         icon: MdOutlineFormatAlignJustify,
-        path: "/user/broadcast",
+        path: "/grop/",
       },
 ];
 

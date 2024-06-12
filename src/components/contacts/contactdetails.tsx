@@ -23,7 +23,7 @@ export default function TabDetails(props:Tabdetails){
                 <div className="py-4 mt-7">
                 <hr />
                 </div>
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-row justify-between flex-wrap">
                     <p className="text-primary-6">{props.total}</p>
                     <p className="text-success font-bold">{props.totaldescription} </p>
                 </div>

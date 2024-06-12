@@ -1,7 +1,8 @@
 import { AutomationMenus } from "@/core/const/automation";
 import { BroadcastMenus } from "@/core/const/broadcast";
 import { UserMenus } from "@/core/const/menu.const";
-import useActiveMenu from "@/providers/hooks/layout/activeMenu";
+import  useActiveMenu from "@/providers/hooks/layout/activeMenu";
+import useActiveBroadcast from "@/providers/hooks/layout/activebroadcast";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
 
@@ -12,6 +13,8 @@ interface Props {
 
 export default function AppDrawer(props: Props) {
   const currentMenuItem = useActiveMenu();
+  // const currentAutomationItem = useActiveAutomation();
+  const currentBroadcastItem = useActiveBroadcast();
 
   return (
     <>
@@ -52,7 +55,7 @@ export default function AppDrawer(props: Props) {
         <div>
                 <p className="text-primary-7 px-4">Broadcast</p>
                 {BroadcastMenus.map((item) => {
-          const isActive = currentMenuItem && currentMenuItem.path != "" && item.path == currentMenuItem.path;
+          const isActive = currentBroadcastItem && currentBroadcastItem.path != "" && item.path == currentBroadcastItem.path;
           return (
             <Link href={item.path} key={item.path}>
               <div

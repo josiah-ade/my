@@ -31,7 +31,7 @@ export const UserMenus: Menu[] = [
     title: "Team",
     id: "2",
     icon: LuUsers2 ,
-    path: "/user",
+    path: "/user/",
   },
   {
     title: "Subscriptions",

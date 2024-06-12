@@ -35,7 +35,7 @@ export default function LoginPage() {
       <form className="w-full width-[100%] max-w-[350px] mx-auto py-10 rounded-md bg-white 
      px-6 md:px-0 ">
           <div className="w-full max-w-[500px] mx-auto align-center">
-          <div className="text-3xl text-center font-bold">
+          <div className="text-[2rem] text-center font-bold">
           Log In
             </div>
             <p className="text-[1.2rem] mt-5 text-center text-gray-400">
