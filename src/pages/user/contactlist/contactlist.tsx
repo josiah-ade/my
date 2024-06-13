@@ -1,10 +1,41 @@
 import Button from "@/components/button/button";
+import CreateForm from "@/components/common/actions/form/createform";
+import Modal from "@/components/modal/modal";
+import Tabs from "@/components/tab/Tab";
 import Table from "@/components/table/table";
+import { Qr, Home } from "@/core/const/icons/icons";
 import { TableHeader, AccountData } from "@/core/types/data.interface";
 import UserLayout from "@/layout/user";
+// import Home from "@/pages";
+import { useState } from "react";
 import { GoPlus } from "react-icons/go";
 
+interface IAdd{
+  name: string,
+  description: string,
+  automation: string,
+
+}
+
 export default function ContactPage(){
+    const[isOpen, setIsOpen]=useState(false)
+    const [add, setAdd] = useState<IAdd>({
+      name: "",
+      description: "",
+      automation: "",
+    });
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+      const { value, name } = event.target;
+      setAdd({ ...add, [name]: value });
+      // console.log({ data });
+    }
+
+    const handleModal =()=>{
+        setIsOpen(true)
+    }
+    const handleClose =()=>{
+        setIsOpen(false)
+    }
     const headers :TableHeader[] = [
         {field:'whatsAppNumber',title:"Phone Number"},
         {field:'purpose',title:"Country"},
@@ -20,6 +51,77 @@ export default function ContactPage(){
             "serviceStatus": ""
         },
       ];
+
+      const tabs = [
+        {
+          label: 'Add to a New List',
+          icon: <Home />,
+          content: (
+            <form>
+           <div>
+            <h2>Add 384 contacts to a new list</h2>
+            <p>384 contacts you have selected would be added to a new broadcast list </p>
+           </div>
+           <div  className={`mt-5 relative `}>
+              <label className="font-bold">List Name</label><br></br>
+              <div className="mt-2">
+              <input
+                name="name"
+                autoComplete="off"
+                placeholder="Enter List Name"
+                onChange={handleChange}
+                value={add.name}
+                className="pl-[10px]  rounded-2xl px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
+              />
+              </div>
+              </div>
+           <div  className={`mt-5 relative `}>
+              <label className="font-bold">Description</label><br></br>
+              <div className="mt-2">
+              <input
+                name="name"
+                autoComplete="off"
+                placeholder="Enter business email"
+                onChange={handleChange}
+                value={add.name}
+                className="pl-[10px]  rounded-2xl px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
+              />
+              </div>
+              </div>
+              <div className="outline-gray-400">
+                <p>what is this list for?</p>
+              </div>
+           <div  className={`mt-5 relative `}>
+              <label className="font-bold">Day Number on Automation</label><br></br>
+              <div className="mt-2">
+              <input
+                name="name"
+                autoComplete="off"
+                placeholder="Enter business email"
+                onChange={handleChange}
+                value={add.name}
+                className="pl-[10px]  rounded-2xl px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
+              />
+              </div>
+              </div>
+              <div>
+            <Button primary className="w-full">
+              Done
+            </Button>
+            </div>
+            </form>
+          ),
+        },
+        {
+          label: 'Add to an Existing List',
+          icon: <Qr />,
+          content: (
+            <div>
+
+            </div>
+          ),
+        },
+      ];
     return(
         <UserLayout>
         <div>
@@ -30,7 +132,8 @@ export default function ContactPage(){
              </div>
              <div>
                 <Button 
-                  secondary
+                onClick={handleModal}
+                  primary
                   icon={<GoPlus />}
                   >
                 Add to List
@@ -41,6 +144,9 @@ export default function ContactPage(){
              <Table  headers={headers} data={data}   />
              </div>
         </div>
+        <Modal isOpen={isOpen} onClose={handleClose}  >
+            <Tabs tabs={tabs} />
+        </Modal>
         </UserLayout>
     )
 }

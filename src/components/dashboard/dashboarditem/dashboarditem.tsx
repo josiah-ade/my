@@ -35,10 +35,7 @@ export default function DashBoardItems(){
                                 <div>
                                 <span className="font-bold" >{item.amount}/</span>
                                 <span className="font-bold">{item.total}</span>
-
                                 </div>
-
-
                             </div>
                         </div>
 

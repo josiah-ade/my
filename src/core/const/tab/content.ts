@@ -18,7 +18,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
       description: "Group chat contacts",
         total:"Total Groups",
       totaldescription:"9 Groups",
-       path:"/user/contactlist/"
+       path:"/user/contactlist/whatsaplist"
     },
     {
       icon: MdOutlineKeyboardArrowRight,

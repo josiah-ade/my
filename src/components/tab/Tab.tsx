@@ -3,9 +3,9 @@
 import React, { useState, ReactNode } from 'react';
 
 type TabProps = {
-  label: string;
-  icon: ReactNode;
-  content: ReactNode;
+  label?: string;
+  icon?: ReactNode;
+  content?: ReactNode;
 };
 
 export default function Tabs({ tabs }: { tabs: TabProps[] }) {
