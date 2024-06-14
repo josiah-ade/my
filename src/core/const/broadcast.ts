@@ -7,26 +7,27 @@ import { MdOutlineFormatAlignJustify } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
 
-
 export const BroadcastMenus: Menu[] = [
-    {
-        title: "Broadcast List",
-        id: "3",
-        icon: MdOutlineFormatAlignJustify,
-        path: "/user/broadcast",
-      },
-    {
-        title: "Broadcast Messages",
-        id: "3",
-        icon: MdOutlineFormatAlignJustify,
-        path: "/userss/",
-      },
-    {
-        title: "Broadcast Reports",
-        id: "3",
-        icon: MdOutlineFormatAlignJustify,
-        path: "/usersss/",
-      },
+  {
+    title: "Broadcast List",
+    id: "3",
+    icon: MdOutlineFormatAlignJustify,
+    path: "/user/broadcast",
+  },
+  {
+    title: "Broadcast Messages",
+    id: "3",
+    icon: MdOutlineFormatAlignJustify,
+    path: "/userss/",
+    disabled: true,
+  },
+  {
+    title: "Broadcast Reports",
+    id: "3",
+    icon: MdOutlineFormatAlignJustify,
+    path: "/usersss/",
+    disabled: true,
+  },
 ];
 
 export const UserBroadcastLookup = BroadcastMenus.reduce<{ [key: string]: Menu }>((val, item) => {

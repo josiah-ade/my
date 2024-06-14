@@ -6,10 +6,11 @@ export interface Menu {
   id: string;
   icon?: IconType;
   path: string;
+  disabled?: boolean;
 }
 export interface dashboard {
   title: string;
   id: string;
- amount:string;
- total:string
+  amount: string;
+  total: string;
 }
