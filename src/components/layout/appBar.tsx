@@ -30,9 +30,9 @@ export default function AppBar(props: Props) {
           </div>
         </div>
         <div className=" hidden md:flex items-center gap-2">
-          <Image src={profile} alt="profile" height={35} width={35} />
-          <div>
-            <h4>David Eskor</h4>
+          <Image src={profile} alt="profile"  />
+          <div className="text-xs">
+            <h4 className="font-bold">David Eskor</h4>
             <p>eek@gmail.com</p>
           </div>
         </div>

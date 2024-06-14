@@ -1,7 +1,8 @@
 import { AutomationMenus } from "@/core/const/automation";
 import { BroadcastMenus } from "@/core/const/broadcast";
 import { UserMenus } from "@/core/const/menu.const";
-import useActiveMenu from "@/providers/hooks/layout/activeMenu";
+import  useActiveMenu from "@/providers/hooks/layout/activeMenu";
+import { useActiveAutomation } from "@/providers/hooks/layout/activeautomation";
 import useActiveBroadcast from "@/providers/hooks/layout/activebroadcast";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
@@ -13,7 +14,7 @@ interface Props {
 
 export default function AppDrawer(props: Props) {
   const currentMenuItem = useActiveMenu();
-  // const currentAutomationItem = useActiveAutomation();
+  const currentAutomationItem = useActiveAutomation();
   const currentBroadcastItem = useActiveBroadcast();
 
   return (
@@ -80,27 +81,27 @@ export default function AppDrawer(props: Props) {
           <hr />
         </div>
         <div>
-          <p className="text-primary-7 px-4">Automation</p>
-          {AutomationMenus.map((item) => {
-            const isActive = currentMenuItem && currentMenuItem.path != "" && item.path == currentMenuItem.path;
-            return (
-              <Link href={item.path} key={item.path}>
-                <div
-                  className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF] cursor-pointer ${
-                    isActive ? "bg-primary-3 text-primary-4 font-bold " : "text-primary-4"
-                  }  ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold " : ""}`}
-                >
-                  {/* <img src="item.img" alt="" className="h-[24px] w-[24px]" /> */}
-                  <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
-                    {item.icon ? (
-                      <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
-                    ) : null}
-                  </span>
-                  <span className="pl-2">{item.title}</span>
-                </div>
-              </Link>
-            );
-          })}
+                <p className="text-primary-7 px-4">Automation</p>
+                {AutomationMenus.map((item) => {
+          const isActive = currentAutomationItem && currentAutomationItem.path != "" && item.path == currentAutomationItem.path;
+          return (
+            <Link href={item.path} key={item.path}>
+              <div
+                className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF] cursor-pointer ${
+                  isActive ? "bg-primary-3 text-primary-4 font-bold " : "text-primary-4"
+                }  ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold " : ""}`}
+              >
+                {/* <img src="item.img" alt="" className="h-[24px] w-[24px]" /> */}
+                <span className={`${
+                  isActive ? " text-primary " : "text-primary-4"} `}>
+                 { item.icon ? <item.icon size={18} className={`${
+                  isActive ? " text-primary " : "text-primary-4"}`} />:null}
+                </span>
+                <span className="pl-2">{item.title}</span>
+              </div>
+            </Link>
+          );
+        })}
         </div>
       </div>
       {props.display ? (

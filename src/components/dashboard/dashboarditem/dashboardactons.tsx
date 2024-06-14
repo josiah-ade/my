@@ -1,7 +1,7 @@
-import BroadCastList from "@/components/common/broadcasts/broadcast";
-import ContactList from "@/components/common/contacts/contacts";
-import CreateForm from "@/components/common/form/createform";
-import Automations from "@/components/common/message_Automation/message";
+import BroadCastList from "@/components/common/actions/broadcasts/broadcast";
+import ContactList from "@/components/common/actions/contacts/contacts";
+import CreateForm from "@/components/common/actions/form/createform";
+import Automations from "@/components/common/actions/message_Automation/message";
 import Link from "next/link";
 
 export default function DashBoardAction() {

@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+import { ReactNode } from "react";
 
 export interface Data{
   text: string;
@@ -7,13 +9,14 @@ export interface Data{
 export interface TableHeader {
   field: keyof AccountData;
   title: string;
+  icon?: string
 }
 
 export interface AccountData {
-  whatsAppNumber: string;
-  purpose: string;
-  plan: string;
-  expiry: string;
-  serviceStatus: string;
+  first: string;
+  second: string;
+  third: string;
+  fourth: string;
+  fifth: string;
 }
 

@@ -25,19 +25,19 @@ export const UserMenus: Menu[] = [
     title: "Contacts",
     id: "3",
     icon: RiContactsLine ,
-    path: "/user/contact",
+    path: "/contacts",
   },
   {
     title: "Team",
     id: "2",
     icon: LuUsers2 ,
-    path: "/user/",
+    path: "/user/teams",
   },
   {
     title: "Subscriptions",
     id: "2",
     icon: FaHashtag ,
-    path: "/user",
+    path: "/user/subscrition",
   },
   {
     title: "Forms",
