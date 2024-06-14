@@ -1,15 +1,21 @@
 import { StaticImageData } from "next/image";
 import { ReactNode } from "react";
 
-export interface Data{
+export interface Data {
   text: string;
   icon: JSX.Element;
 }
 
 export interface TableHeader {
-  field: keyof AccountData;
+  field: String;
   title: string;
-  icon?: string
+  icon?: string;
+  action?: {
+    text: string;
+    type?: "Button" | "dropdoen";
+    style?: string;
+    href?: string;
+  };
 }
 
 export interface AccountData {
@@ -20,3 +26,10 @@ export interface AccountData {
   fifth: string;
 }
 
+export interface BroadCastList {
+  listName: string;
+  id: string;
+  description: string;
+  // contact?: string;
+  // view: string;
+}

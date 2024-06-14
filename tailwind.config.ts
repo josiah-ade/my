@@ -1,9 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}"
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       backgroundImage: {
@@ -12,12 +10,13 @@ const config: Config = {
       },
       colors: {
         background: "rgb(59 130 246 / var(--tw-bg-opacity));",
-        "black": "#000000",
+        black: "#000000",
         "gray-600": "#475367",
         "green-50": "#E7F6EC",
         "gray-900": "#101928",
         "gray-500": "#667185",
-        "primary": "#EB5017",
+        "gray-50": "#F9FAFB",
+        primary: "#EB5017",
         "primary-1": "#D0D5DD",
         "primary-2": "#F0F2F5",
         "primary-3": "#FFECE5",
@@ -25,17 +24,17 @@ const config: Config = {
         "primary-5": "#1671D9",
         "primary-6": "#667185",
         "primary-7": "#98A2B3",
-        "success": "#0F973D",
+        success: "#0F973D",
         "primary-base": "#F56630",
         "warning-500": "#DD900D",
       },
       screens: {
-        'xs': "10px",
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
-        '2xl': '1536px',
+        xs: "10px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
       },
     },
   },
