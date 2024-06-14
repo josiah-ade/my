@@ -10,7 +10,7 @@ export default function PhoneList() {
         <div className="flex flex-wrap gap-5 mt-5">
             {phonelist.map((item) => (
                 <Link
-                    href={`/contacts/lists/${item.id}`}
+                    href={`/contacts/${item.id}`}
                     key={item.id}
                     className="border py-5 px-4 rounded w-full max-w-[400px] flex-1"
                 >

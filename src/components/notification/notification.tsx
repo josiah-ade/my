@@ -4,7 +4,7 @@ import { IoIosClose } from "react-icons/io";
 interface NotificationProps {
   message: string;
   description: string;
-  additionalInfo: string;
+  additionalInfo?: string;
   onClose: () => void;
 }
 

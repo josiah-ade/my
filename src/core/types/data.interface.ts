@@ -9,16 +9,14 @@ export interface Data{
 export interface TableHeader {
   field: keyof AccountData;
   title: string;
-  icon:ReactNode;
-  icons:ReactNode;
+  icon?: string
 }
 
-export interface AccountData{
-  whatsAppNumber: string;
-  purpose: string;
-  plan: string;
-  expiry: string;
-  serviceStatus: string;
-  img:StaticImageData;
+export interface AccountData {
+  first: string;
+  second: string;
+  third: string;
+  fourth: string;
+  fifth: string;
 }
 

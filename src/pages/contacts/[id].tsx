@@ -11,8 +11,12 @@ import { useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
-import profile from "../../../assets/profile.png"
+import profile from "../../assets/profile.png"
 import { useRouter } from 'next/router';
+import { IoAddCircleOutline } from "react-icons/io5";
+import { MdOutlinePostAdd } from "react-icons/md";
+import Notification from "@/components/notification/notification";
+
 
 
 interface IAdd{
@@ -44,11 +48,9 @@ export default function ContactPage(){
         setIsOpen(false)
     }
     const headers :TableHeader[] = [
-        {field:'whatsAppNumber',title:"Phone Number", icon:<MdOutlineKeyboardArrowDown />, icons:<MdOutlineKeyboardArrowUp  />},
-        {field:'purpose',title:"Country", icon:<MdOutlineKeyboardArrowDown />, icons:<MdOutlineKeyboardArrowUp  />},
-        {field:'plan',title:"Name", icon:<MdOutlineKeyboardArrowDown />, icons:<MdOutlineKeyboardArrowUp  />},
-       
-        
+        {field:'whatsAppNumber',title:"Phone Number", },
+        {field:'purpose',title:"Country", },
+        {field:'plan',title:"Name", },
       ];
       const data: AccountData[] = [
         {
@@ -88,7 +90,7 @@ export default function ContactPage(){
       const tabs = [
         {
           label: 'Add to a New List',
-          icon: <Home />,
+          icon: <IoAddCircleOutline />,
           content: (
             <form className=" mt-5 relative ">
            <div >
@@ -147,7 +149,7 @@ export default function ContactPage(){
         },
         {
           label: 'Add to an Existing List',
-          icon: <Qr />,
+          icon: <MdOutlinePostAdd  />,
           content: (
             <form className=" mt-10 relative ">
             <div>
@@ -214,6 +216,9 @@ export default function ContactPage(){
         <Modal isOpen={isOpen} onClose={handleClose}  >
             <Tabs tabs={tabs} />
         </Modal>
+
+        <Notification message={"Contact List Updated successfully"} description={"you added 232 contacts to New Customers Broadcast list"} 
+         onClose={handleClose} />
         </UserLayout>
     )
 }

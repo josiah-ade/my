@@ -31,13 +31,13 @@ export const UserMenus: Menu[] = [
     title: "Team",
     id: "2",
     icon: LuUsers2 ,
-    path: "/user/",
+    path: "/user/teams",
   },
   {
     title: "Subscriptions",
     id: "2",
     icon: FaHashtag ,
-    path: "/user",
+    path: "/user/subscrition",
   },
   {
     title: "Forms",
