@@ -1,4 +1,4 @@
-import { ILogin } from "@/typings/interface/login";
+import { ILogin,ISignUp } from "@/typings/interface/login";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -9,25 +9,26 @@ import { FcGoogle } from "react-icons/fc";
 import { GrFacebookOption } from "react-icons/gr";
 import { MdMailOutline } from "react-icons/md";
 import { useAuthContext } from "@/providers/context/auth";
+import { GoDotFill } from "react-icons/go";
 
 
 
-export default function LoginPage() {
+export default function SignPage() {
   const router = useRouter();
   const {SignUpApi, } = useAuthContext();
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string[]>([]);
   const [hidepassword, setHidePassword] = useState(false)
-  const [data, setData] = useState<ILogin>({
-    name: "",
-    useremail: "",
+  const [data, setData] = useState<ISignUp>({
+    fullname: "",
+    businessline: "",
     email: "",
     password: "",
   });
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = event.target;
     setData({ ...data, [name]: value });
-    // console.log({ data });
+    console.log({ data });
   }
   const togglePasswordVisisbility = () =>{
     setHidePassword(!hidepassword)
@@ -38,6 +39,7 @@ export default function LoginPage() {
     try {
         setLoading(true);
        await SignUpApi(data)
+       console.log({ data });
         setLoading(false);
       } catch (e) {
         const loginError = e as Error
@@ -60,6 +62,20 @@ export default function LoginPage() {
             <p className="text-[1.2rem] mt-2 text-center text-gray-400">
             Enter your credentials to create your account{" "}
             </p>
+            <div >
+            {error?.length ? (
+            <div className="flex flex-col">
+              {error?.map((e) => (
+                <p key={e} className="text-red">
+                  {" "}
+                  <div className="flex flex-row  text-red-500">
+                  <GoDotFill color="inherit" className="mt-1" /><span>{e}</span>
+                  </div>
+                </p>
+              ))}
+            </div>
+          ) : null}
+            </div>
             <div
               className={`mt-5 relative flex flex-row gap-10`}>
                 {/* name input */}
@@ -67,11 +83,11 @@ export default function LoginPage() {
               <label className="font-bold">BUSINESS NAME</label><br></br>
               <div className="mt-2">
               <input
-                name="name"
+                name="fullname"
                 autoComplete="off"
                 placeholder="Enter Name"
                 onChange={handleChange}
-                value={data.name}
+                value={data.fullname}
                 className="pl-[10px]  rounded-2xl px-3 py-5 w-[100%]  bg-white outline-gray-400 border focus:outline-none focus:border-primary"
               />
               </div>
@@ -81,11 +97,11 @@ export default function LoginPage() {
               <label className="font-bold">LINE OF BUSINESS</label><br></br>
               <div className="mt-2">
               <input
-                name="useremail"
+                name="businessline"
                 autoComplete="off"
                 placeholder="Enter business email"
                 onChange={handleChange}
-                value={data.useremail}
+                value={data.businessline}
                 className="pl-[10px]  rounded-2xl px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
               />
               </div>
@@ -129,14 +145,19 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="mt-8  flex flex-col">
-            <Link href="/login">
+            {loading ? (
+              <button
+              disabled
+              className="items-center text-2xl bg-primary-2  py-4 px-7 rounded-2xl text-black  max-w-[1000px] w-full">
+              Loading...
+            </button>
+            ):(
               <button
                 type="submit"
-                className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full"
-              >
-              Create your Account
+                className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full">
+             Create Account
               </button>
-              </Link>
+            )}
               </div>
               <div  className={`py-6 relative text-center `}>
                 <h2>Or</h2>

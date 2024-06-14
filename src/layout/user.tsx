@@ -1,15 +1,29 @@
 import AppBar from "@/components/layout/appBar";
 import AppDrawer from "@/components/layout/appDrawer";
-import { PropsWithChildren, useState } from "react";
+import { useAuthContext } from "@/providers/context/auth";
+import { useRouter } from "next/router";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 export default function UserLayout(props: PropsWithChildren) {
   const [showDrawer, setShowDrawer] = useState(false);
+  const { islLoggedIn, loaded } = useAuthContext();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
 
-  const toggleDrawer = () => {
+  useEffect(() => {
+    if (!islLoggedIn && loaded) {
+      router.push("/login");
+    } else if (loaded) {
+      setOpen(true);
+    }
+  }, [islLoggedIn, router, loaded]);
+
+  const toggleDrawer = () =>{
     setShowDrawer((val) => !val);
   };
   return (
     <>
+    {loaded && islLoggedIn ? (
       <div className="h-screen w-full">
         <div className="">
             <AppBar onToggle={toggleDrawer} />
@@ -20,7 +34,7 @@ export default function UserLayout(props: PropsWithChildren) {
             {props.children}
           </div>
         </div>
-      </div>
+      </div>):(<></>)}
     </>
   );
 }

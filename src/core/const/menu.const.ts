@@ -19,7 +19,7 @@ export const UserMenus: Menu[] = [
     title: "Account",
     id: "3",
     icon: LuUsers2   ,
-    path: "/user/account",
+    path: "/account",
   },
   {
     title: "Contacts",

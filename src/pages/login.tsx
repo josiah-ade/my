@@ -10,24 +10,24 @@ import { GrFacebookOption } from "react-icons/gr";
 import { MdMailOutline } from "react-icons/md";
 import { useAuthContext } from "@/providers/context/auth";
 import error from "next/error";
+import { GoDotFill } from "react-icons/go";
 
 
 export default function LoginPage() {
   const router = useRouter();
   const {AdminLogin, } = useAuthContext();
+  console.log("this is login",AdminLogin)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string[]>([]);
   const [hidepassword, setHidePassword] = useState(false)
   const [data, setData] = useState<ILogin>({
-    name: "",
-    useremail: "",
     email: "",
     password: "",
   });
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = event.target;
     setData({ ...data, [name]: value });
-    // console.log({ data });
+    console.log({ data });
   }
   const togglePasswordVisisbility = () =>{
     setHidePassword(!hidepassword)
@@ -38,6 +38,7 @@ export default function LoginPage() {
     try {
         setLoading(true);
        await AdminLogin(data)
+       console.log({ data });
         setLoading(false);
       } catch (e) {
         const loginError = e as Error
@@ -59,6 +60,20 @@ export default function LoginPage() {
             <p className="text-[1.2rem] mt-5 text-center text-gray-400">
             Enter your credentials to access your account{" "}
             </p>
+            <div >
+            {error?.length ? (
+            <div className="flex flex-col">
+              {error?.map((e) => (
+                <p key={e} className="text-red">
+                  {" "}
+                  <div className="flex flex-row  text-red-500">
+                  <GoDotFill color="inherit" className="mt-1" /><span>{e}</span>
+                  </div>
+                   </p>
+              ))}
+            </div>
+          ) : null}
+            </div>
             {/* email input */}
             <div  className={`mt-10 relative `}>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 pt-6 pointer-events-none">
@@ -107,14 +122,19 @@ export default function LoginPage() {
             </div>
             {/* button */}
             <div className="mt-10  flex flex-col">
-            <Link href="/">
+            {loading ? (
+              <button
+              disabled
+              className="items-center text-2xl bg-primary-2  py-4 px-7 rounded-2xl text-black  max-w-[1000px] w-full">
+              Loading...
+            </button>
+            ):(
               <button
                 type="submit"
-                className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full"
-              >
+                className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full">
               Log into Account
               </button>
-              </Link>
+            )}
               </div>
               <div  className={`py-6 relative text-center `}>
                 <h2>Or</h2>

@@ -1,4 +1,4 @@
-import { AuthResponse, ILogin } from "../../typings/interface/login";
+import { AuthResponse, ILogin, ISignUp } from "../../typings/interface/login";
 import { setToken } from "../services/config";
 import axios, { AxiosResponse } from "axios";
 import router from "next/router";
@@ -20,7 +20,7 @@ interface Session {
 interface AuthContextType {
   auth?: AuthResponse ;
   AdminLogin: (data: ILogin) => void;
-  SignUpApi: (data: ILogin) => void;
+  SignUpApi: (data: ISignUp) => void;
   logout: () => void;
   islLoggedIn: boolean;
   loaded: boolean;
@@ -60,9 +60,9 @@ export default function Context({ children }: { children: ReactNode }) {
   }, []);
   
 
-  const SignUpApi = async (data: ILogin) => {
+  const SignUpApi = async (data: ISignUp) => {
     const Promise = await axios
-      .post<AuthResponse>("/api/v1/auth/signup", data)
+      .post<AuthResponse>("/auth/signup", data)
       .then((res) => {
         const data = res.data;
         localStorage.setItem("token", JSON.stringify(res.data));
@@ -89,14 +89,14 @@ export default function Context({ children }: { children: ReactNode }) {
   };
   const AdminLogin = async (data: ILogin) => {
     const Promise = await axios
-      .post<AuthResponse>("/api/v1/auth/signin", data)
+      .post<AuthResponse>("/auth/signin", data)
       .then((res) => {
         const data = res.data;
         localStorage.setItem("token", JSON.stringify(res.data));
         setToken(res.data.accessToken);
         setAuth({ ...res.data });
         setILoggedIn(true);
-          router.push("/selectAction");
+          router.push("/");
         // if(data.role == "user"){
         //   router.push("/usermanagement");
         // }else{
