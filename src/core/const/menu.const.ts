@@ -7,37 +7,36 @@ import { MdOutlineFormatAlignJustify } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
 
-
 export const UserMenus: Menu[] = [
   {
     title: "Dashboard",
     id: "1",
-    icon: FaHashtag ,
-    path: "/",
+    icon: FaHashtag,
+    path: "/user",
   },
   {
     title: "Account",
     id: "3",
-    icon: LuUsers2   ,
+    icon: LuUsers2,
     path: "/user/account",
   },
   {
     title: "Contacts",
     id: "3",
-    icon: RiContactsLine ,
-    path: "/user/contact",
+    icon: RiContactsLine,
+    path: "/user/contacts",
   },
   {
     title: "Team",
     id: "2",
-    icon: LuUsers2 ,
-    path: "/user/",
+    icon: LuUsers2,
+    path: "/user/teams",
   },
   {
     title: "Subscriptions",
     id: "2",
-    icon: FaHashtag ,
-    path: "/user",
+    icon: FaHashtag,
+    path: "/user/subscrition",
   },
   {
     title: "Forms",

@@ -1,6 +1,6 @@
-import HasBack from "@/components/common/hasback/hasback";
-import TabComponent from "@/components/contacts/tab/tab";
-import UserLayout from "@/layout/user";
+import HasBack from "../../components/common/hasback/hasback";
+import TabComponent from "../../components/contacts/tab/tab";
+import UserLayout from "../../layout/user";
 import { IconBaseProps } from "react-icons";
 
 

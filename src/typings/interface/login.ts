@@ -4,3 +4,12 @@ export interface ILogin{
     name:string,
     useremail:string
 }
+
+
+export interface AuthResponse {
+    id: string;
+    email: string;
+    fullName: string;
+    accessToken: string;
+    refreshToken: string;
+}

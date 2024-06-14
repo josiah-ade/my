@@ -11,6 +11,10 @@ import { LuHash } from "react-icons/lu";
 import { IoRepeat } from "react-icons/io5";
 import { ImBin } from "react-icons/im";
 import { CiHome } from "react-icons/ci";
+import { FaUsers } from "react-icons/fa6";
+import { HiOutlinePencilAlt } from "react-icons/hi";
+import { FaUserTimes } from "react-icons/fa";
+
 
 export const Link = (props: React.SVGProps<SVGSVGElement>) => <LuScanLine {...props} />;
 export const Qr = (props: React.SVGProps<SVGSVGElement>) => <MdQrCode2 {...props} />;
@@ -20,4 +24,12 @@ export const Hash = (props: React.SVGProps<SVGSVGElement>) => <LuHash {...props}
 export const Repeat = (props: React.SVGProps<SVGSVGElement>) => <IoRepeat {...props} />;
 export const Bin = (props: React.SVGProps<SVGSVGElement>) => <ImBin {...props} />;
 export const Home = (props: React.SVGProps<SVGSVGElement>) => <CiHome {...props} />;
+export const Plus = (props: React.SVGProps<SVGSVGElement>) => <GoPlus {...props} />;
+export const Userg = (props: React.SVGProps<SVGSVGElement>) => <FaUsers {...props} />;
+export const Pencil = (props: React.SVGProps<SVGSVGElement>) => <HiOutlinePencilAlt  {...props} />;
+export const Usercancel = (props: React.SVGProps<SVGSVGElement>) => <FaUserTimes  {...props} />;
+
+
+
+
 
