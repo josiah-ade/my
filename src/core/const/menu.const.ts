@@ -12,7 +12,7 @@ export const UserMenus: Menu[] = [
     title: "Dashboard",
     id: "1",
     icon: FaHashtag,
-    path: "/",
+    path: "/user",
   },
   {
     title: "Account",

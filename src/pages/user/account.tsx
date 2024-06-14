@@ -6,7 +6,7 @@ import UserLayout from "@/layout/user";
 import Button from "@/components/button/button";
 import { GoPlus } from "react-icons/go";
 
-import Table from "@/components/table/table";
+import Table from "../../components/table/table";
 import Tabs from "@/components/tab/Tab";
 import { Bin, Qr, Circle, Message, Hash, Repeat, Home, Link, Plus } from "@/core/const/icons/icons";
 import { AccountData, Data, TableHeader } from "@/core/types/data.interface";
@@ -24,26 +24,20 @@ export default function User() {
   };
 
   const headers: TableHeader[] = [
-    { field: "first", title: "WhatsApp Number" },
-    { field: "second", title: "Purpose" },
-    { field: "third", title: "Plan" },
-    { field: "fourth", title: "Expiry" },
-    { field: "fifth", title: "Service Status" },
+    { field: "whatsAppNumber", title: "WhatsApp Number" },
+    { field: "purpose", title: "Purpose" },
+    { field: "plan", title: "Plan" },
+    { field: "expiry", title: "Expiry" },
+    { field: "serviceStatus", title: "Service Status" },
   ];
   const data: AccountData[] = [
     {
-      first: "+234 915 632 9332",
-      second: "For RJStores",
-      third: "Free Plan",
-      fourth: "22 February 2024",
-      fifth: "Disabled",
-    },
-    {
-      first: "+234 915 632 9332",
-      second: "For RJStores",
-      third: "Free Plan",
-      fourth: "22 February 2024",
-      fifth: "Disabled",
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
     },
   ];
   const actions: Data[] = [
@@ -70,8 +64,8 @@ export default function User() {
             seconds, it'll show 'Connected' here, you can close this window after that.
           </p>
           <div className="flex items-center justify-center mb-4">
-            <div className="bg-green-100 flex flex-col items-center justify-center p-5 w-[100%] rounded-lg text-lg">
-              <div className="flex gap-2.5 items-center">
+            <div className="bg-green-100 text-green-800 flex flex-col items-center justify-center p-5 w-[100%] rounded-lg text-lg">
+              <div className="flex space-x-2 items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 20 21" fill="none">
                   <g clip-path="url(#clip0_53_3095)">
                     <path
@@ -87,14 +81,14 @@ export default function User() {
                     </clipPath>
                   </defs>
                 </svg>
-                <p className="font-semibold ">Pairing Code</p>
+                <p className="text-gray-900 text-[0.9rem]">Pairing Code</p>
               </div>
-              <p className="text-gray-600  tracking-[0.4rem] MT-4 leading-8">2045692</p>
+              <p className="text-gray-600 text-[0.8rem] leading-8">2045692</p>
             </div>
           </div>
 
           <div>
-            <Button onClick={closeFunc} primary className="w-full">
+            <Button primary className="w-full">
               Done
             </Button>
           </div>
@@ -118,7 +112,7 @@ export default function User() {
           </div>
 
           <div>
-            <Button onClick={closeFunc} primary className="w-full">
+            <Button primary className="w-full">
               Done
             </Button>
           </div>
@@ -130,7 +124,7 @@ export default function User() {
   return (
     <UserLayout>
       {/* <div> Wellcmoe</div> */}
-      <div>
+      <div className="h-screen">
         <div className="w-full bg-white">
           <section className="flex justify-between items-center">
             <div>
@@ -188,7 +182,6 @@ export default function User() {
             />
           )}
         </div>
-        
       </div>
 
       <Modal isOpen={isOpen} onClose={closeFunc}>

@@ -11,7 +11,7 @@ import { useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
-import profile from "../../assets/profile.png";
+import profile from "@/assets/profile.png";
 import { useRouter } from "next/router";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdOutlinePostAdd } from "react-icons/md";

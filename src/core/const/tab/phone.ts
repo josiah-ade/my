@@ -3,7 +3,7 @@ import { FaPhone, FaWhatsapp, FaGoogle } from "react-icons/fa";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 
- export const phonelist: Tabdetails[] = [
+ export const phoneList: Tabdetails[] = [
     {
       icon: MdOutlineKeyboardArrowRight,
       phone: "+234-123-456-7890",

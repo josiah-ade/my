@@ -1,49 +1,50 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
+// components/Breadcrumb.tsx
+import React from "react";
+import { useRouter } from "next/router";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
-const Breadcrumb: React.FC = () => {
+interface BreadcrumbProps {
+  items?: { label: string; path?: string }[];
+}
+
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   const router = useRouter();
-  const { pathname } = router;
 
-  const generateBreadcrumbs = () => {
-    const pathnames = pathname.split('/').filter((x) => x);
-    return (
-      <nav aria-label="breadcrumb">
-        <ol className="flex space-x-2">
-          <li>
-            <Link href="/" passHref>
-              <a className="text-blue-500 hover:underline">Home</a>
-            </Link>
-            {pathnames.length > 0 && <span className="mx-2">/</span>}
-          </li>
-          {pathnames.map((value, index) => {
-            const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-            const isLast = index === pathnames.length - 1;
-            return (
-              <li key={to}>
-                {isLast ? (
-                  <span className="text-gray-500">{value}</span>
-                ) : (
-                  <>
-                    <Link href={to} passHref>
-                      <a className="text-blue-500 hover:underline">{value}</a>
-                    </Link>
-                    <span className="mx-2">/</span>
-                  </>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
-    );
+  const handleNavigation = (path: string | undefined) => {
+    if (path) {
+      router.push(path);
+    }
   };
 
+  const breadcrumbItems = [
+    { label: "Broadcast Lists", path: "/user/broadcast" },
+    { label: "Import Contacts" },
+  ];
+
   return (
-    <div className="my-4">
-      {generateBreadcrumbs()}
-    </div>
+    <nav className="flex items-center space-x-2 text-sm text-gray-500">
+      <button
+        className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
+        onClick={() => router.back()}
+      >
+        <AiOutlineArrowLeft />
+        <span>Go Back</span>
+      </button>
+      {breadcrumbItems.map((item, index) => (
+        <React.Fragment key={index}>
+          <span>/</span>
+          <button
+            className={`hover:text-orange-700 ${
+              item.path ? "text-gray-500" : "text-orange-500"
+            }`}
+            onClick={() => handleNavigation(item.path)}
+            disabled={!item.path}
+          >
+            {item.label}
+          </button>
+        </React.Fragment>
+      ))}
+    </nav>
   );
 };
 

@@ -16,7 +16,7 @@ export default function UserLayout(props: PropsWithChildren) {
         </div>
         <div className=" bg-background text-gray-900 flex flex-row gap-y-1 w-full   ">
           <AppDrawer display={showDrawer} onToggle={toggleDrawer} />
-          <div className="flex-col bg-background flex gap-y-1 w-full overflow-auto p-5">{props.children}</div>
+          <div className="flex-col bg-background flex gap-y-1 w-full overflow-auto p-7">{props.children}</div>
         </div>
       </div>
     </>
