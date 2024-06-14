@@ -25,7 +25,7 @@ export const UserMenus: Menu[] = [
     title: "Contacts",
     id: "3",
     icon: RiContactsLine ,
-    path: "/user/contact",
+    path: "/contacts",
   },
   {
     title: "Team",

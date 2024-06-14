@@ -1,22 +1,18 @@
-import { content } from "@/core/const/tab/content";
+// import { content } from "@/core/const/tab/phone";
 import { useState } from "react";
-import TabDetails from "../contactdetails";
+import TabDetails from "../phonelist";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import EmailList from "../email";
+import WhatsAppList from "../whatsapp";
+import Phonelists from "../phonelist";
 
 export default function TabComponent(){
   const router = useRouter()
     const [activeTab, setActiveTab] = useState(0);
-    const handleRedirect=()=>{
-      router.push("/user/contactlist")
-    }
   
   const tabs = ["Phone Contacts", "WhatsApp Group Contacts", "Google Contacts"];
-//   const content = [
-//     "Content for Tab 1",
-//     "Content for Tab 2",
-//     "Content for Tab 3",
-//   ];
+
     return(
         <div className="w-full  mt-10">
         <div className="flex border-b border-gray-200">
@@ -35,23 +31,12 @@ export default function TabComponent(){
           ))}
         </div>
         <div className="p-4">
-        {content.map((cont, index) => (
-          <Link href={cont.path || ''} key={cont.path} className={`${activeTab === index ? "block" : "hidden"}`}>
-          <div
-            className={`${activeTab === index ? "block" : "hidden"}`}
-          >
-            <TabDetails
-              icon={cont.icon}
-              phone={cont.phone}
-              description={cont.description}
-              total={cont.total}
-              totaldescription={cont.totaldescription}
-              // onClick={handleRedirect} 
-              path={cont.path}          
-                />
-          </div>
-          </Link>
-        ))}
+        <div className="p-4">
+                {activeTab === 0 && <Phonelists />}
+                {activeTab === 1 && <WhatsAppList />}
+                {activeTab === 2 && <EmailList />}
+            </div>
+       
         </div>
       </div>
     )
