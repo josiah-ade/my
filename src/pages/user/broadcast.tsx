@@ -84,7 +84,7 @@ export default function User() {
               Connect Google Contacts
             </Button>
             <Button 
-              className="bg-orange-500 text-white px-4 py-2 rounded-lg"
+              className="bg-primary text-white px-4 py-2 rounded-lg"
               icon={<Plus />}
               onClick={handleOpen}
               >
@@ -105,7 +105,7 @@ export default function User() {
                 </p>
               </div>
             </div>
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg">
+            <button className="bg-primary text-white px-4 py-2 rounded-lg">
               Upgrade
             </button>
           </div>
@@ -143,7 +143,7 @@ export default function User() {
                   placeholder="Placeholder"
                   value={listName}
                   onChange={(e) => setListName(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                 />
               </div>
               <div className="mb-4">
@@ -156,7 +156,7 @@ export default function User() {
                   placeholder="Placeholder"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                 />
                 <p className="mt-2 text-sm text-gray-500">What is this list for?</p>
               </div>
@@ -170,12 +170,12 @@ export default function User() {
                   placeholder="0"
                   value={dayNumber}
                   onChange={(e) => setDayNumber(Number(e.target.value))}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Create list
               </button>

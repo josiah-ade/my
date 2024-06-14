@@ -20,7 +20,7 @@ export default function Tabs({ tabs }: { tabs: TabProps[] }) {
             onClick={() => setActiveTab(index)}
             className={`flex items-center py-2 px-4 -mb-px text-sm font-medium text-center border-b-2 transition-all duration-300 ${
               activeTab === index
-                ? 'text-orange-500 border-orange-500'
+                ? 'text-primary border-primary'
                 : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-white'
             }`}
           >

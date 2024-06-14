@@ -130,7 +130,7 @@ export default function User() {
   return (
     <UserLayout>
       {/* <div> Wellcmoe</div> */}
-      <div >
+      <div>
         <div className="w-full bg-white">
           <section className="flex justify-between items-center">
             <div>
@@ -188,49 +188,7 @@ export default function User() {
             />
           )}
         </div>
-        <div>
-          {/* <button className="bg-orange-500 text-white py-2 px-4 rounded-lg">+ Add Account</button> */}
-          <Button primary icon={<GoPlus />}>
-            Add Account
-          </Button>
-        </div>
-
-        <section className="lg:flex lg:space-x-4 mt-8">
-          <section className="px-4 gap-4 py-8 lg:w-[50%] lg:flex justify-between bg-green-50 border border-green-50 rounded-lg">
-            <div className="">
-              <p className="font-semibold text-gray-900 leading-6">Link your WhatsApp account</p>
-              <p className="text-sm text-gray-600 mt-1">
-                Please update/verify your information before <br /> <strong>13th July 2023 </strong> to unlock level
-                benefits
-              </p>
-            </div>
-            <div className="mt-4 lg:mt-0">
-              <Image src="/whatsapp-img.png" alt="WhatsApp Logo" objectFit="contain" width={100} height={100} />
-            </div>
-          </section>
-          <section className="px-4 py-4 mt-4 lg:mt-0 lg:w-[50%] border-2 border-[#F7F9F] rounded-lg">
-            <div className="rounded-lg">
-              <p className="text-[0.9] text-gray-500 font-bold">Account Usage</p>
-              <p className="text-[1rem] font-bold text-gray-900 mt-1">0/1</p>
-            </div>
-            <div className="mt-8">
-              <Button primary>Upgrade</Button>
-            </div>
-          </section>
-        </section>
-        {showTable ? (
-          <div className="my-5">
-            <Table setIsOpen={setIsOpen} isOpen={isOpen} headers={headers} data={data} actions={actions} />
-          </div>
-        ) : (
-          <div className="my-40 flex flex-col items-center">
-            <Image src="/book.png" alt="No accounts added" height={100} width={100} />
-            <p className="text-gray-900 text-[1rem] leading-10">No accounts added</p>
-            <p className="text-gray-600 text-sm">
-              Click "add account" button to get started in linking your first whatsapp account
-            </p>
-          </div>
-        )}
+        
       </div>
 
       <Modal isOpen={isOpen} onClose={closeFunc}>
