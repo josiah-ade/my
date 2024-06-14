@@ -8,8 +8,9 @@ import { GoPlus } from "react-icons/go";
 
 import Table from "@/components/table/table";
 import Tabs from "@/components/tab/Tab";
-import { Bin, Qr, Circle, Message, Hash, Repeat, Home, Link } from "@/core/const/icons/icons";
+import { Bin, Qr, Circle, Message, Hash, Repeat, Home, Link, Plus } from "@/core/const/icons/icons";
 import { AccountData, Data, TableHeader } from "@/core/types/data.interface";
+import Default from "@/components/default/default";
 
 export default function User() {
   const [isOpen, setIsOpen ] = useState(false)
@@ -23,34 +24,27 @@ export default function User() {
   }
 
   const headers :TableHeader[] = [
-    {field:'whatsAppNumber',title:"WhatsApp Number"},
-    {field:'purpose',title:"Purpose"},
-    {field:'plan',title:"Plan"},
-    {field:'expiry',title:"Expiry"},
-    {field:'serviceStatus',title:"Service Status"},
+    {field:'first',title:"WhatsApp Number"},
+    {field:'second',title:"Purpose"},
+    {field:'third',title:"Plan"},
+    {field:'fourth',title:"Expiry"},
+    {field:'fifth',title:"Service Status"},
   
   ];
   const data: AccountData[] = [
     {
-      'whatsAppNumber': '+234 915 632 9332',
-      'purpose': 'For RJStores',
-      'plan': 'Free Plan',
-      'expiry': '22 February 2024',
-      'serviceStatus': 'Disabled',
+      'first': '+234 915 632 9332',
+      'second': 'For RJStores',
+      'third': 'Free Plan',
+      'fourth': '22 February 2024',
+      'fifth': 'Disabled',
     },
     {
-        'whatsAppNumber': '+234 915 632 9332',
-        'purpose': 'For RJStores',
-        'plan': 'Free Plan',
-        'expiry': '22 February 2024',
-        'serviceStatus': 'Disabled',
-      },
-      {
-        'whatsAppNumber': '+234 915 632 9332',
-        'purpose': 'For RJStores',
-        'plan': 'Free Plan',
-        'expiry': '22 February 2024',
-        'serviceStatus': 'Disabled',
+        'first': '+234 915 632 9332',
+        'second': 'For RJStores',
+        'third': 'Free Plan',
+        'fourth': '22 February 2024',
+        'fifth': 'Disabled',
       },
   ];
   const actions: Data[] = [
@@ -144,7 +138,7 @@ export default function User() {
                 {/* <button className="bg-orange-500 text-white py-2 px-4 rounded-lg">+ Add Account</button> */}
                 <Button 
                   primary
-                  icon={<GoPlus />}
+                  icon={<Plus />}
                   >
                   Add Account
                 </Button>
@@ -187,11 +181,19 @@ export default function User() {
                 </div>
               ):
               (
-                <div className="my-40 flex flex-col items-center">
-                <Image src="/book.png" alt="No accounts added" height={100} width={100} />
-                <p className="text-gray-900 text-[1rem] leading-10">No accounts added</p>
-                <p className="text-gray-600 text-sm">Click "add account" button to get started in linking your first whatsapp account</p>
-              </div>
+            //     <div className="my-40 flex flex-col items-center">
+            //     <Image src="/book.png" alt="No accounts added" height={100} width={100} />
+            //     <p className="text-gray-900 text-[1rem] leading-10">No accounts added</p>
+            //     <p className="text-gray-600 text-sm">Click "add account" button to get started in linking your first whatsapp account</p>
+            //   </div>
+                <Default 
+                    src="/book.png"
+                    alt="No accounts added"
+                    height={100}
+                    width={100}
+                    mainText="No accounts added"
+                    subText="Click 'add account' button to get started in linking your first WhatsApp account"
+                />
               )}
           </div>
         </div>

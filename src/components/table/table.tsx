@@ -1,10 +1,13 @@
 import React, { useState, Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
+import Image from 'next/image';
+import { TableHeader } from '@/core/types/data.interface';
+import Button from '../button/button';
 
-interface TableHeader {
-  title: string;
-  field: string;
-}
+// interface TableHeader {
+//   title: string;
+//   field: string;
+// }
 
 interface TableProps<T = unknown> {
   headers: TableHeader[];
@@ -54,7 +57,14 @@ export default function Table<T>(props: TableProps<T>) {
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase"
                 >
-                  {header.title}
+                  <section className='flex space-x-1'>
+                    <div>
+                      {header.title}
+                    </div>
+                    <div className='pointer'>
+                      {header?.icon && <span className=''><Image src={header.icon} alt="icon" width={15} height={15} /></span>}
+                    </div>
+                  </section>
                 </th>
               ))}
               <th scope="col" className="relative px-6 py-3">
@@ -76,20 +86,28 @@ export default function Table<T>(props: TableProps<T>) {
                     key={header.field}
                     className="px-6 py-1 whitespace-nowrap text-sm text-gray-900"
                   >
-                    {`${row[header.field as keyof typeof row]}`}
+                    <section>
+                      {row[header.field as keyof typeof row] === "View List" ? (
+                        <div>
+                          <Button primary>View List</Button> 
+                        </div>
+                      ): (
+                        <div>
+                          {`${row[header.field as keyof typeof row]}`}
+                        </div>
+                      )}
+                    </section>
                   </td>
                 ))}
                 <td className="px-6 py-4 text-right text-sm font-medium">
                   <Menu as="div" className="relative inline-block text-left">
                     <Menu.Button className="inline-flex justify-center w-full  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path d="M6 10a2 2 0 114 0 2 2 0 01-4 0zm3-5a1 1 0 00-2 0v1a1 1 0 102 0V5zm-3.293 6.707a1 1 0 001.414-1.414L6.414 9H7a1 1 0 100-2h-1a1 1 0 00-1 1v1a1 1 0 001 1h.586l-.293.293a1 1 0 001.414 1.414zM4.707 4.293A1 1 0 015.293 5L4.707 5.707a1 1 0 01-1.414-1.414L4.707 4.293zM12.707 5l.293-.293a1 1 0 10-1.414-1.414L12 4.707a1 1 0 000 1.414zM12.707 14.293a1 1 0 010 1.414l-.293-.293a1 1 0 10-1.414 1.414l.293-.293a1 1 0 001.414-1.414zM9 15a1 1 0 112 0v1a1 1 0 11-2 0v-1zm-3.293.707A1 1 0 016.414 14H7a1 1 0 100-2H6a1 1 0 00-1 1v1a1 1 0 001 1h.586l-.293.293a1 1 0 001.414 1.414l-.293-.293z" />
-                      </svg>
+                      <Image src="/dots.png" alt="dots" width={10} height={10} />
+                      {/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M9 2.6665C9 3.21879 8.55228 3.6665 8 3.6665C7.44772 3.6665 7 3.21879 7 2.6665C7 2.11422 7.44772 1.6665 8 1.6665C8.55228 1.6665 9 2.11422 9 2.6665Z" fill="black"/>
+                        <path d="M9 7.99984C9 8.55212 8.55228 8.99984 8 8.99984C7.44772 8.99984 7 8.55212 7 7.99984C7 7.44755 7.44772 6.99984 8 6.99984C8.55228 6.99984 9 7.44755 9 7.99984Z" fill="black"/>
+                        <path d="M8 14.3332C8.55228 14.3332 9 13.8855 9 13.3332C9 12.7809 8.55228 12.3332 8 12.3332C7.44772 12.3332 7 12.7809 7 13.3332C7 13.8855 7.44772 14.3332 8 14.3332Z" fill="black"/>
+                      </svg> */}
                     </Menu.Button>
                     <Transition
                       as={Fragment}
@@ -100,8 +118,8 @@ export default function Table<T>(props: TableProps<T>) {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="origin-top-right z-40 absolute right-0 mt-2 w-56 max-h-40 overflow-y-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div className="py-4">
+                      <Menu.Items className="origin-top-right z-40 absolute right-0 mt-2 w-56 max-h-50 overflow-y-auto  rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" style={{overflowY: "scroll"}}>
+                        <div className="py-4 ">
                           <p className="text-center text-sm text-primary-base p-4">Start Service</p>
                           {actions && actions.map((action, actionIndex) => (
                             <Menu.Item key={actionIndex}>

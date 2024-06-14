@@ -6,6 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     secondary?: boolean;
     danger?: boolean;
     icon?: React.ReactNode;
+    // onClick: () => void;
   }
 
   const Button: React.FC<ButtonProps> = ({
