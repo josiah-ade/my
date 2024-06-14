@@ -16,7 +16,7 @@ export default function DashBoardItems(){
                     <button className="bg-primary text-white rounded-2xl px-5 py-2 text-center text-md">Upgrade</button>
                 </div>
             </div>
-            <div  className="flex flex-row justify-between border w-full max-w-[600px] py-3 rounded px-5 flex-wrap">
+            <div  className="flex flex-row justify-between border w-full max-w-[600px] gap-2 py-3 rounded px-5 flex-wrap">
                 <div>
                     <h4>Accounts</h4>
                     <h3 className="font-bold">+234 567 899 4212</h3>
