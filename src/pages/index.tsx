@@ -12,10 +12,9 @@ export default function Home() {
       <div>
         <DashBoardItems />
       </div>
-      <div>
+      <div className="grid lg:grid-cols-2 mt-8">
         <DashBoardAction />
       </div>
-      
-      </UserLayout>
+    </UserLayout>
   );
 }

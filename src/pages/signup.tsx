@@ -8,10 +8,15 @@ import { FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebookOption } from "react-icons/gr";
 import { MdMailOutline } from "react-icons/md";
+import { useAuthContext } from "@/providers/context/auth";
+
 
 
 export default function LoginPage() {
   const router = useRouter();
+  const {SignUpApi, } = useAuthContext();
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string[]>([]);
   const [hidepassword, setHidePassword] = useState(false)
   const [data, setData] = useState<ILogin>({
     name: "",
@@ -27,12 +32,26 @@ export default function LoginPage() {
   const togglePasswordVisisbility = () =>{
     setHidePassword(!hidepassword)
   }
+  
+  const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+        setLoading(true);
+       await SignUpApi(data)
+        setLoading(false);
+      } catch (e) {
+        const loginError = e as Error
+      setError( loginError.message?.split("\n") ?? [loginError.message])
+        console.log("Error in Login:", error);
+        setLoading(false);
+      }
+  }
 
   return (
     <div
     className="flex flex-col items-center 
     justify-center min-h-[100vh] w-full px-6 md:px-0">
-      <form className="w-full width-[100%] max-w-[350px] mx-auto py-10 rounded-md bg-white 
+      <form onSubmit={handleClick} className="w-full width-[100%] max-w-[350px] mx-auto py-10 rounded-md bg-white 
      px-6 md:px-0 ">
           <div className="w-full max-w-[500px] mx-auto align-center">
           <div className="text-4xl text-center font-bold">

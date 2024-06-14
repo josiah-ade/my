@@ -20,7 +20,7 @@ export default function AppDrawer(props: Props) {
   return (
     <>
       <div
-        className={`w-[22rem]  pt-3  h-[90vh] fixed lg:relative md:relative lg:flex md:flex z-20 lg:z-auto overflow-auto px-3 bg-primary-2 flex flex-col gap-1 
+        className={`w-[22rem]  pt-3 h-screen  md:h-[90vh] fixed lg:relative md:relative lg:flex md:flex z-20 lg:z-auto overflow-auto px-3 bg-gray-50 flex flex-col gap-1 
         ${props.display ? "flex" : "hidden"}
         ${props.display ? "top-0" : ""} `}
       >
@@ -40,10 +40,10 @@ export default function AppDrawer(props: Props) {
                 }  ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold " : ""}`}
               >
                 {/* <img src="item.img" alt="" className="h-[24px] w-[24px]" /> */}
-                <span className={`${
-                  isActive ? " text-primary " : "text-primary-4"} `}>
-                 { item.icon ? <item.icon size={18} className={`${
-                  isActive ? " text-primary " : "text-primary-4"}`} />:null}
+                <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
+                  {item.icon ? (
+                    <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
+                  ) : null}
                 </span>
                 <span className="pl-2">{item.title}</span>
               </div>
@@ -51,34 +51,35 @@ export default function AppDrawer(props: Props) {
           );
         })}
         <div className="py-2">
-                <hr />
-                </div>
+          <hr />
+        </div>
         <div>
-                <p className="text-primary-7 px-4">Broadcast</p>
-                {BroadcastMenus.map((item) => {
-          const isActive = currentBroadcastItem && currentBroadcastItem.path != "" && item.path == currentBroadcastItem.path;
-          return (
-            <Link href={item.path} key={item.path}>
-              <div
-                className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF] cursor-pointer ${
-                  isActive ? "bg-primary-3 text-primary-4 font-bold " : "text-primary-4"
-                }  ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold " : ""}`}
-              >
-                {/* <img src="item.img" alt="" className="h-[24px] w-[24px]" /> */}
-                <span className={`${
-                  isActive ? " text-primary " : "text-primary-4"} `}>
-                 { item.icon ? <item.icon size={18} className={`${
-                  isActive ? " text-primary " : "text-primary-4"}`} />:null}
-                </span>
-                <span className="pl-2">{item.title}</span>
-              </div>
-            </Link>
-          );
-        })}
+          <p className="text-primary-7 px-4">Broadcast</p>
+          {BroadcastMenus.map((item) => {
+            const isActive =
+              currentBroadcastItem && currentBroadcastItem.path != "" && item.path == currentBroadcastItem.path;
+            return (
+              <Link href={item.path} key={item.path}>
+                <div
+                  className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF] cursor-pointer ${
+                    isActive ? "bg-primary-3 text-primary-4 font-bold " : "text-primary-4"
+                  }  ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold " : ""}`}
+                >
+                  {/* <img src="item.img" alt="" className="h-[24px] w-[24px]" /> */}
+                  <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
+                    {item.icon ? (
+                      <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
+                    ) : null}
+                  </span>
+                  <span className="pl-2">{item.title}</span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
         <div className="py-2">
-                <hr />
-                </div>
+          <hr />
+        </div>
         <div>
                 <p className="text-primary-7 px-4">Automation</p>
                 {AutomationMenus.map((item) => {

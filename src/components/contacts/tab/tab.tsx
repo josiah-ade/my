@@ -39,5 +39,6 @@ export default function TabComponent(){
        
         </div>
       </div>
-    )
+    </div>
+  );
 }
