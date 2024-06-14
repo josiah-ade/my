@@ -12,16 +12,39 @@ import { Bin, Qr, Circle, Message, Hash, Repeat, Home, Link, Plus } from "@/core
 import { AccountData, Data, TableHeader } from "@/core/types/data.interface";
 import Default from "@/components/default/default";
 
+interface AddNew{
+  phoneNumber:string,
+  description:string,
+}
 export default function User() {
   const [isOpen, setIsOpen ] = useState(false)
+  const [open, setOpen ] = useState(false)
   const [showTable, setShowTable] = useState(true)
+  const [datas, setData] = useState<AddNew>({
+    phoneNumber:"",
+    description:""
+  })
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value, name } = event.target;
+    setData({ ...datas, [name]: value });
+    console.log({ datas });
+  }
+
   const openFuc = () => {
     setIsOpen(true)
   }
-
+  
   const closeFunc = () => {
     setIsOpen(false)
   }
+  const handleOpenModal = () => {
+    setOpen(true)
+  }
+  
+  const handleClose = () => {
+    setOpen(false)
+  }
+
 
   const headers :TableHeader[] = [
     {field:'first',title:"WhatsApp Number"},
@@ -137,6 +160,7 @@ export default function User() {
               <div>
                 {/* <button className="bg-orange-500 text-white py-2 px-4 rounded-lg">+ Add Account</button> */}
                 <Button 
+                onClick={handleOpenModal}
                   primary
                   icon={<Plus />}
                   >
@@ -201,6 +225,56 @@ export default function User() {
         <Modal isOpen={isOpen} onClose={closeFunc}>
             <Tabs tabs={tabs} />
         </Modal>
+
+        <Modal isOpen={open} onClose={handleClose}>
+        <div className="bg-white">
+          <h2 className="text-2xl font-semibold mb-4">Create Broadcast List</h2>
+          <p className="text-gray-600 mb-6">Create a broadcast list</p>
+          <form>
+            <div className="mb-4">
+              <label
+                htmlFor="listName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                List Name
+              </label>
+              <input
+                id="phoneNumber"
+                type="text"
+                placeholder="Placeholder"
+                value={datas.phoneNumber}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
+              <input
+                id="description"
+                type="text"
+                placeholder="Placeholder"
+                value={datas.description}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+              />
+              <p className="mt-2 text-sm text-gray-500">
+                What is this list for?
+              </p>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+            >
+              Create list
+            </button>
+          </form>
+        </div>
+      </Modal>
     </UserLayout>
   );
 }

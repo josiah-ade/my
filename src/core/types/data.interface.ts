@@ -33,3 +33,12 @@ export interface BroadCastList {
   // contact?: string;
   // view: string;
 }
+export interface ContactList {
+  PhoneNumber: string;
+  purpose: string;
+  plan: string;
+  img:StaticImageData,
+  // contact?: string;
+  // view: string;
+}
+

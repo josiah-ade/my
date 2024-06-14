@@ -4,7 +4,7 @@ import Modal from "@/components/modal/modal";
 import Tabs from "@/components/tab/Tab";
 import Table from "@/components/table/table";
 import { Qr, Home } from "@/core/const/icons/icons";
-import { TableHeader, AccountData } from "@/core/types/data.interface";
+import { TableHeader, AccountData, ContactList } from "@/core/types/data.interface";
 import UserLayout from "@/layout/user";
 // import Home from "@/pages";
 import { useState } from "react";
@@ -52,38 +52,30 @@ export default function ContactPage(){
         {field:'purpose',title:"Country", },
         {field:'plan',title:"Name", },
       ];
-      const data: AccountData[] = [
+      const data: ContactList[] = [
         {
-            'whatsAppNumber': '+234 915 632 9332',
+            'PhoneNumber': '+234 915 632 9332',
             'purpose': 'For RJStores',
             'plan': 'Free Plan',
             img:profile,
-            "expiry": "",
-            "serviceStatus": ""
         },
         {
-            'whatsAppNumber': '+234 915 632 9332',
+            'PhoneNumber': '+234 915 632 9332',
             'purpose': 'For RJStores',
             'plan': 'Free Plan',
             img:profile,
-            "expiry": "",
-            "serviceStatus": ""
         },
         {
-            'whatsAppNumber': '+234 915 632 9332',
+            'PhoneNumber': '+234 915 632 9332',
             'purpose': 'For RJStores',
             'plan': 'Free Plan',
             img:profile,
-            "expiry": "",
-            "serviceStatus": ""
         },
         {
-            'whatsAppNumber': '+234 915 632 9332',
+            'PhoneNumber': '+234 915 632 9332',
             'purpose': 'For RJStores',
             'plan': 'Free Plan',
             img:profile,
-            "expiry": "",
-            "serviceStatus": ""
         },
       ];
 
