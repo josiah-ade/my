@@ -1,5 +1,4 @@
-
-export interface Data{
+export interface Data {
   text: string;
   icon: JSX.Element;
 }
@@ -7,7 +6,7 @@ export interface Data{
 export interface TableHeader {
   field: keyof AccountData;
   title: string;
-  icon?: string
+  icon?: string;
 }
 
 export interface AccountData {
@@ -18,3 +17,8 @@ export interface AccountData {
   fifth: string;
 }
 
+export interface BroadCastList {
+  listName: string;
+  id: string;
+  description: string;
+}
