@@ -2,14 +2,11 @@ import { ILogin } from "@/typings/interface/login";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { IoPersonOutline } from "react-icons/io5";
-import { RiLockPasswordFill } from "react-icons/ri";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { GrFacebookOption } from "react-icons/gr";
 import { MdMailOutline } from "react-icons/md";
 import { useAuthContext } from "@/providers/context/auth";
-import error from "next/error";
+import logo from "../assets/logo.png";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,16 +43,16 @@ export default function LoginPage() {
     }
   };
   return (
-    <div
-      className="flex flex-col items-center 
-    justify-center min-h-[100vh] w-full px-6 md:px-0"
-    >
-      <form
-        onSubmit={handleClick}
-        className="w-full width-[100%] max-w-[350px] mx-auto py-10 rounded-md bg-white 
-     px-6 md:px-0 "
-      >
-        <div className="w-full max-w-[500px] mx-auto align-center">
+    <div className="flex flex-col items-center justify-center min-h-[100vh] w-full px-6 md:px-0">
+      <div className="flex w-full top-0 fixed justify-between p-8 items-center">
+        <div className="flex h-full items-center gap-3 ">
+          <div className="hidden  md:flex lg:flex cursor-pointer gap-8 ">
+            <Image src={logo} alt="Logo" height={200} width={100} />
+          </div>
+        </div>
+      </div>
+      <form onSubmit={handleClick} className="w-full max-w-[25rem] mx-auto py-10 rounded-md bg-white px-6 md:px-0">
+        <div className="w-full mx-auto align-center">
           <div className="text-[2rem] text-center font-bold">Log In</div>
           <p className="text-[1.2rem] mt-5 text-center text-gray-400">Enter your credentials to access your account </p>
           {/* email input */}
@@ -111,7 +108,7 @@ export default function LoginPage() {
           </div>
           {/* button */}
           <div className="mt-10  flex flex-col">
-            <Link href="/">
+            <Link href="/user">
               <button
                 type="submit"
                 className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full"

@@ -219,11 +219,11 @@ export default function ContactPage() {
         <Tabs tabs={tabs} />
       </Modal>
 
-      <Notification
+      {/* <Notification
         message={"Contact List Updated successfully"}
         description={"you added 232 contacts to New Customers Broadcast list"}
         onClose={handleClose}
-      />
+      /> */}
     </UserLayout>
   );
 }
