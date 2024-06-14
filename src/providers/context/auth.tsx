@@ -1,7 +1,5 @@
-import { ICreateData } from "@/lib/interface/ITabel";
-import { AuthResponse, ILogin } from "@/lib/interface/Ilogin";
-import { CreateUserModel, UserModel } from "@/lib/interface/Iregister";
-import { setToken } from "@/services/api/_config";
+import { AuthResponse, ILogin } from "../../typings/interface/login";
+import { setToken } from "../services/config";
 import axios, { AxiosResponse } from "axios";
 import router from "next/router";
 import React from "react";
@@ -22,6 +20,7 @@ interface Session {
 interface AuthContextType {
   auth?: AuthResponse ;
   AdminLogin: (data: ILogin) => void;
+  SignUpApi: (data: ILogin) => void;
   logout: () => void;
   islLoggedIn: boolean;
   loaded: boolean;
@@ -30,6 +29,7 @@ interface AuthContextType {
 const usersContext = createContext<AuthContextType>({
   auth: undefined,
   AdminLogin: async () => {},
+  SignUpApi: async () => {},
   logout: () => {},
   islLoggedIn: false,
   loaded: true,
@@ -60,20 +60,48 @@ export default function Context({ children }: { children: ReactNode }) {
   }, []);
   
 
-  const AdminLogin = async (data: ILogin) => {
+  const SignUpApi = async (data: ILogin) => {
     const Promise = await axios
-      .post<AuthResponse>("/auth/login", data)
+      .post<AuthResponse>("/api/v1/auth/signup", data)
       .then((res) => {
         const data = res.data;
         localStorage.setItem("token", JSON.stringify(res.data));
         setToken(res.data.accessToken);
         setAuth({ ...res.data });
         setILoggedIn(true);
-        if(data.role == "user"){
-          router.push("/usermanagement");
-        }else{
-          router.push("/selectAction");
+          router.push("/login");
+        // if(data.role == "user"){
+        //   router.push("/usermanagement");
+        // }else{
+        //   router.push("/selectAction");
+        // }
+      })
+      .catch((e) => {
+        const message = e.response?.data?.message || "Network Error";
+        if (Array.isArray(message)) {
+          const error = message.join("\n");
+          console.log({ error });
+          throw new Error(error);
         }
+        throw new Error(message);
+      });
+    return Promise;
+  };
+  const AdminLogin = async (data: ILogin) => {
+    const Promise = await axios
+      .post<AuthResponse>("/api/v1/auth/signin", data)
+      .then((res) => {
+        const data = res.data;
+        localStorage.setItem("token", JSON.stringify(res.data));
+        setToken(res.data.accessToken);
+        setAuth({ ...res.data });
+        setILoggedIn(true);
+          router.push("/selectAction");
+        // if(data.role == "user"){
+        //   router.push("/usermanagement");
+        // }else{
+        //   router.push("/selectAction");
+        // }
       })
       .catch((e) => {
         const message = e.response?.data?.message || "Network Error";
@@ -124,6 +152,7 @@ export default function Context({ children }: { children: ReactNode }) {
     loaded,
     islLoggedIn,
     UpdateToken,
+    SignUpApi,
   };
 
   return (
