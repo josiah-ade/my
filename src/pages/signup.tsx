@@ -2,11 +2,7 @@ import { ILogin,ISignUp } from "@/typings/interface/login";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { IoPersonOutline } from "react-icons/io5";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { FaRegEye, FaRegEyeSlash} from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { GrFacebookOption } from "react-icons/gr";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { MdMailOutline } from "react-icons/md";
 import { useAuthContext } from "@/providers/context/auth";
 import { GoDotFill } from "react-icons/go";
@@ -15,8 +11,8 @@ import { GoDotFill } from "react-icons/go";
 
 export default function SignPage() {
   const router = useRouter();
-  const {SignUpApi, } = useAuthContext();
-  const [loading, setLoading] = useState(false)
+  const { SignUpApi } = useAuthContext();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string[]>([]);
   const [hidepassword, setHidePassword] = useState(false)
   const [data, setData] = useState<ISignUp>({
@@ -30,10 +26,10 @@ export default function SignPage() {
     setData({ ...data, [name]: value });
     console.log({ data });
   }
-  const togglePasswordVisisbility = () =>{
-    setHidePassword(!hidepassword)
-  }
-  
+  const togglePasswordVisisbility = () => {
+    setHidePassword(!hidepassword);
+  };
+
   const handleClick = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -107,13 +103,30 @@ export default function SignPage() {
               </div>
               </div>
             </div>
-            {/* email input */}
-            <div  className={`mt-5 relative `}>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 pt-6 pointer-events-none">
-                <MdMailOutline  className="text-gray-600" size="20px" />
-              </div>
-              <label className="font-bold">EMAIL</label><br></br>
+            {/*Business Line email input */}
+            <div className={`mt-5 relative `}>
+              <label className="font-bold">LINE OF BUSINESS</label>
+              <br></br>
               <div className="mt-2">
+                <input
+                  name="useremail"
+                  autoComplete="off"
+                  placeholder="Enter business email"
+                  onChange={handleChange}
+                  value={data.businessline}
+                  className="pl-[10px]  rounded-2xl px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
+                />
+              </div>
+            </div>
+          </div>
+          {/* email input */}
+          <div className={`mt-5 relative `}>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-2 pt-6 pointer-events-none">
+              <MdMailOutline className="text-gray-600" size="20px" />
+            </div>
+            <label className="font-bold">EMAIL</label>
+            <br></br>
+            <div className="mt-2">
               <input
                 name="email"
                 autoComplete="off"
@@ -122,10 +135,10 @@ export default function SignPage() {
                 value={data.email}
                 className="pl-[10px] rounded-2xl px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
               />
-              </div>
-              </div>
-            {/* password input */}
-            <div
+            </div>
+          </div>
+          {/* password input */}
+          <div
               className={`mt-6 relative   `}
             >
               <div className="absolute right-3 bottom-[13px] cursor-pointer" onClick={togglePasswordVisisbility}>
@@ -144,6 +157,7 @@ export default function SignPage() {
               />
               </div>
             </div>
+            <div>
             <div className="mt-8  flex flex-col">
             {loading ? (
               <button
@@ -166,15 +180,15 @@ export default function SignPage() {
               <p className="text-1xl">Or signup with</p><button className="pl-2"><FcGoogle size={18} /></button>
               <button><GrFacebookOption  size={25} className="pl-3a text-blue-800"/></button>
               </div> */}
-              <div>
-              <p className="text-[1.2rem] mt-2 text-center ">
-              Already have an account?{" "}	
+          <div>
+            <p className="text-[1.2rem] mt-2 text-center ">
+              Already have an account?{" "}
               <span className="text-primary text-1xl">
-                <Link href="/login">Login Here</Link>
+                <Link href="/">Login Here</Link>
               </span>
-              </p>
-              </div>
+            </p>
           </div>
+            </div>
       </form>
     </div>
   );

@@ -7,7 +7,6 @@ import { MdOutlineFormatAlignJustify } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
 
-
 export const BroadcastMenus: Menu[] = [
     {
         title: "Broadcast List",

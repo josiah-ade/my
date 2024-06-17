@@ -1,6 +1,6 @@
 // import { content } from "@/core/const/tab/content";
 import { useState } from "react";
-import TabDetails from "../../components/contacts/phonelist";
+import TabDetails from "../../../components/contacts/phonelist";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Whatsappcontent } from "@/core/const/tab/whatsapplist";

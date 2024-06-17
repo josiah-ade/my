@@ -7,7 +7,7 @@ export interface Data {
 }
 
 export interface TableHeader {
-  field: String;
+  field: string;
   title: string;
   icon?: string;
   action?: {
@@ -19,18 +19,24 @@ export interface TableHeader {
 }
 
 export interface AccountData {
-  first: string;
-  second: string;
-  third: string;
-  fourth: string;
-  fifth: string;
+  // first: string;
+  // second: string;
+  // third: string;
+  // fourth: string;
+  // fifth: string;
+  whatsAppNumber: string;
+  purpose: string;
+  plan: string;
+  img?: StaticImageData;
+  expiry: string;
+  serviceStatus: string;
 }
 
 export interface BroadCastList {
   listName: string;
   id: string;
   description: string;
-  // contact?: string;
+  contacts?: number;
   // view: string;
 }
 export interface ContactList {

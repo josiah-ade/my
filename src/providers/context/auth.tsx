@@ -69,7 +69,7 @@ export default function Context({ children }: { children: ReactNode }) {
         setToken(res.data.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
-        router.push("/login");
+        router.push("/");
         // if(data.role == "user"){
         //   router.push("/usermanagement");
         // }else{
@@ -96,7 +96,7 @@ export default function Context({ children }: { children: ReactNode }) {
         setToken(res.data?.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
-          router.push("/");
+          router.push("/user");
         // if(data.role == "user"){
         //   router.push("/usermanagement");
         // }else{
