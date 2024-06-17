@@ -47,8 +47,8 @@ export default function Context({ children }: { children: ReactNode }) {
     if (storedToken) {
       try {
         let tokens = JSON.parse(storedToken);
-        if (tokens?.accessToken) {
-          setToken(tokens.accessToken);
+        if (tokens?.token) {
+          setToken(tokens.token);
           setILoggedIn(true);
           setAuth(tokens);
         }
@@ -66,7 +66,7 @@ export default function Context({ children }: { children: ReactNode }) {
       .then((res) => {
         const data = res.data;
         localStorage.setItem("token", JSON.stringify(res.data));
-        setToken(res.data.accessToken);
+        setToken(res.data.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
         router.push("/login");
@@ -93,7 +93,7 @@ export default function Context({ children }: { children: ReactNode }) {
       .then((res) => {
         const data = res.data;
         localStorage.setItem("token", JSON.stringify(res.data));
-        setToken(res.data.accessToken);
+        setToken(res.data?.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
           router.push("/");
@@ -120,29 +120,29 @@ export default function Context({ children }: { children: ReactNode }) {
     setILoggedIn(false);
   };
 
-  const UpdateToken = async (): Promise<Session | undefined> => {
-    const storedSession = JSON.parse(localStorage.getItem("token") || "{}");
-      const response = await axios.post("/auth/refresh", {
-        refreshToken: storedSession.refreshToken,
-      });
-      const { token: refreshedSession } = response.data;
-      if (!refreshedSession?.accessToken) {
-        console.error("Refresh token failed. User needs to re-authenticate.");
-        localStorage.removeItem("token");
-        return undefined;
-      }
-      localStorage.setItem(
-        "token",
-        JSON.stringify({
-          ...storedSession,
-          accessToken: refreshedSession.accessToken,
-          refreshToken: refreshedSession.refreshToken,
-          refreshTokenExpiry: refreshedSession.refreshTokenExpiry || Date.now() + 15 * 60 * 1000,
-        })
-      );
+  // const UpdateToken = async (): Promise<Session | undefined> => {
+  //   const storedSession = JSON.parse(localStorage.getItem("token") || "{}");
+  //     const response = await axios.post("/auth/refresh", {
+  //       refreshToken: storedSession.refreshToken,
+  //     });
+  //     const { token: refreshedSession } = response.data;
+  //     if (!refreshedSession?.accessToken) {
+  //       console.error("Refresh token failed. User needs to re-authenticate.");
+  //       localStorage.removeItem("token");
+  //       return undefined;
+  //     }
+  //     localStorage.setItem(
+  //       "token",
+  //       JSON.stringify({
+  //         ...storedSession,
+  //         accessToken: refreshedSession.accessToken,
+  //         refreshToken: refreshedSession.refreshToken,
+  //         refreshTokenExpiry: refreshedSession.refreshTokenExpiry || Date.now() + 15 * 60 * 1000,
+  //       })
+  //     );
 
-      return refreshedSession;
-  };
+  //     return refreshedSession;
+  // };
 
   const value = {
     auth,
@@ -151,7 +151,7 @@ export default function Context({ children }: { children: ReactNode }) {
     logout,
     loaded,
     islLoggedIn,
-    UpdateToken,
+    // UpdateToken,
     SignUpApi,
   };
 

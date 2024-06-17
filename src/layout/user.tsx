@@ -8,13 +8,13 @@ export default function UserLayout(props: PropsWithChildren) {
   const [showDrawer, setShowDrawer] = useState(false);
   const { islLoggedIn, } = useAuthContext();
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   useEffect(() =>   {
     if (!islLoggedIn) {
       router.push("/login");
-    // } else if (loaded) {
-    //   setOpen(true);
+    } else{
+      router.push("/");
     }
   }, [islLoggedIn, router]);
 
@@ -23,7 +23,7 @@ export default function UserLayout(props: PropsWithChildren) {
   };
   return (
     <>
-    {islLoggedIn && islLoggedIn ? (
+    {islLoggedIn ? (
       <div className="h-screen w-full">
         <div className="">
           <AppBar onToggle={toggleDrawer} />

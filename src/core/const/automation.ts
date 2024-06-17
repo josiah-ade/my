@@ -11,13 +11,13 @@ import { FaHashtag } from "react-icons/fa";
 export const AutomationMenus: Menu[] = [
     {
         title: "Lists Automations",
-        id: "3",
+        id: "1",
         icon: MdOutlineFormatAlignJustify,
         path: "/user/broadcast",
       },
     {
         title: "Group Automations",
-        id: "3",
+        id: "2",
         icon: MdOutlineFormatAlignJustify,
         path: "/users",
       },

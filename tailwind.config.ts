@@ -36,6 +36,15 @@ const config: Config = {
         xl: "1280px",
         "2xl": "1536px",
       },
+      animation: {
+        spin: 'spin 1s linear infinite',
+      },
+      keyframes: {
+        spin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
     },
   },
   plugins: [],

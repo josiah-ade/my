@@ -11,6 +11,7 @@ import { MdMailOutline } from "react-icons/md";
 import { useAuthContext } from "@/providers/context/auth";
 import error from "next/error";
 import { GoDotFill } from "react-icons/go";
+import AuthLoading from "@/components/common/loading/authloading";
 
 
 export default function LoginPage() {
@@ -123,11 +124,9 @@ export default function LoginPage() {
             {/* button */}
             <div className="mt-10  flex flex-col">
             {loading ? (
-              <button
-              disabled
-              className="items-center text-2xl bg-primary-2  py-4 px-7 rounded-2xl text-black  max-w-[1000px] w-full">
-              Loading...
-            </button>
+              <div>
+                <AuthLoading />
+            </div>
             ):(
               <button
                 type="submit"

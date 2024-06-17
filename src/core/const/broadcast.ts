@@ -11,13 +11,13 @@ import { FaHashtag } from "react-icons/fa";
 export const BroadcastMenus: Menu[] = [
     {
         title: "Broadcast List",
-        id: "3",
+        id: "1",
         icon: MdOutlineFormatAlignJustify,
         path: "/user/broadcast",
       },
     {
         title: "Broadcast Messages",
-        id: "3",
+        id: "2",
         icon: MdOutlineFormatAlignJustify,
         path: "/userss/",
       },
