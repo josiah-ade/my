@@ -6,24 +6,24 @@ import { PropsWithChildren, useEffect, useState } from "react";
 
 export default function UserLayout(props: PropsWithChildren) {
   const [showDrawer, setShowDrawer] = useState(false);
-  const { islLoggedIn, loaded } = useAuthContext();
+  const { islLoggedIn, } = useAuthContext();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (!islLoggedIn && loaded) {
+  useEffect(() =>   {
+    if (!islLoggedIn) {
       router.push("/login");
-    } else if (loaded) {
-      setOpen(true);
+    // } else if (loaded) {
+    //   setOpen(true);
     }
-  }, [islLoggedIn, router, loaded]);
+  }, [islLoggedIn, router]);
 
   const toggleDrawer = () =>{
     setShowDrawer((val) => !val);
   };
   return (
     <>
-    {loaded && islLoggedIn ? (
+    {islLoggedIn && islLoggedIn ? (
       <div className="h-screen w-full">
         <div className="">
           <AppBar onToggle={toggleDrawer} />
