@@ -1,7 +1,7 @@
 import React, { useState, Fragment, ReactNode } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
-import { TableHeader } from "@/core/types/data.interface";
+import { AccountData, TableHeader } from "@/core/types/data.interface";
 import Button from "../button/button";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ interface TableProps<T = unknown> {
   data: T[];
   actions?: { text: string; icon?: JSX.Element }[];
   isOpen?: boolean;
-  setIsOpen?: (x: boolean) => void;
+  setIsOpen?: (x: T) => void;
 }
 
 export default function Table<T>(props: TableProps<T>) {
@@ -24,8 +24,8 @@ export default function Table<T>(props: TableProps<T>) {
   const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data.length).fill(false));
   const [selectAll, setSelectAll] = useState(false);
 
-  const handleOpen = () => {
-    setIsOpen && setIsOpen(true);
+  const handleOpen = (currentValue:T) => {
+    setIsOpen && setIsOpen(currentValue);
   };
 
   const handleSelectAllChange = () => {
@@ -99,7 +99,7 @@ export default function Table<T>(props: TableProps<T>) {
                           </Button>
                         </div>
                       ) : (
-                        <div>{`${row[header.field as keyof typeof row]}`}</div>
+                        <div>{`${row[header.field as keyof typeof row] ?? ""}`}</div>
                       )}
                     </section>
                   </td>
@@ -144,7 +144,7 @@ export default function Table<T>(props: TableProps<T>) {
                                       }`}
                                       onClick={
                                         action.text === "Link with QR code" || action.text === "Link with pairing code"
-                                          ? handleOpen
+                                          ? ()=>handleOpen(row)
                                           : undefined
                                       }
                                     >

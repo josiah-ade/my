@@ -6,17 +6,17 @@ import { PropsWithChildren, useEffect, useState } from "react";
 
 export default function UserLayout(props: PropsWithChildren) {
   const [showDrawer, setShowDrawer] = useState(false);
-  const { islLoggedIn, } = useAuthContext();
+  const { islLoggedIn, loaded } = useAuthContext();
   const router = useRouter();
   // const [open, setOpen] = useState(false);
 
-  useEffect(() =>   {
+  useEffect(() =>{
+    if(!loaded)
+    return;
     if (!islLoggedIn) {
       router.push("/");
-    } else{
-      router.push("/user");
     }
-  }, [islLoggedIn, router]);
+  }, [islLoggedIn]);
 
   const toggleDrawer = () =>{
     setShowDrawer((val) => !val);

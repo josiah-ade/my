@@ -32,7 +32,7 @@ const usersContext = createContext<AuthContextType>({
   SignUpApi: async () => {},
   logout: () => {},
   islLoggedIn: false,
-  loaded: true,
+  loaded: false,
 });
 
 export default function Context({ children }: { children: ReactNode }) {

@@ -20,11 +20,16 @@ import {
   Usercancel,
 } from "@/core/const/icons/icons";
 import Image from "next/image";
+import { IBroadcastcreate } from "@/typings/interface/broadcasts";
+import { useCreateBroadCastList } from "@/providers/hooks/mutate/createbroadcast";
 
 export default function User() {
   const [isOpen, setIsOpen] = useState(false);
   const [showTable, setShowTable] = useState(true);
-
+const{mutate: createbroadCast}=useCreateBroadCastList({onError(error) {
+  console.log(error)
+},})
+console.log(createbroadCast)
   const handleOpen = () => {
     setIsOpen(true);
   };
@@ -33,14 +38,20 @@ export default function User() {
     setIsOpen(false);
   };
 
-  const [listName, setListName] = useState("");
-  const [description, setDescription] = useState("");
-  const [dayNumber, setDayNumber] = useState(0);
+  const [user, setUser] = useState<IBroadcastcreate>({
+    listName: "",
+    description: "",
+    dayNumber:""
+  });
 
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value, name } = event.target;
+    setUser({ ...user, [name]: value });
+    console.log({ user });
+  }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log({ listName, description, dayNumber });
   };
 
   const headers: TableHeader[] = [
@@ -151,11 +162,12 @@ export default function User() {
                 List Name
               </label>
               <input
+              name="listName"
                 id="listName"
                 type="text"
                 placeholder="Placeholder"
-                value={listName}
-                onChange={(e) => setListName(e.target.value)}
+                value={user.listName}
+                onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
               />
             </div>
@@ -167,11 +179,12 @@ export default function User() {
                 Description
               </label>
               <input
+              name="description"
                 id="description"
                 type="text"
                 placeholder="Placeholder"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={user.description}
+                onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
               />
               <p className="mt-2 text-sm text-gray-500">
@@ -186,11 +199,12 @@ export default function User() {
                 Day Number on Automation
               </label>
               <input
+              name="dayNumber"
                 id="dayNumber"
                 type="number"
                 placeholder="0"
-                value={dayNumber}
-                onChange={(e) => setDayNumber(Number(e.target.value))}
+                value={user.dayNumber}
+                onChange={handleChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
               />
             </div>

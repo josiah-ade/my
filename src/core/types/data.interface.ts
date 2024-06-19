@@ -19,14 +19,10 @@ export interface TableHeader {
 }
 
 export interface AccountData {
-  // first: string;
-  // second: string;
-  // third: string;
-  // fourth: string;
-  // fifth: string;
   whatsAppNumber: string;
   purpose: string;
   plan: string;
+  id: string;
   img?: StaticImageData;
   expiry: string;
   serviceStatus: string;
@@ -37,14 +33,16 @@ export interface BroadCastList {
   id: string;
   description: string;
   contacts?: number;
-  // view: string;
+}
+export interface IBroadCastList {
+  listName: string;
+  id: string;
+  description: string;
 }
 export interface ContactList {
   PhoneNumber: string;
   purpose: string;
   plan: string;
   img:StaticImageData,
-  // contact?: string;
-  // view: string;
 }
 

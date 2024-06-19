@@ -1,22 +1,39 @@
 import { phoneList } from "@/core/const/tab/phone";
 import Link from "next/link";
 import TabLists from "./tab/tabdetail";
+import { useGetUsersAcount, } from "@/providers/hooks/query/getaccount";
+import router from "next/router";
+import { ParsedUrlQuery } from "querystring";
+import { Tabdetails } from "@/typings/interface/component/tab/tabdetails";
+import {  IContact } from "@/typings/interface/account";
+import EmptyState from "../common/empty/empty";
 
 export default function PhoneList() {
+  const { data: getaccountdata, loading } = useGetUsersAcount();
+  console.log(getaccountdata);
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4 mt-5">
-      {phoneList.map((item) => (
+  {loading ? (
+    <>loading...</>
+  ) : (
+    getaccountdata && getaccountdata.length > 0 ? (
+      getaccountdata.map((item: IContact) => (
         <Link href={`/user/contacts/${item.id}`} key={item.id} className="border p-5 rounded-[0.6rem] w-full">
           <TabLists
-            icon={item.icon}
-            phone={item.phone}
+            // icon={item.icon}
+            phoneNumber={item.phoneNumber}
             description={item.description}
-            total={item.total}
-            totaldescription={item.totaldescription}
-            path={item.path}
+            id={"1"}         
+            // total={item.total}
+            // totaldescription={item.totaldescription}
+            // path={item.path}
           />
         </Link>
-      ))}
-    </div>
+      ))
+    ) : (
+      <EmptyState />
+    )
+  )}
+</div>
   );
 }

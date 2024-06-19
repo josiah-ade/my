@@ -16,6 +16,10 @@ import { useRouter } from "next/router";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdOutlinePostAdd } from "react-icons/md";
 import Notification from "@/components/notification/notification";
+import { useGetSingleUsersAcount, useGetUsersAcount, useGetUsersContactAcount } from "@/providers/hooks/query/getaccount";
+import HasBack from "@/components/common/hasback/hasback";
+import { IContact } from "@/typings/interface/account";
+import { useParams } from "next/navigation";
 
 interface IAdd {
   name: string;
@@ -25,7 +29,13 @@ interface IAdd {
 
 export default function ContactPage() {
   const router = useRouter();
-  const { id } = router.query;
+  // const { id } = router.query;
+
+  // const { data: getaccountdata } = useGetUsersAcount();
+  const {id} = useParams();
+  const {data:contactAcount}=useGetUsersContactAcount(id as string)
+  const {data:accountDetails}=useGetSingleUsersAcount(id as string)
+
   const [isOpen, setIsOpen] = useState(false);
   const [add, setAdd] = useState<IAdd>({
     name: "",
@@ -37,7 +47,6 @@ export default function ContactPage() {
     setAdd({ ...add, [name]: value });
     // console.log({ data });
   }
-
   const handleModal = () => {
     setIsOpen(true);
   };
@@ -45,45 +54,10 @@ export default function ContactPage() {
     setIsOpen(false);
   };
   const headers: TableHeader[] = [
-    { field: "whatsAppNumber", title: "Phone Number" },
-    { field: "purpose", title: "Country" },
-    { field: "plan", title: "Name" },
+    { field: "phoneNumber", title: "Phone Number" },
+    { field: "country", title: "Country" },
+    { field: "name", title: "Name" },
   ];
-  const data: AccountData[] = [
-    {
-      whatsAppNumber: "+234 915 632 9332",
-      purpose: "For RJStores",
-      plan: "Free Plan",
-      img: profile,
-      expiry: "",
-      serviceStatus: "",
-    },
-    {
-      whatsAppNumber: "+234 915 632 9332",
-      purpose: "For RJStores",
-      plan: "Free Plan",
-      img: profile,
-      expiry: "",
-      serviceStatus: "",
-    },
-    {
-      whatsAppNumber: "+234 915 632 9332",
-      purpose: "For RJStores",
-      plan: "Free Plan",
-      img: profile,
-      expiry: "",
-      serviceStatus: "",
-    },
-    {
-      whatsAppNumber: "+234 915 632 9332",
-      purpose: "For RJStores",
-      plan: "Free Plan",
-      img: profile,
-      expiry: "",
-      serviceStatus: "",
-    },
-  ];
-
   const tabs = [
     {
       label: "Add to a New List",
@@ -200,10 +174,13 @@ export default function ContactPage() {
   return (
     <UserLayout>
       <div>
+      <div className="flex flex-row gap-3">
+        <HasBack hasBack={true} title={"GoBack"} />
+      </div>
         <div className="mt-5 flex flex-row justify-between">
           <div>
-            <h1 className="font-bold text-2xl">Imported Contacts</h1>
-            <p className="mt-2">View all your contacts here</p>
+            <h1 className="font-bold text-2xl"> {accountDetails?.phoneNumber ?? ''} </h1>
+            <p className="mt-2">View all your contacts for this account</p>
           </div>
           <div>
             <Button onClick={handleModal} primary icon={<GoPlus />}>
@@ -212,7 +189,7 @@ export default function ContactPage() {
           </div>
         </div>
         <div className="mt-5">
-          <Table headers={headers} data={data} />
+         {contactAcount? <Table headers={headers} data={contactAcount} />: <></>}
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={handleClose}>

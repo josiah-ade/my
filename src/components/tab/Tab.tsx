@@ -1,11 +1,11 @@
 // components/Tabs.tsx
 
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, ReactElement } from 'react';
 
 type TabProps = {
   label?: string;
   icon?: ReactNode;
-  content?: ReactNode;
+  content?:ReactNode;
 };
 
 export default function Tabs({ tabs }: { tabs: TabProps[] }) {
@@ -31,9 +31,10 @@ export default function Tabs({ tabs }: { tabs: TabProps[] }) {
       </div>
       <div className="relative">
           <div className={`transition-opacity duration-300 ease-in-out  left-0 w-full `}>
+          {/* {tabs[activeTab].content?.()} */}
+          {/* {tabs[activeTab].content ? tabs[activeTab].content() : null} */}
             {tabs[activeTab].content}
           </div>
-        
       </div>
     </div>
   );
