@@ -31,30 +31,34 @@ export const UserMenus: Menu[] = [
     id: "2",
     icon: LuUsers2,
     path: "/user/teams",
+    disabled: true,
   },
   {
     title: "Subscriptions",
     id: "2",
     icon: FaHashtag,
+    disabled: true,
     path: "/user/subscrition",
   },
   {
     title: "Forms",
     id: "3",
     icon: MdOutlineFormatAlignJustify,
+    disabled: true,
     path: "/user/form",
   },
   {
     title: "Chatbot",
     id: "3",
     icon: MdOutlineFormatAlignJustify,
+    disabled: true,
     path: "/user/form",
   },
   {
     title: "Login",
     id: "7",
     icon: MdOutlineFormatAlignJustify,
-    path: "/login",
+    path: "/",
   },
 ];
 
