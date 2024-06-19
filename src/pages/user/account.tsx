@@ -8,7 +8,17 @@ import { GoPlus } from "react-icons/go";
 
 import Table from "../../components/table/table";
 import Tabs from "@/components/tab/Tab";
-import { Bin, Qr, Circle, Message, Hash, Repeat, Home, Link, Plus } from "@/core/const/icons/icons";
+import {
+  Bin,
+  Qr,
+  Circle,
+  Message,
+  Hash,
+  Repeat,
+  Home,
+  Link,
+  Plus,
+} from "@/core/const/icons/icons";
 import { AccountData, Data, TableHeader } from "@/core/types/data.interface";
 import Default from "@/components/default/default";
 
@@ -39,6 +49,70 @@ export default function User() {
       expiry: "22 February 2024",
       serviceStatus: "Disabled",
     },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
+    {
+      whatsAppNumber: "+234 915 632 9332",
+      purpose: "For RJStores",
+      plan: "Free Plan",
+      // img: profile,
+      expiry: "22 February 2024",
+      serviceStatus: "Disabled",
+    },
   ];
   const actions: Data[] = [
     { text: "Link with pairing code", icon: <Link className="h-4 w-4" /> },
@@ -46,7 +120,10 @@ export default function User() {
     { text: "Disconnect", icon: <Circle className="h-4 w-4" /> },
     { text: "Send test message", icon: <Message className="h-4 w-4" /> },
     { text: "Unsubscribe Keyword", icon: <Hash className="h-4 w-4" /> },
-    { text: "Trigger Word To Move To Another List", icon: <Hash className="h-4 w-4" /> },
+    {
+      text: "Trigger Word To Move To Another List",
+      icon: <Hash className="h-4 w-4" />,
+    },
     { text: "Transfer License", icon: <Repeat className="h-4 w-4" /> },
     { text: "Delete", icon: <Bin className="h-4 w-4 text-red-600" /> },
   ];
@@ -57,16 +134,26 @@ export default function User() {
       icon: <Home />,
       content: (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg">
-          <h2 className="text-black text-[1.2rem] font-semibold mb-4">How to Link with pairing code</h2>
+          <h2 className="text-black text-[1.2rem] font-semibold mb-4">
+            How to Link with pairing code
+          </h2>
           <p className="mb-4 text-sm text-black leading-6">
-            To link with a pairing code, open WhatsApp on the phone where 8038548936 is after you have requested, you
-            will be prompted to input a pairing code, copy the code shown here and paste on your device. After few
-            seconds, it'll show 'Connected' here, you can close this window after that.
+            To link with a pairing code, open WhatsApp on the phone where
+            8038548936 is after you have requested, you will be prompted to
+            input a pairing code, copy the code shown here and paste on your
+            device. After few seconds, it'll show 'Connected' here, you can
+            close this window after that.
           </p>
           <div className="flex items-center justify-center mb-4">
             <div className="bg-green-100 text-green-800 flex flex-col items-center justify-center p-5 w-[100%] rounded-lg text-lg">
               <div className="flex space-x-2 items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 20 21" fill="none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="17"
+                  height="18"
+                  viewBox="0 0 20 21"
+                  fill="none"
+                >
                   <g clip-path="url(#clip0_53_3095)">
                     <path
                       fill-rule="evenodd"
@@ -77,7 +164,12 @@ export default function User() {
                   </g>
                   <defs>
                     <clipPath id="clip0_53_3095">
-                      <rect width="20" height="20" fill="white" transform="translate(0 0.5)" />
+                      <rect
+                        width="20"
+                        height="20"
+                        fill="white"
+                        transform="translate(0 0.5)"
+                      />
                     </clipPath>
                   </defs>
                 </svg>
@@ -100,10 +192,13 @@ export default function User() {
       icon: <Qr />,
       content: (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg">
-          <h2 className="text-black text-[1.2rem] font-semibold mb-4">How to Link with QR code</h2>
+          <h2 className="text-black text-[1.2rem] font-semibold mb-4">
+            How to Link with QR code
+          </h2>
           <p className="mb-4 text-sm text-black leading-6">
-            To link with a QR code, open WhatsApp on your phone, go to the settings, and tap on 'Link a Device'. Scan
-            the QR code shown on this screen with your phone.
+            To link with a QR code, open WhatsApp on your phone, go to the
+            settings, and tap on 'Link a Device'. Scan the QR code shown on this
+            screen with your phone.
           </p>
           <div className="flex items-center justify-center mb-4">
             <div className=" px-4 py-2 rounded-md text-xl font-mono">
@@ -128,8 +223,12 @@ export default function User() {
         <div className="w-full bg-white">
           <section className="flex justify-between items-center">
             <div>
-              <h1 className="text-[1.3rem] leading-7 font-bold text-black">Manage Accounts</h1>
-              <p className="text-gray-600 leading-7 text-[0.9rem]">Link your Whatsapp accounts here</p>
+              <h1 className="text-[1.3rem] leading-7 font-bold text-black">
+                Manage Accounts
+              </h1>
+              <p className="text-gray-600 leading-7 text-[0.9rem]">
+                Link your Whatsapp accounts here
+              </p>
             </div>
             <div>
               {/* <button className="bg-orange-500 text-white py-2 px-4 rounded-lg">+ Add Account</button> */}
@@ -142,19 +241,29 @@ export default function User() {
           <section className="lg:flex lg:space-x-4 mt-8">
             <section className="px-4 py-8 lg:w-[50%] lg:flex justify-between bg-green-50 border border-green-50 rounded-lg">
               <div className="">
-                <p className="font-semibold text-gray-900 leading-6">Link your WhatsApp account</p>
+                <p className="font-semibold text-gray-900 leading-6">
+                  Link your WhatsApp account
+                </p>
                 <p className="text-sm text-gray-600 mt-1">
-                  Please update/verify your information before <br /> <strong>13th July 2023 </strong> to unlock level
-                  benefits
+                  Please update/verify your information before <br />{" "}
+                  <strong>13th July 2023 </strong> to unlock level benefits
                 </p>
               </div>
               <div className="mt-4 lg:mt-0">
-                <Image src="/whatsapp-img.png" alt="WhatsApp Logo" objectFit="contain" width={100} height={100} />
+                <Image
+                  src="/whatsapp-img.png"
+                  alt="WhatsApp Logo"
+                  objectFit="contain"
+                  width={100}
+                  height={100}
+                />
               </div>
             </section>
             <section className="px-4 py-4 mt-4 lg:mt-0 lg:w-[50%] border-2 border-[#F7F9F] rounded-lg">
               <div className="rounded-lg">
-                <p className="text-[0.9] text-gray-500 font-bold">Account Usage</p>
+                <p className="text-[0.9] text-gray-500 font-bold">
+                  Account Usage
+                </p>
                 <p className="text-[1rem] font-bold text-gray-900 mt-1">0/1</p>
               </div>
               <div className="mt-8">
@@ -164,7 +273,13 @@ export default function User() {
           </section>
           {showTable ? (
             <div className="my-5">
-              <Table setIsOpen={setIsOpen} isOpen={isOpen} headers={headers} data={data} actions={actions} />
+              <Table
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+                headers={headers}
+                data={data}
+                actions={actions}
+              />
             </div>
           ) : (
             //     <div className="my-40 flex flex-col items-center">

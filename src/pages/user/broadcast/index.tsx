@@ -46,8 +46,7 @@ export default function User() {
   const headers: TableHeader[] = [
     { field: "listName", title: "List Name", icon: "/chevron.jpg" },
     { field: "description", title: "Description", icon: "/chevron.jpg" },
-    { field: "contact", title: "Subscribers", icon: "/chevron.jpg" },
-    { field: "fourth", title: "" },
+    { field: "contacts", title: "Subscribers", icon: "/chevron.jpg" },
     {
       field: "",
       title: "Actions",
@@ -58,6 +57,7 @@ export default function User() {
     {
       listName: "Nysc Batch A stream 1",
       description: "for batch A stream 1 PCMs",
+      contacts: "23 contact",
       id: "1",
     },
   ];
@@ -125,7 +125,7 @@ export default function User() {
           isOpen={isOpen}
           headers={headers}
           data={data}
-          actions={actions}
+          action={actions}
         />
       ) : (
         <Default
