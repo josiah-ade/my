@@ -24,7 +24,7 @@ const defaultCreateBroadcastFormValue: ICreateBroadcastList = {
 };
 
 export default function ContactPage() {
-  const { id } = useParams();
+  const { id } = useParams() ?? {};
   const { data: contactAcount } = useGetUsersContactAcount(id as string);
   const { data: accountDetails } = useGetSingleUsersAcount(id as string);
   const { data: broadcastList } = useGetUserBroadcast();
