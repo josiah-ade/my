@@ -11,7 +11,7 @@ import { IGroupAccount } from "@/typings/interface/account";
 
 export default function WhatsappList() {
   const router = useRouter();
-  const { id } = useParams();
+  const { id } = useParams() ?? {};
   const { data: groupAccount } = useGetGroupAcount(id as string);
   const { data: accountDetails } = useGetSingleUsersAcount(id as string);
 
