@@ -1,20 +1,25 @@
 // components/Tabs.tsx
 
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 
 type TabProps = {
   label?: string;
   icon?: ReactNode;
-  content?:ReactNode;
+  content?: ReactNode;
 };
 
 interface TabComponentProps {
-  tabs?: TabProps[];
+  tabs: TabProps[];
   searchPlaceholder?: string;
+  onTabChange?: (index: number) => void;
 }
 
-export default function Tabs({ tabs }: { tabs: TabProps[] }) {
+export default function Tabs({ tabs, searchPlaceholder, onTabChange }: TabComponentProps) {
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    onTabChange && onTabChange(activeTab);
+  }, [activeTab]);
 
   return (
     <div className="w-full ">
@@ -34,19 +39,17 @@ export default function Tabs({ tabs }: { tabs: TabProps[] }) {
           </button>
         ))}
       </div>
-      {/* <div>
-        <input
-          type="text"
-          placeholder={searchPlaceholder}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div> */}
-      <div className="relative">
-        <div
-          className={`transition-opacity duration-300 ease-in-out  left-0 w-full `}
-        >
-          {tabs[activeTab].content}
+      {searchPlaceholder ? (
+        <div>
+          <input
+            type="text"
+            placeholder={searchPlaceholder}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
         </div>
+      ) : null}
+      <div className="relative">
+        <div className={`transition-opacity duration-300 ease-in-out  left-0 w-full `}>{tabs[activeTab].content}</div>
       </div>
     </div>
   );

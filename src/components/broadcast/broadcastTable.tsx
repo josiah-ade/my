@@ -67,7 +67,7 @@ export default function BroadCastMessageTable({
                 {data.map((row, rowIndex) => (
                   <tr key={rowIndex} className="bg-white border-b">
                     {headers.map((header, colIndex) => {
-                      const key = header.field;
+                      const key = header.field as keyof typeof row;
                       if (key === "lists") {
                         return (
                           <td
@@ -106,7 +106,7 @@ export default function BroadCastMessageTable({
                           }`}
                           onClick={
                             key === "actions"
-                              ? () => handleRoute(row[key])
+                              ? () => handleRoute(row[key] ?? '')
                               : undefined
                           }
                         >

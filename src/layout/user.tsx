@@ -10,29 +10,31 @@ export default function UserLayout(props: PropsWithChildren) {
   const router = useRouter();
   // const [open, setOpen] = useState(false);
 
-  useEffect(() =>{
-    if(!loaded)
-    return;
+  useEffect(() => {
+    if (!loaded) return;
     if (!islLoggedIn) {
       router.push("/");
     }
   }, [islLoggedIn]);
 
-  const toggleDrawer = () =>{
+  const toggleDrawer = () => {
     setShowDrawer((val) => !val);
   };
   return (
     <>
-    {islLoggedIn ? (
-      <div className="h-screen w-full">
-        <div className="">
-          <AppBar onToggle={toggleDrawer} />
+      {islLoggedIn ? (
+        <div className="h-screen w-full">
+          <div className="">
+            <AppBar onToggle={toggleDrawer} />
+          </div>
+          <div className=" bg-background text-gray-900 flex flex-row gap-y-1 w-full   ">
+            <AppDrawer display={showDrawer} onToggle={toggleDrawer} />
+            <div className="flex-col bg-background flex gap-y-1 w-full overflow-auto p-7">{props.children}</div>
+          </div>
         </div>
-        <div className=" bg-background text-gray-900 flex flex-row gap-y-1 w-full   ">
-          <AppDrawer display={showDrawer} onToggle={toggleDrawer} />
-          <div className="flex-col bg-background flex gap-y-1 w-full overflow-auto p-7">{props.children}</div>
-        </div>
-      </div>):(<></>)}
+      ) : (
+        <></>
+      )}
     </>
   );
 }

@@ -20,7 +20,7 @@ import {
   Usercancel,
 } from "@/core/const/icons/icons";
 import Image from "next/image";
-import { IBroadcastcreate } from "@/typings/interface/broadcasts";
+import { ICreateBroadcastList } from "@/typings/interface/broadcasts";
 import { useCreateBroadCastList } from "@/providers/hooks/mutate/createbroadcast";
 
 export default function User() {
@@ -38,10 +38,10 @@ console.log(createbroadCast)
     setIsOpen(false);
   };
 
-  const [user, setUser] = useState<IBroadcastcreate>({
+  const [user, setUser] = useState<ICreateBroadcastList>({
     listName: "",
     description: "",
-    dayNumber:""
+    dayNumber:0
   });
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {

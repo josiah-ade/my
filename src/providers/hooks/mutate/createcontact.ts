@@ -1,15 +1,27 @@
-import { IContactList } from "@/typings/interface/contacts";
+import { CreateContactFromNewListDTO, IContactList } from "@/typings/interface/contacts";
 import { IMutationArgs, IMutationHook } from "../../../typings/query";
 import { useCreateResources } from "../helper/mutation";
-import { ContactList,  } from "@/core/types/data.interface";
+import { ContactList } from "@/core/types/data.interface";
 import { createContact } from "@/providers/services/contact";
+import { createBroadcast } from "@/providers/services/broadcast";
 
 export function useCreateContactList({ onSuccess, onError }: IMutationHook) {
-  const createcontact: IMutationArgs<IContactList, ContactList> = {
-    key: ["contac"],
+  const mutation: IMutationArgs<IContactList, ContactList> = {
+    key: ["contact"],
     callback: (data: IContactList) => createContact(data),
     onSuccess: onSuccess,
     onError: onError,
   };
-  return useCreateResources(createcontact);
+  return useCreateResources(mutation);
+}
+
+export function useCreateContactFromNewList({ onSuccess, onError }: IMutationHook) {
+  const mutation: IMutationArgs<CreateContactFromNewListDTO, ContactList> = {
+    key: ["contact"],
+    callback: ({ contacts, broadcast }: CreateContactFromNewListDTO) =>
+      createBroadcast(broadcast).then((resp) => createContact({ contacts, broadcastListId: resp.id })),
+    onSuccess: onSuccess,
+    onError: onError,
+  };
+  return useCreateResources(mutation);
 }

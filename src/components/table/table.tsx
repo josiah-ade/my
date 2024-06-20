@@ -1,4 +1,4 @@
-import React, { useState, Fragment, ReactNode } from "react";
+import React, { useState, Fragment, ReactNode, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { TableHeader } from "@/core/types/data.interface";
@@ -13,14 +13,13 @@ interface TableProps<T = unknown> {
   action?: { text?: string; icon?: JSX.Element; avatar?: string }[];
   isOpen?: boolean;
   search?: boolean;
+  checkboxAction?: (selected: T[]) => void;
   setIsOpen?: (x: boolean) => void;
 }
 
 export default function Table<T>(props: TableProps<T>) {
   const { headers, data, action, isOpen, setIsOpen, search } = props;
-  const [selectedRows, setSelectedRows] = useState<boolean[]>(
-    Array(data.length).fill(false)
-  );
+  const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data.length).fill(false));
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -28,6 +27,20 @@ export default function Table<T>(props: TableProps<T>) {
   const handleOpen = () => {
     setIsOpen && setIsOpen(true);
   };
+
+  const handleCheckboxCallback = () => {
+    if (props.checkboxAction) {
+      const selected = selectedRows.reduce<T[]>((acc, val, index) => {
+        val && acc.push(data[index]);
+        return acc;
+      }, []);
+      props.checkboxAction(selected);
+    }
+  };
+
+  useEffect(() => {
+    handleCheckboxCallback();
+  }, [selectedRows]);
 
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
@@ -88,23 +101,13 @@ export default function Table<T>(props: TableProps<T>) {
                   >
                     <section className="flex space-x-1">
                       {index == 0 ? (
-                        <input
-                          type="checkbox"
-                          className="mr-3"
-                          checked={selectAll}
-                          onChange={handleSelectAllChange}
-                        />
+                        <input type="checkbox" className="mr-3" checked={selectAll} onChange={handleSelectAllChange} />
                       ) : null}
                       <div>{header.title}</div>
                       <div className="pointer">
                         {header?.icon && (
                           <span className="">
-                            <Image
-                              src={header.icon}
-                              alt="icon"
-                              width={15}
-                              height={15}
-                            />
+                            <Image src={header.icon} alt="icon" width={15} height={15} />
                           </span>
                         )}
                       </div>
@@ -120,30 +123,19 @@ export default function Table<T>(props: TableProps<T>) {
               {currentItems.map((row, rowIndex) => (
                 <tr key={rowIndex} className="relative">
                   {headers.map((header, index) => (
-                    <td
-                      key={header.field}
-                      className="px-6 py-7 whitespace-nowrap text-sm text-gray-900"
-                    >
+                    <td key={header.field} className="px-6 py-7 whitespace-nowrap text-sm text-gray-900">
                       <section className="flex justify-between space-x-1">
                         {index == 0 ? (
                           <input
                             type="checkbox"
                             className="mr-3"
                             checked={selectedRows[indexOfFirstItem + rowIndex]}
-                            onChange={() =>
-                              handleRowCheckboxChange(
-                                indexOfFirstItem + rowIndex
-                              )
-                            }
+                            onChange={() => handleRowCheckboxChange(indexOfFirstItem + rowIndex)}
                           />
                         ) : null}
                         {header.action ? (
                           <div>
-                            <Button
-                              onClick={() => handleRoute(header.action?.href)}
-                            >
-                              {header.action.text}
-                            </Button>
+                            <Button onClick={() => handleRoute(header.action?.href)}>{header.action.text}</Button>
                           </div>
                         ) : (
                           <section className="flex items-center space-x-2">
@@ -156,9 +148,7 @@ export default function Table<T>(props: TableProps<T>) {
                                 className="rounded-full mr-2"
                               />
                             ) : null} */}
-                            <div>{`${
-                              row[header.field as keyof typeof row]
-                            }`}</div>
+                            <div>{`${row[header.field as keyof typeof row] ?? ''}`}</div>
                           </section>
                         )}
                       </section>
@@ -166,17 +156,9 @@ export default function Table<T>(props: TableProps<T>) {
                   ))}
                   <td className="px-6 py-4 text-right text-sm font-medium">
                     {action ? (
-                      <Menu
-                        as="div"
-                        className="relative inline-block text-left"
-                      >
+                      <Menu as="div" className="relative inline-block text-left">
                         <Menu.Button className="inline-flex justify-center w-full  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
-                          <Image
-                            src="/dots.png"
-                            alt="dots"
-                            width={10}
-                            height={10}
-                          />
+                          <Image src="/dots.png" alt="dots" width={10} height={10} />
                         </Menu.Button>
 
                         <Transition
@@ -193,9 +175,7 @@ export default function Table<T>(props: TableProps<T>) {
                             style={{ overflowY: "scroll" }}
                           >
                             <div className="py-4 ">
-                              <p className="text-center text-sm text-primary-base p-4">
-                                Start Service
-                              </p>
+                              <p className="text-center text-sm text-primary-base p-4">Start Service</p>
                               {action &&
                                 action.map((action, actionIndex) => (
                                   <Menu.Item key={actionIndex}>
@@ -205,28 +185,19 @@ export default function Table<T>(props: TableProps<T>) {
                                         className={`text-center text-sm flex items-center space-x-2 ${
                                           active ? "bg-gray-100" : ""
                                         } flex items-center px-4 py-2 text-sm ${
-                                          action.text === "Delete"
-                                            ? "text-red-600"
-                                            : "text-gray-700"
+                                          action.text === "Delete" ? "text-red-600" : "text-gray-700"
                                         }`}
                                         onClick={
                                           action.text === "Link with QR code" ||
-                                          action.text ===
-                                            "Link with pairing code"
+                                          action.text === "Link with pairing code"
                                             ? handleOpen
                                             : undefined
                                         }
                                       >
-                                        {action.icon && (
-                                          <span className="mr-2">
-                                            {action.icon}
-                                          </span>
-                                        )}
+                                        {action.icon && <span className="mr-2">{action.icon}</span>}
                                         <span
                                           className={`text-gray-500 text-sm ${
-                                            action.text === "Delete"
-                                              ? "text-red-600"
-                                              : "text-gray-500"
+                                            action.text === "Delete" ? "text-red-600" : "text-gray-500"
                                           }`}
                                         >
                                           {action.text}

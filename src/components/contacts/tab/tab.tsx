@@ -26,9 +26,10 @@ export default function TabComponent() {
       </div>
       <div className="">
         {activeTab === 0 && <Phonelists />}
-        {activeTab === 1 && <WhatsAppList />}
+        {activeTab === 1 && <Phonelists isGroup={true} />}
+        {/* {activeTab === 1 && <WhatsAppList />} */}
         {activeTab === 2 && <EmailList />}
       </div>
-      </div>
+    </div>
   );
 }

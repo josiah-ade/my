@@ -1,5 +1,9 @@
-export interface IBroadcastcreate{
-    listName: string,
-    description: string,
-    dayNumber: string;
+export interface ICreateBroadcastList {
+  listName: string;
+  description: string;
+  dayNumber?: number;
+}
+
+export interface IBroadcastList extends ICreateBroadcastList {
+  id: string;
 }

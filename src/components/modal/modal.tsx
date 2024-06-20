@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     >
       <div
         ref={modalRef}
-        className="relative px-4 py-1 border w-[25rem] shadow-lg rounded-lg bg-white"
+        className="relative px-5 py-1 border w-[32rem] shadow-lg rounded-lg bg-white"
       >
         <div className="flex justify-between items-center pb-3">
           {title && <div className="text-lg font-semibold">{title}</div>}
