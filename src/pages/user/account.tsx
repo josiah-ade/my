@@ -5,7 +5,7 @@ import Modal from "@/components/modal/modal";
 import UserLayout from "@/layout/user";
 import Button from "@/components/button/button";
 import { GoPlus } from "react-icons/go";
-import Table from "../../components/table/table";
+import Table from "../../components/table";
 import Tabs from "@/components/tab/Tab";
 import {
   Bin,

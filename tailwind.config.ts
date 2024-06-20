@@ -6,7 +6,8 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
         background: "rgb(59 130 246 / var(--tw-bg-opacity));",
@@ -16,6 +17,12 @@ const config: Config = {
         "gray-900": "#101928",
         "gray-500": "#667185",
         "gray-50": "#F9FAFB",
+        "gray-300": "#D0D5DD",
+        "gray-400": "#98A2B3",
+        "gray-75": "#F7F9FC",
+        "gray-100": "#F0F2F5",
+        "gray-200": "#E4E7EC",
+        "gray-700": "#E4E7EC",
         primary: "#EB5017",
         "primary-1": "#D0D5DD",
         "primary-2": "#F0F2F5",
@@ -25,8 +32,18 @@ const config: Config = {
         "primary-6": "#667185",
         "primary-7": "#98A2B3",
         success: "#0F973D",
+        "success-700": "#036B26",
+        "success-50": "#E7F6EC",
         "primary-base": "#F56630",
         "warning-500": "#DD900D",
+        "warning-50": "#FEF6E7",
+        "warning-700": "#865503",
+        "error-700": "#9E0A05",
+        "error-50": "#FBEAE9",
+        secondary: "#1671D9",
+        "secondary-700": "#04326B",
+        "secondary-50": "#E3EFFC",
+        "secondary-400": "#1671D9",
       },
       screens: {
         xs: "10px",
