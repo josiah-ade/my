@@ -8,27 +8,24 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
 
 export const AutomationMenus: Menu[] = [
-  {
-    title: "Lists Automations",
-    id: "3",
-    icon: MdOutlineFormatAlignJustify,
-    path: "/user/broadcast",
-    disabled: true,
-  },
-  {
-    title: "Group Automations",
-    id: "3",
-    icon: MdOutlineFormatAlignJustify,
-    path: "/users",
-    disabled: true,
-  },
-  {
-    title: "Group Templates",
-    id: "3",
-    icon: MdOutlineFormatAlignJustify,
-    path: "/grop/",
-    disabled: true,
-  },
+    {
+        title: "Lists Automations",
+        id: "1",
+        icon: MdOutlineFormatAlignJustify,
+        path: "/user/broadcast",
+      },
+    {
+        title: "Group Automations",
+        id: "2",
+        icon: MdOutlineFormatAlignJustify,
+        path: "/users",
+      },
+    {
+        title: "Group Templates",
+        id: "3",
+        icon: MdOutlineFormatAlignJustify,
+        path: "/grop/",
+      },
 ];
 
 export const UserAutomationLookup = AutomationMenus.reduce<{ [key: string]: Menu }>((val, item) => {

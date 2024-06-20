@@ -1,14 +1,25 @@
-// components/Breadcrumb.tsx
 import React from "react";
 import { useRouter } from "next/router";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
 interface BreadcrumbProps {
-  items?: { label: string; path?: string }[];
+  customItems?: { label: string; path?: string }[];
 }
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
+const routeLabels: { [key: string]: string } = {
+  user: "User",
+  broadcast: "Broadcast Lists",
+  import: "Import Contacts",
+  contacts: "Contacts",
+  account: "Accounts",
+  // Add more route segments and their labels as needed
+};
+
+function Breadcrumb({ customItems }: BreadcrumbProps) {
   const router = useRouter();
+  const { pathname } = router;
+
+  const pathSegments = pathname.split("/").filter((segment) => segment);
 
   const handleNavigation = (path: string | undefined) => {
     if (path) {
@@ -16,29 +27,33 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
     }
   };
 
-  const breadcrumbItems = [
-    { label: "Broadcast Lists", path: "/user/broadcast" },
-    { label: "Import Contacts" },
-  ];
+  const breadcrumbItems = pathSegments.map((segment, index) => {
+    const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
+    return {
+      label: routeLabels[segment] || segment,
+      path,
+    };
+  });
 
   return (
     <nav className="flex items-center space-x-2 text-sm text-gray-500">
       <button
-        className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
+        className="flex items-center justify-center space-x-3 text-gray-500"
         onClick={() => router.back()}
       >
-        <AiOutlineArrowLeft />
-        <span>Go Back</span>
+        <button className=" text-gray-500 border-2 border-gray-700 py-1 px-1 rounded-md">
+          <FaLongArrowAltLeft />
+        </button>
+        <span className="text-sm">Go Back</span>
       </button>
       {breadcrumbItems.map((item, index) => (
         <React.Fragment key={index}>
           <span>/</span>
           <button
-            className={`hover:text-orange-700 ${
-              item.path ? "text-gray-500" : "text-orange-500"
+            className={`hover:text-primary text-sm ${
+              item.path ? "text-gray-500" : "text-primary"
             }`}
             onClick={() => handleNavigation(item.path)}
-            disabled={!item.path}
           >
             {item.label}
           </button>
@@ -46,6 +61,6 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
       ))}
     </nav>
   );
-};
+}
 
 export default Breadcrumb;

@@ -9,37 +9,37 @@ export const dashboardItem: dashboard[]=[
 },
     {
     title:"Forms",
-    id:"1",
+    id:"2",
     amount:"3",
     total:"15"
 },
     {
     title:"Automations",
-    id:"1",
+    id:"3",
     amount:"3",
     total:"15"
 },
     {
     title:"Broadcast Lists",
-    id:"1",
+    id:"4",
     amount:"3",
     total:"15"
 },
     {
     title:"Total Lead",
-    id:"1",
+    id:"5",
     amount:"3",
     total:"15"
 },
     {
     title:"Chatbots",
-    id:"1",
+    id:"6",
     amount:"3",
     total:"15"
 },
     {
     title:"Chatbots",
-    id:"1",
+    id:"7",
     amount:"3",
     total:"15"
 },

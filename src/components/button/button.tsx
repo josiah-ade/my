@@ -22,10 +22,13 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "px-5 py-2 rounded-md flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2";
-  const primaryStyles = "bg-primary text-white hover:bg-primary focus:ring-primary";
-  const secondaryStyles = "bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-500";
-  const dangerStyles = "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500";
+    "px-5 py-2 rounded-md  flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2";
+  const primaryStyles =
+    "bg-primary text-white hover:bg-primary focus:ring-primary";
+  const secondaryStyles =
+    "bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-500";
+  const dangerStyles =
+    "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500";
   const disabledStyles = "opacity-50 cursor-not-allowed";
 
   const buttonClasses = classNames(
@@ -40,8 +43,14 @@ const Button: React.FC<ButtonProps> = ({
   );
 
   return (
-    <button type={type} className={buttonClasses} onClick={onClick} disabled={disabled} {...props}>
-      {icon && <span className="mr-2">{icon}</span>}
+    <button
+      type={type}
+      className={buttonClasses}
+      onClick={onClick}
+      disabled={disabled}
+      {...props}
+    >
+      {icon && <span className="mr-2 mt-1">{icon}</span>}
       {children}
     </button>
   );

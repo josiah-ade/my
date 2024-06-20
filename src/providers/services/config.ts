@@ -1,6 +1,5 @@
-
-import axios from 'axios'
-// const BASE_URL = "http://192.168.1.28:8000"
+import axios from "axios";
+// const BASE_URL = "http://localhost:8000/api/v1";
 const BASE_URL = "https://expertnaire-be.onrender.com/api/v1"
 
 // export const axiosPublic = axios.create({
@@ -10,13 +9,12 @@ const BASE_URL = "https://expertnaire-be.onrender.com/api/v1"
 //     },
 //   });
 
-axios.defaults.baseURL = BASE_URL
+axios.defaults.baseURL = BASE_URL;
 
-axios.defaults.withCredentials=false;
+axios.defaults.withCredentials = false;
 
-export  function setToken(token: string |null): void{
-    if(token){
-        axios.defaults.headers.common.Authorization = token? `Bearer ${token}` : "";
-    }
-
+export function setToken(token: string | null): void {
+  if (token) {
+    axios.defaults.headers.common.Authorization = token ? `Bearer ${token}` : "";
+  }
 }

@@ -18,19 +18,19 @@ export const BroadcastMenus: Menu[] = [
     title: "Broadcast Messages",
     id: "3",
     icon: MdOutlineFormatAlignJustify,
-    path: "/userss/",
-    disabled: true,
+    path: "/user/broadcast-message",
   },
   {
     title: "Broadcast Reports",
     id: "3",
     icon: MdOutlineFormatAlignJustify,
     path: "/usersss/",
-    disabled: true,
   },
 ];
 
-export const UserBroadcastLookup = BroadcastMenus.reduce<{ [key: string]: Menu }>((val, item) => {
+export const UserBroadcastLookup = BroadcastMenus.reduce<{
+  [key: string]: Menu;
+}>((val, item) => {
   val = { ...val, [item.path]: item };
   return val;
 }, {});

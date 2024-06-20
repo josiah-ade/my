@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -22,7 +22,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     // } else {
     //   document.removeEventListener('mousedown', handleOutsideClick);
     // }
-
     // return () => {
     //   document.removeEventListener('mousedown', handleOutsideClick);
     // };
@@ -31,8 +30,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div onClick={handleOutsideClick} className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-      <div ref={modalRef} className="relative px-4 py-1 border w-97 shadow-lg rounded-lg bg-white">
+    <div
+      onClick={handleOutsideClick}
+      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center"
+    >
+      <div
+        ref={modalRef}
+        className="relative px-5 py-1 border w-[32rem] shadow-lg rounded-lg bg-white"
+      >
         <div className="flex justify-between items-center pb-3">
           {title && <div className="text-lg font-semibold">{title}</div>}
           {/* <button onClick={onClose} className="text-black close-modal">
@@ -41,9 +46,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
             </svg>
           </button> */}
         </div>
-        <div className="my-5">
-          {children}
-        </div>
+        <div className="my-5">{children}</div>
       </div>
     </div>
   );
