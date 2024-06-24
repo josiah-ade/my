@@ -51,7 +51,7 @@ export default function SendBroadast() {
 
   function handleSubmit(data: FormData) {
     console.log("Form Data:", data);
-    createMessageMutation.mutate(data);
+    // createMessageMutation.mutate(data);
   }
 
   const handleToggle = (index: number) => {
