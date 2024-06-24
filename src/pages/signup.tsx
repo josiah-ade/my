@@ -6,7 +6,8 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { MdMailOutline } from "react-icons/md";
 import { useAuthContext } from "@/providers/context/auth";
 import { GoDotFill } from "react-icons/go";
-
+import logo from "../assets/logo.png";
+import Image from "next/image";
 
 
 export default function SignPage() {
@@ -18,13 +19,13 @@ export default function SignPage() {
   const [data, setData] = useState<ISignUp>({
     fullname: "",
     businessline: "",
+    phoneNumber:"",
     email: "",
     password: "",
   });
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = event.target;
     setData({ ...data, [name]: value });
-    console.log({ data });
   }
   const togglePasswordVisisbility = () => {
     setHidePassword(!hidepassword);
@@ -35,12 +36,10 @@ export default function SignPage() {
     try {
         setLoading(true);
        await SignUpApi(data)
-       console.log({ data });
         setLoading(false);
       } catch (e) {
         const loginError = e as Error
       setError( loginError.message?.split("\n") ?? [loginError.message])
-        console.log("Error in Login:", error);
         setLoading(false);
       }
   }
@@ -48,9 +47,16 @@ export default function SignPage() {
   return (
     <div
     className="flex flex-col items-center 
-    justify-center min-h-[100vh] w-full px-6 md:px-0">
+    justify-center min-h-[100vh] w-full px-6 md:px-0 bg-white">
+      <div className="flex w-full top-0 fixed justify-between p-8 items-center bg-white">
+        <div className="flex h-full items-center gap-3 ">
+          <div className="hidden  md:flex lg:flex cursor-pointer gap-8 ">
+            <Image src={logo} alt="Logo" height={200} width={100} />
+          </div>
+        </div>
+      </div>
       <form onSubmit={handleClick} className="w-full width-[100%] max-w-[350px] mx-auto py-10 rounded-md bg-white 
-     px-6 md:px-0 ">
+     px-6 md:px-0 mt-[6rem] z-10">
           <div className="w-full max-w-[500px] mx-auto align-center">
           <div className="text-4xl text-center font-bold">
           Create An Account
@@ -58,7 +64,7 @@ export default function SignPage() {
             <p className="text-[1.2rem] mt-2 text-center text-gray-400">
             Enter your credentials to create your account{" "}
             </p>
-            <div >
+            <div className="mt-2">
             {error?.length ? (
             <div className="flex flex-col">
               {error?.map((e) => (
@@ -103,17 +109,18 @@ export default function SignPage() {
               </div>
               </div>
             </div>
-            {/*Business Line email input */}
+            {/*Business phoneNumber */}
             <div className={`mt-5 relative `}>
-              <label className="font-bold">LINE OF BUSINESS</label>
+              <label className="font-bold">PHONE NUMBER</label>
               <br></br>
               <div className="mt-2">
                 <input
-                  name="useremail"
+                type="text"
+                  name="Phone Number"
                   autoComplete="off"
-                  placeholder="Enter business email"
+                  placeholder="phoneNumber"
                   onChange={handleChange}
-                  value={data.businessline}
+                  value={data.phoneNumber}
                   className="pl-[10px]  rounded-2xl px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
                 />
               </div>
@@ -159,27 +166,17 @@ export default function SignPage() {
             </div>
             <div>
             <div className="mt-8  flex flex-col">
-            {loading ? (
-              <button
-              disabled
-              className="items-center text-2xl bg-primary-2  py-4 px-7 rounded-2xl text-black  max-w-[1000px] w-full">
-              Loading...
-            </button>
-            ):(
               <button
                 type="submit"
                 className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full">
-             Create Account
+                   {!loading
+                ? ` Create Account`
+                : "Loading..."}
               </button>
-            )}
               </div>
               <div  className={`py-6 relative text-center `}>
                 <h2>Or</h2>
               </div>
-              {/* <div className="flex flex-row mt-8 ">
-              <p className="text-1xl">Or signup with</p><button className="pl-2"><FcGoogle size={18} /></button>
-              <button><GrFacebookOption  size={25} className="pl-3a text-blue-800"/></button>
-              </div> */}
           <div>
             <p className="text-[1.2rem] mt-2 text-center ">
               Already have an account?{" "}

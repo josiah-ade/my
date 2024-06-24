@@ -1,11 +1,17 @@
 import { dashboardItem } from "@/core/const/dashboard.consr";
 import { dashboard } from "@/typings/interface/component/layout/menu";
-import { IoAddSharp } from "react-icons/io5";
-import DashBoardAction from "./dashboardactons";
 import Button from "@/components/button/button";
 import { Plus } from "@/core/const/icons/icons";
+import { useAccountStore } from "@/providers/stores/accountStore";
+import AddAccountModal from "@/components/account/addModal";
+import { useState } from "react";
 
 export default function DashBoardItems() {
+  const [modal, setModal] = useState(false);
+
+  const accounts = useAccountStore((state) => state.accounts);
+  const account = accounts.filter((item) => item.status == "connected")[0] ?? accounts[0];
+
   return (
     <div>
       <div className="flex md:flex-row lg:flex-row sm:flex-row justify-between gap-5 xs:flex-col">
@@ -23,10 +29,10 @@ export default function DashBoardItems() {
         <div className="flex flex-col md:flex-row justify-between border w-full py-3 rounded px-5 flex-wrap gap-3">
           <div>
             <h4 className="text-gray-500">Accounts</h4>
-            <h3 className="font-bold">+234 567 899 4212</h3>
+            <h3 className="font-bold"> {account?.phoneNumber ?? "No Active Account"} </h3>
           </div>
           <div className="text-right">
-            <Button primary icon={<Plus />} className="inline-flex rounded-lg">
+            <Button onClick={() => setModal(true)} primary icon={<Plus />} className="inline-flex rounded-lg">
               Add Account
             </Button>
           </div>
@@ -44,6 +50,8 @@ export default function DashBoardItems() {
           </div>
         ))}
       </div>
+
+      <AddAccountModal isOpen={modal} onClose={() => setModal(false)} />
     </div>
   );
 }

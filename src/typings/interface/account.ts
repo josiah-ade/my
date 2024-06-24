@@ -58,9 +58,9 @@ interface LastMessage {
   status: string;
 }
 
-interface Participant {
+ export interface Participant {
   phoneNumber: string;
-  rank: Record<string, any>;
+  rank: string,
 }
 
 export interface IGroupAccount {

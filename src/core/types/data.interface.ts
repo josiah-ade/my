@@ -6,17 +6,10 @@ export interface Data {
   icon: JSX.Element;
 }
 
-export interface TableHeader {
-  field: string;
-  title: string;
-  icon?: string;
-  action?: {
-    text?: string;
-    type?: "Button" | "dropdoen";
-    style?: string;
-    href?: string;
-    avatar?: string;
-  };
+export interface ITablePagination {
+  currentPage?: number;
+  pageSize: number;
+  totalCount?: number;
 }
 
 export interface AccountData {
@@ -33,8 +26,12 @@ export interface BroadCastList {
   listName: string;
   id: string;
   description: string;
-  contacts?: string;
-  // view: string;
+  contacts?: number;
+}
+export interface IBroadCastList {
+  listName: string;
+  id: string;
+  description: string;
 }
 
 export interface ContactList {

@@ -33,7 +33,6 @@ export default function BroadcastMessage() {
     router.push("/user/broadcast-message/send-broadcast");
   };
   function handleTabChange(tab: string) {
-    console.log(`Selected Tab: ${tab}`);
     setActiveTab(tab);
     // Add your routing logic here
   }

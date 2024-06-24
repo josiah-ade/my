@@ -1,5 +1,8 @@
 import { IMutationArgs } from "../../../typings/query";
-import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import useNotificationStore from "@/providers/stores/notificationStore";
+import { NotificationType } from "@/core/enum/notification";
+import useLoadingStore from "@/providers/stores/loadingStore";
 
 export function useCreateResources<IArg, IReturn, TError>({
   callback,
@@ -7,20 +10,58 @@ export function useCreateResources<IArg, IReturn, TError>({
   onSuccess,
   onSettled,
   onError,
+  options: {
+    retry,
+    loadingConfig = { displayLoader: true },
+    errorConfig = { displayError: true },
+    successConfig = { displaySuccess: true },
+  } = {},
 }: IMutationArgs<IArg, IReturn, TError>) {
   const queryClient = useQueryClient();
-  return useMutation(
-    (data: IArg) => {
-      return callback && callback(data);
-    },
-    {
-      onSuccess: (data: IReturn) => {
-        queryClient.invalidateQueries(key);
-        onSuccess && onSuccess(data);
-      },
+  const setNotification = useNotificationStore((state) => state.setDisplay);
+  const setLoading = useLoadingStore((state) => state.setLoading);
 
-      onError: (err: TError) => onError && onError(err),
-      onSettled: () => onSettled && onSettled(),
-    }
-  );
+  const { displayLoader = true, ...loadingContents } = loadingConfig;
+  const { displayError = true, ...errorContents } = errorConfig;
+  const { displaySuccess = true, ...successContent } = successConfig;
+
+  const mutation = useMutation(callback, {
+    onMutate: () => {
+      if (displayLoader) setLoading(true, loadingContents);
+    },
+
+    onSuccess: (data: IReturn) => {
+      queryClient.invalidateQueries(key);
+      if (displaySuccess) {
+        setNotification(true, {
+          type: NotificationType.success,
+          content: {
+            title: successContent.title ?? "Success",
+            text: successContent.text ?? "Your action was completed successfully",
+          },
+        });
+      }
+      if (onSuccess) onSuccess(data);
+    },
+
+    onError: (err: TError) => {
+      if (displayError) {
+        setNotification(true, {
+          type: NotificationType.error,
+          content: {
+            title: errorContents.title ?? "Error",
+            text: errorContents.text ?? (err as Error).message,
+          },
+        });
+      }
+      if (onError) onError(err);
+    },
+
+    onSettled: () => {
+      if (displayLoader) setLoading(false, loadingContents);
+      if (onSettled) onSettled();
+    },
+    retry,
+  });
+  return mutation;
 }

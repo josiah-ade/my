@@ -51,7 +51,7 @@ const ContactsList: React.FC = () => {
                 <p className="font-semibold text-base text-gray-900">
                   {contact.name}
                 </p>
-                <p className="text-sm text-gray-500 text-gray-600">
+                <p className="text-sm text-gray-600">
                   {contact.phone} • {contact.email}
                 </p>
               </div>

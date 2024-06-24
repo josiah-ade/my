@@ -1,5 +1,4 @@
 import React, {useState} from "react"
-import Notification from "../notification/notification"
 
 const Contact = () => {
     const [showNotification, setShowNotification] = useState(true)

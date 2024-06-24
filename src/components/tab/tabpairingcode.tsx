@@ -6,7 +6,7 @@ export default function PairQrcode(){
             <h2 className="text-black text-[1.2rem] font-semibold mb-4">
               How to Link with pairing code
             </h2>
-            <p className="mb-4 text-sm text-black leading-6">
+            <p className="mb-4 text-sm text-black whitespace-break-spaces leading-6">
               To link with a pairing code, open WhatsApp on the phone where
               8038548936 is after you have requested, you will be prompted to
               input a pairing code, copy the code shown here and paste on your

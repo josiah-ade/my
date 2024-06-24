@@ -23,14 +23,16 @@ export default function TabLists(props: IProps) {
         </div>
         <MdOutlineKeyboardArrowRight size="1.25rem" className="text-primary text-xl" />
       </div>
+      {displayTotal ? (
+        <>  
       <div className="py-4 mt-7">
         <hr />
       </div>
-      {displayTotal ? (
         <div className="flex flex-row justify-between capitalize flex-wrap">
           <p className="text-gray-500 text-xs">Total {totalKey}</p>
           <p className="text-success font-bold">3 {totalKey}</p>
         </div>
+        </>
       ) : null}
     </>
   );

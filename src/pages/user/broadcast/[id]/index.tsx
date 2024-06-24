@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
 import Button from "@/components/button/button";
 import Default from "@/components/default/default";
-import Table from "@/components/table/table";
-import { BroadCastList, TableHeader } from "@/core/types/data.interface";
+import Table from "@/components/table";
+import { BroadCastList } from "@/core/types/data.interface";
 import UserLayout from "@/layout/user";
 import Modal from "@/components/modal/modal";
+import { TableHeader } from "@/typings/interface/component/table";
 
 interface EditContactProps {
   name?: string;
@@ -13,13 +14,7 @@ interface EditContactProps {
   email?: string;
   tag?: string;
   automationDay?: number;
-  onSave?: (data: {
-    name?: string;
-    phone?: string;
-    email?: string;
-    tag?: string;
-    automationDay?: number;
-  }) => void;
+  onSave?: (data: { name?: string; phone?: string; email?: string; tag?: string; automationDay?: number }) => void;
 }
 
 export default function NewCustomer({}) {
@@ -27,9 +22,7 @@ export default function NewCustomer({}) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = React.useState({});
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -57,14 +50,13 @@ export default function NewCustomer({}) {
     {
       field: "",
       title: "Actions",
-      action: { text: "View All", href: "/user/broadcast/import-contact" },
     },
   ];
   const data: BroadCastList[] = [
     {
       listName: "Nysc Batch A stream 1",
       description: "for batch A stream 1 PCMs",
-      contacts: "23 contact",
+      contacts: 23,
       id: "1",
     },
   ];
@@ -76,15 +68,10 @@ export default function NewCustomer({}) {
       <div className="block md:flex mt-2 md:mt-0 justify-between">
         <section className="mt-4">
           <h2 className="text-xl font-bold">Import Contacts manually</h2>
-          <p className="text-gray-600 text-base">
-            Manually type contact details to be imported
-          </p>
+          <p className="text-gray-600 text-base">Manually type contact details to be imported</p>
         </section>
         <section className="flex items-center space-x-2">
-          <Button
-            onClick={() => handleIsOpen()}
-            className="border-2 border-primary text-primary text-sm"
-          >
+          <Button onClick={() => handleIsOpen()} className="border-2 border-primary text-primary text-sm">
             Import
           </Button>
           <Button className="" primary>
@@ -115,13 +102,9 @@ export default function NewCustomer({}) {
       <Modal isOpen={isOpen} onClose={handleIsClose}>
         <form onSubmit={handleSubmit} className=" bg-white p-8 rounded-md ">
           <h2 className="text-2xl font-bold mb-4">Edit Contact</h2>
-          <p className="text-sm text-gray-600 mb-6">
-            Make an edit to this contact information
-          </p>
+          <p className="text-sm text-gray-600 mb-6">Make an edit to this contact information</p>
           <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700">
-              Name
-            </label>
+            <label className="block text-sm font-semibold text-gray-700">Name</label>
             <input
               type="text"
               name="name"
@@ -131,9 +114,7 @@ export default function NewCustomer({}) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700">
-              Phone
-            </label>
+            <label className="block text-sm font-semibold text-gray-700">Phone</label>
             <input
               type="text"
               name="phone"
@@ -143,9 +124,7 @@ export default function NewCustomer({}) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700">
-              Email
-            </label>
+            <label className="block text-sm font-semibold text-gray-700">Email</label>
             <input
               type="email"
               name="email"
@@ -155,9 +134,7 @@ export default function NewCustomer({}) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700">
-              Tag
-            </label>
+            <label className="block text-sm font-semibold text-gray-700">Tag</label>
             <select
               name="tag"
               //   value={formData.tag}
@@ -170,9 +147,7 @@ export default function NewCustomer({}) {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700">
-              Day Number on Automation
-            </label>
+            <label className="block text-sm font-semibold text-gray-700">Day Number on Automation</label>
             <input
               type="number"
               name="automationDay"

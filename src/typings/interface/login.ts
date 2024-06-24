@@ -2,7 +2,8 @@ export interface ISignUp{
     email:string,
     password:string,
     fullname:string,
-    businessline:string
+    businessline:string,
+    phoneNumber:string,
 }
 export interface ILogin{
     email:string,

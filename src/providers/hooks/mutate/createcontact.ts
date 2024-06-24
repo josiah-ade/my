@@ -5,23 +5,25 @@ import { ContactList } from "@/core/types/data.interface";
 import { createContact } from "@/providers/services/contact";
 import { createBroadcast } from "@/providers/services/broadcast";
 
-export function useCreateContactList({ onSuccess, onError }: IMutationHook) {
+export function useCreateContactList({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<IContactList, ContactList> = {
-    key: ["contact"],
+    key: ["broadcast"],
     callback: (data: IContactList) => createContact(data),
     onSuccess: onSuccess,
     onError: onError,
+    options,
   };
   return useCreateResources(mutation);
 }
 
-export function useCreateContactFromNewList({ onSuccess, onError }: IMutationHook) {
+export function useCreateContactFromNewList({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<CreateContactFromNewListDTO, ContactList> = {
-    key: ["contact"],
+    key: ["broadcast"],
     callback: ({ contacts, broadcast }: CreateContactFromNewListDTO) =>
       createBroadcast(broadcast).then((resp) => createContact({ contacts, broadcastListId: resp.id })),
     onSuccess: onSuccess,
     onError: onError,
+    options,
   };
   return useCreateResources(mutation);
 }

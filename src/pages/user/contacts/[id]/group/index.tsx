@@ -31,6 +31,7 @@ export default function WhatsappList() {
               >
                 <TabLists
                   // icon={item.icon}
+                  displayTotal={false}
                   phoneNumber={item.name}
                   description={`${item.participants.length} contacts`}
                   id={item.id}

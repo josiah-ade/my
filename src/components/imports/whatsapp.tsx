@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Button from "../button/button";
-import Table from "../table/table";
-import { TableHeader, WhatsappContact } from "@/core/types/data.interface";
+import Table from "../table/index";
+import { WhatsappContact } from "@/core/types/data.interface";
+import { TableHeader } from "@/typings/interface/component/table";
 export default function Whatsapp() {
   const [search] = useState(true);
   const headers: TableHeader[] = [
@@ -10,7 +11,6 @@ export default function Whatsapp() {
       field: "name",
       title: "Name",
       icon: "/chevron.jpg",
-      action: { text: "name", avatar: "/path/to/avatar.png" },
     },
     { field: "country", title: "Country", icon: "/chevron.jpg" },
     {
@@ -56,9 +56,7 @@ export default function Whatsapp() {
       <section className="flex justify-between items-center">
         <div>
           <h2 className="text-lg font-bold">Import Contacts manually</h2>
-          <p className="text-gray-600 text-sm">
-            Manually type contact details to be imported
-          </p>
+          <p className="text-gray-600 text-sm">Manually type contact details to be imported</p>
         </div>
         <div>
           <Button primary>Import 35 contacts</Button>

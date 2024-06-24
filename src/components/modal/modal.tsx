@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   return (
     <div
       onClick={handleOutsideClick}
-      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center"
+      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-40 flex items-center justify-center"
     >
       <div
         ref={modalRef}

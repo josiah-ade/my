@@ -3,14 +3,10 @@ import { setToken } from "../services/config";
 import axios, { AxiosResponse } from "axios";
 import router from "next/router";
 import React from "react";
-import {
-  ReactElement,
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { ReactElement, ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { useGetUsersAcount } from "../hooks/query/getaccount";
+import { useGetUserBroadcast } from "../hooks/query/getbroadcast";
+import { useQueryClient } from "react-query";
 
 interface Session {
   accessToken: string;
@@ -18,7 +14,7 @@ interface Session {
 }
 
 interface AuthContextType {
-  auth?: AuthResponse ;
+  auth?: AuthResponse;
   AdminLogin: (data: ILogin) => void;
   SignUpApi: (data: ISignUp) => void;
   logout: () => void;
@@ -41,7 +37,10 @@ export default function Context({ children }: { children: ReactNode }) {
   const [loaded, setLoaded] = React.useState(false);
   const [auth, setAuth] = useState<AuthResponse>();
 
-  
+
+  const {} = useGetUsersAcount({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
+  const {} = useGetUserBroadcast({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
+
   useEffect(() => {
     let storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -58,7 +57,6 @@ export default function Context({ children }: { children: ReactNode }) {
     }
     setLoaded(true);
   }, []);
-  
 
   const SignUpApi = async (data: ISignUp) => {
     const Promise = await axios
@@ -70,11 +68,6 @@ export default function Context({ children }: { children: ReactNode }) {
         setAuth({ ...res.data });
         setILoggedIn(true);
         router.push("/");
-        // if(data.role == "user"){
-        //   router.push("/usermanagement");
-        // }else{
-        //   router.push("/selectAction");
-        // }
       })
       .catch((e) => {
         const message = e.response?.data?.message || "Network Error";
@@ -96,7 +89,7 @@ export default function Context({ children }: { children: ReactNode }) {
         setToken(res.data?.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
-          router.push("/user");
+        router.push("/user");
         // if(data.role == "user"){
         //   router.push("/usermanagement");
         // }else{

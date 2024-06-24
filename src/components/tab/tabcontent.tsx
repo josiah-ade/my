@@ -1,81 +1,88 @@
-import {
-    useGetQrcodeUsersAcount,
-    useGetUsersAcount,
-  } from "@/providers/hooks/query/getaccount";
-  import router, { useRouter } from "next/router";
-  import Image from "next/image";
+import { useGetQrcodeUsersAcount, useGetUsersAcount } from "@/providers/hooks/query/getaccount";
+import Image from "next/image";
 import Button from "../button/button";
-import { AccountData } from "@/core/types/data.interface";
-import { useState, useEffect } from "react";
-import { useQuery, useQueryClient } from 'react-query';
+import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { IAccount } from "@/typings/interface/account";
 
+let timeoutId: number | undefined;
+let intervalId: number | undefined;
 
+export default function TabContent(props: { currentAccount: IAccount; onClose: () => void }) {
+  const queryClient = useQueryClient();
+  const { currentAccount, onClose } = props;
+  const [countdown, setCountdown] = useState(0);
 
-  
-export default function TabContent(props: { currentAccount: IAccount, onClose:()=>void }){
-    const queryClient = useQueryClient();
-    const[refresh, setRefresh]=useState("")
-    const{currentAccount, onClose}=props
-    const handleClose =()=>{
-        onClose && onClose()
+  const { data: qrData, error, loading } = useGetQrcodeUsersAcount(currentAccount?.id ?? "");
+
+  const expire = qrData?.expire ?? 0;
+
+  const handleClose = () => {
+    onClose && onClose();
+  };
+
+  useEffect(() => {
+    setCountdown((val) => qrData?.expire ?? val);
+    if (expire <= 2 || !qrData?.base64) {
+      queryClient.invalidateQueries("qr_code");
+      return;
     }
 
-    useEffect(() => {
-        const intervalId = setInterval(async () => {
-          try {
-            const newQrCodeData = getqrimagecode?.expire;
-            queryClient.setQueryData(["getQrcodeUsersAcount", currentAccount?.id], newQrCodeData);
-          } catch (error) {
-            console.error("Error fetching new QR code:", error);
-          }
-        }, 10000);
-        return () => clearTimeout(intervalId);
-    }, [])
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         getqrimagecode?.expire
-    //     }, 1000); 
+    timeoutId = window.setTimeout(async () => {
+      queryClient.invalidateQueries("qr_code");
+    }, expire * 1000);
 
-    //     return () => clearTimeout(timer);
-    // }, []);
+    return () => {
+      timeoutId && window.clearTimeout(timeoutId);
+    };
+  }, [expire, qrData]);
 
-    const { data: getqrimagecode } = useGetQrcodeUsersAcount(
-        currentAccount?.id ?? ""
-      );
+  useEffect(() => {
+    if (!loading && !error && !qrData?.base64) {
+      queryClient.invalidateQueries("qr_code");
+    }
+  }, [loading, qrData]);
 
-    return(
-        <div className="max-w-md mx-auto bg-white p-6 rounded-lg">
-            <h2 className="text-black text-[1.2rem] font-semibold mb-4">
-              How to Link with QR code
-            </h2>
-            <p className="mb-4 text-sm text-black leading-6">
-              To link with a QR code, open WhatsApp on your phone, go to the
-              settings, and tap on 'Link a Device'. Scan the QR code shown on
-              this screen with your phone.
-            </p>
-            <div className="flex items-center justify-center mb-4">
-              <div className=" px-4 py-2 rounded-md text-xl font-mono">
-                {getqrimagecode ? (
-                  <Image
-                    src={getqrimagecode.base64 ?? ""}
-                    alt="qr"
-                    width={200}
-                    height={300}
-                  />
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
+  useEffect(() => {
+    intervalId = window.setInterval(() => {
+      setCountdown((val) => (val < 1 ? 0 : val - 1));
+    }, 1000);
+    return () => {
+      intervalId && window.clearInterval(intervalId);
+    };
+  }, [qrData?.expire]);
 
-            <div>
-              <Button 
-              onClick={handleClose}
-              primary className="w-full">
-                Done
-              </Button>
+  const isConnected = (error as Error)?.message?.includes("authenticated");
+
+  return (
+    <div className="max-w-md whitespace-break-spaces mx-auto bg-white p-6 rounded-lg">
+      {!isConnected ? (
+        <>
+          {qrData?.base64 ? (
+            <p className="text-right text-gray-500 text-xs"> Expires in {countdown ?? "retrying.."} </p>
+          ) : null}
+          <h2 className="text-black text-[1.2rem] font-semibold mb-4">How to Link with QR code</h2>
+          <p className="mb-4 text-sm text-black leading-6">
+            To link with a QR code, open WhatsApp on your phone, go to the settings, and tap on 'Link a Device'. Scan
+            the QR code shown on this screen with your phone.
+          </p>
+          <div className="flex items-center justify-center mb-4">
+            <div className=" px-4 py-2 rounded-md text-xl font-mono">
+              {qrData?.base64 ? <Image src={qrData.base64} alt="qr" width={200} height={300} /> : <></>}
             </div>
           </div>
-    )
+        </>
+      ) : (
+        <div className="p-8 text-center">
+          <p className="text-success"> Connected </p>
+        </div>
+      )}
+
+      <div>
+        <Button onClick={handleClose} primary className="w-full">
+          Done
+        </Button>
+      </div>
+    </div>
+  );
 }

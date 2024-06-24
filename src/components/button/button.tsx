@@ -4,7 +4,7 @@ import classNames from "classnames";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   primary?: boolean;
   secondary?: boolean;
-  danger?: boolean;
+  error?: boolean;
   icon?: React.ReactNode;
   // onClick: () => void;
 }
@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   className,
   primary,
   secondary,
-  danger,
+  error,
   disabled,
   icon,
   ...props
@@ -36,7 +36,7 @@ const Button: React.FC<ButtonProps> = ({
     {
       [primaryStyles]: primary,
       [secondaryStyles]: secondary,
-      [dangerStyles]: danger,
+      [dangerStyles]: error,
       [disabledStyles]: disabled,
     },
     className

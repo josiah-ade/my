@@ -1,32 +1,55 @@
-import React, { useState, Fragment, ReactNode } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import Image from "next/image";
-import { AccountData, TableHeader } from "@/core/types/data.interface";
-import Button from "../button/button";
-import { MdOutlinePostAdd } from "react-icons/md";
-import { useRouter } from "next/navigation";
+import React, { useState, Fragment, useEffect } from "react";
 
-// interface TableHeader {
-//   title: string;
-//   field: string;
-// }
+import Button from "../button/button";
+import { useRouter } from "next/navigation";
+import { SearchIcon } from "@/core/const/icons/icons";
+import Pagination from "../pagination/pagination";
+import { TableHeader, TablePagination } from "@/typings/interface/component/table";
+import TableLoading from "../common/loading/tableloading";
+import Chip from "../chip";
 
 interface TableProps<T = unknown> {
-  headers: TableHeader[];
+  headers: TableHeader<T>[];
   data: T[];
-  actions?: { text: string; icon?: JSX.Element }[];
+  action?: { text?: string; icon?: JSX.Element; avatar?: string }[];
   isOpen?: boolean;
+  search?: boolean;
+  checkboxAction?: (selected: T[]) => void;
   setIsOpen?: (x: T) => void;
+  loading?: boolean;
+  pagination?: TablePagination;
 }
 
 export default function Table<T>(props: TableProps<T>) {
-  const { headers, data, actions, isOpen, setIsOpen } = props;
-  const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data.length).fill(false));
+  const { headers, data, action, isOpen, setIsOpen, loading, search, checkboxAction, pagination } =
+    props;
+  const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data?.length).fill(false));
   const [selectAll, setSelectAll] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [currentPage, setCurrentPage] = useState(pagination?.currentPage ?? 1);
+  const itemsPerPage = pagination?.pageSize ?? 10;
 
-  const handleOpen = (currentValue:T) => {
-    setIsOpen && setIsOpen(currentValue);
+  const enableCheckbox = !!checkboxAction;
+
+  const handleOpen = (currentData: T) => {
+    setIsOpen && setIsOpen(currentData);
   };
+
+  const handleCheckboxCallback = () => {
+    if (checkboxAction) {
+      const selected = selectedRows.reduce<T[]>((acc, val, index) => {
+        val && acc.push(data[index]);
+        return acc;
+      }, []);
+      checkboxAction(selected);
+    }
+  };
+
+  useEffect(() => {
+    handleCheckboxCallback();
+  }, [selectedRows]);
 
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
@@ -46,133 +69,154 @@ export default function Table<T>(props: TableProps<T>) {
     route.push(`${value}`);
   };
 
+  // Handle Sorting
+  const handleSort = (column: string) => {
+    const order = sortColumn === column && sortOrder === "asc" ? "desc" : "asc";
+    setSortColumn(column);
+    setSortOrder(order);
+  };
+
+  // Handle Searching
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredData = data?.filter((item) =>
+    Object.values(item as Record<keyof T, T>).some((val) =>
+      String(val).toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
+
+  const sortedData = filteredData?.sort((a, b) => {
+    if (!sortColumn) return 0;
+    const aValue = a[sortColumn as keyof T];
+    const bValue = b[sortColumn as keyof T];
+    if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+    if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  // Pagination Logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedData?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(sortedData?.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
-    <div className="flex items-center justify-center">
-      <div className="w-full shadow-md rounded-lg">
-        <table className="w-full overflow-x-auto divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr className="relative">
-              {headers.map((header, index) => (
-                <th
-                  key={header.title}
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase"
-                >
-                  <section className="flex space-x-1">
-                    {index == 0 ? (
-                      <input type="checkbox" className="mr-3" checked={selectAll} onChange={handleSelectAllChange} />
-                    ) : null}
-                    <div>{header.title}</div>
-                    <div className="pointer">
-                      {header?.icon && (
-                        <span className="">
-                          <Image src={header.icon} alt="icon" width={15} height={15} />
-                        </span>
-                      )}
-                    </div>
-                  </section>
-                </th>
-              ))}
-              <th scope="col" className="relative px-6 py-3">
-                <span className="sr-only">Actions</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((row, rowIndex) => (
-              <tr key={rowIndex} className="relative">
-                {headers.map((header,index) => (
-                  <td key={header.field} className="px-6 py-7 whitespace-nowrap text-sm text-gray-900">
+    <section>
+      <div className="max-w-[20rem] mt-8">
+        {search ? (
+          <div className="mb-4 relative">
+            <SearchIcon className="text-gray-400 mr-2 absolute top-3 left-3" />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={handleSearch}
+              className="border border-gray-300 text-sm focus:outline-none text-gray-600 rounded px-8 py-2 w-full"
+            />
+          </div>
+        ) : null}
+      </div>
+      <div className="flex items-center justify-center">
+        <div className="w-full shadow-md rounded-lg">
+          <table className="w-full overflow-x-auto divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr className="relative">
+                {headers.map((header, index) => (
+                  <th
+                    key={header.title}
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-[#344054] uppercase cursor-pointer"
+                    onClick={() => header.sortable && handleSort(header.field)}
+                  >
                     <section className="flex space-x-1">
-                      {index == 0 ? (
+                      {index == 0 && enableCheckbox ? (
                         <input
+                          onClick={(e) => e.stopPropagation()}
                           type="checkbox"
-                          className="mr-3"
-                          checked={selectedRows[rowIndex]}
-                          onChange={() => handleRowCheckboxChange(rowIndex)}
+                          className="mr-2"
+                          checked={selectAll}
+                          onChange={handleSelectAllChange}
                         />
                       ) : null}
-                      {header.action ? (
-                        <div>
-                          <Button onClick={() => handleRoute(header.action?.href)} primary>
-                            {header.action.text}
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>{`${row[header.field as keyof typeof row] ?? ""}`}</div>
-                      )}
+                      <p>{header.title}</p>
+                      {sortColumn === header.field ? (
+                        sortOrder === "asc" ? (
+                          <span>&#9650;</span> // Up arrow
+                        ) : (
+                          <span>&#9660;</span> // Down arrow
+                        )
+                      ) : null}
                     </section>
-                  </td>
+                  </th>
                 ))}
-                <td className="px-6 py-4 text-right text-sm font-medium">
-                  {actions ? (
-                    <Menu as="div" className="relative inline-block text-left">
-                      <Menu.Button className="inline-flex justify-center w-full  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
-                        <Image src="/dots.png" alt="dots" width={10} height={10} />
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M9 2.6665C9 3.21879 8.55228 3.6665 8 3.6665C7.44772 3.6665 7 3.21879 7 2.6665C7 2.11422 7.44772 1.6665 8 1.6665C8.55228 1.6665 9 2.11422 9 2.6665Z" fill="black"/>
-                        <path d="M9 7.99984C9 8.55212 8.55228 8.99984 8 8.99984C7.44772 8.99984 7 8.55212 7 7.99984C7 7.44755 7.44772 6.99984 8 6.99984C8.55228 6.99984 9 7.44755 9 7.99984Z" fill="black"/>
-                        <path d="M8 14.3332C8.55228 14.3332 9 13.8855 9 13.3332C9 12.7809 8.55228 12.3332 8 12.3332C7.44772 12.3332 7 12.7809 7 13.3332C7 13.8855 7.44772 14.3332 8 14.3332Z" fill="black"/>
-                      </svg> */}
-                      </Menu.Button>
-
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items
-                          className="origin-top-right z-40 absolute right-0 mt-2 w-56 max-h-50 overflow-y-auto  rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                          style={{ overflowY: "scroll" }}
-                        >
-                          <div className="py-4 ">
-                            <p className="text-center text-sm text-primary-base p-4">Start Service</p>
-                            {actions &&
-                              actions.map((action, actionIndex) => (
-                                <Menu.Item key={actionIndex}>
-                                  {({ active }) => (
-                                    <a
-                                      href="#"
-                                      className={`text-center text-sm flex items-center space-x-2 ${
-                                        active ? "bg-gray-100" : ""
-                                      } flex items-center px-4 py-2 text-sm ${
-                                        action.text === "Delete" ? "text-red-600" : "text-gray-700"
-                                      }`}
-                                      onClick={
-                                        action.text === "Link with QR code" || action.text === "Link with pairing code"
-                                          ? ()=>handleOpen(row)
-                                          : undefined
-                                      }
-                                    >
-                                      {action.icon && <span className="mr-2">{action.icon}</span>}
-                                      <span
-                                        className={`text-gray-500 text-sm ${
-                                          action.text === "Delete" ? "text-red-600" : "text-gray-500"
-                                        }`}
-                                      >
-                                        {action.text}
-                                      </span>
-                                    </a>
-                                  )}
-                                </Menu.Item>
-                              ))}
-                          </div>
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
-                  ) : (
-                    <></>
-                  )}
-                </td>
+                <th scope="col" className="relative px-6 py-3">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            {loading ? (
+              <TableLoading headers={headers} />
+            ) : (
+              <tbody className="bg-white ">
+                {currentItems?.map((row, rowIndex) => (
+                  <tr key={rowIndex} className="relative">
+                    {headers.map((header, index) => (
+                      <td
+                        key={header.field}
+                        className="px-6 py-6 whitespace-nowrap text-sm text-gray-900"
+                      >
+                        <section className="flex space-x-1">
+                          {index == 0 ? (
+                            <input
+                              type="checkbox"
+                              className="mr-3"
+                              checked={selectedRows[indexOfFirstItem + rowIndex]}
+                              onChange={() => handleRowCheckboxChange(indexOfFirstItem + rowIndex)}
+                            />
+                          ) : null}
+                          {header.action?.component ? (
+                            <div>
+                              <header.action.component item={row} {...header.action.props} />
+                            </div>
+                          ) : (
+                            <section className="flex items-center space-x-2">
+                              {getDataComponent(header, row)}
+                            </section>
+                          )}
+                        </section>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            )}
+          </table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            pageSize={itemsPerPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
-    </div>
+    </section>
   );
+}
+
+function getDataComponent<T>(header: TableHeader<T>, data: T) {
+  let text = `${data[header.field as keyof typeof data] ?? header.default ??  ""}`;
+  text = header.formatter ? header.formatter(text) : text;
+
+  switch (header.type?.toLowerCase()) {
+    case "chip":
+      return <Chip text={text} />;
+    default:
+      return <div> {text} </div>;
+  }
 }

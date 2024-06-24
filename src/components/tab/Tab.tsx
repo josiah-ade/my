@@ -1,6 +1,7 @@
 // components/Tabs.tsx
 
-import React, { useState, ReactNode, useEffect } from "react";
+import React, { useState, ReactNode, ReactElement, useEffect } from "react";
+// import React, { useState, ReactNode } from "react";
 
 type TabProps = {
   label?: string;
@@ -24,7 +25,7 @@ export default function Tabs({ tabs, searchPlaceholder, onTabChange }: TabCompon
   return (
     <div className="w-full ">
       <div className="flex  w-full items-center justify-center">
-        {tabs.map((tab, index) => (
+        {tabs?.map((tab, index) => (
           <button
             key={index}
             onClick={() => setActiveTab(index)}
@@ -43,13 +44,15 @@ export default function Tabs({ tabs, searchPlaceholder, onTabChange }: TabCompon
         <div>
           <input
             type="text"
-            placeholder={searchPlaceholder}
+            placeholder={""}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
       ) : null}
       <div className="relative">
-        <div className={`transition-opacity duration-300 ease-in-out  left-0 w-full `}>{tabs[activeTab].content}</div>
+        <div className={`transition-opacity duration-300 ease-in-out  left-0 w-full `}>
+          {tabs[activeTab].content}
+        </div>
       </div>
     </div>
   );

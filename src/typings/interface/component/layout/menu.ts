@@ -12,5 +12,6 @@ export interface dashboard {
   title: string;
   id: string;
   amount: string;
+  field?: string;
   total: string;
 }

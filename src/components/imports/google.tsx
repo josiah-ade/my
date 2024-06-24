@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Button from "../button/button";
-import Table from "../table/table";
-import { TableHeader, WhatsappContact } from "@/core/types/data.interface";
+import Table from "../table/index";
+import { WhatsappContact } from "@/core/types/data.interface";
 import Default from "../default/default";
+import { TableHeader } from "@/typings/interface/component/table";
 export default function Google() {
   const [search] = useState(true);
   const [showTable, setShowTable] = useState(true);
@@ -12,7 +13,6 @@ export default function Google() {
       field: "name",
       title: "Name",
       icon: "/chevron.jpg",
-      action: { text: "name", avatar: "/path/to/avatar.png" },
     },
     { field: "country", title: "Country", icon: "/chevron.jpg" },
     {
@@ -58,9 +58,7 @@ export default function Google() {
       <section className="flex justify-between items-center">
         <div>
           <h2 className="text-lg font-bold">Import from Google Contacts</h2>
-          <p className="text-gray-600 text-sm">
-            Import contact details from google contacts
-          </p>
+          <p className="text-gray-600 text-sm">Import contact details from google contacts</p>
         </div>
         <div>
           <Button primary>Import</Button>

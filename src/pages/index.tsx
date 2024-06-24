@@ -52,13 +52,13 @@ export default function LoginPage() {
       </div>
       <form
         onSubmit={handleClick}
-        className="w-full width-[100%] max-w-[350px] mx-auto py-10 rounded-md bg-white 
+        className="w-full width-[100%] max-w-[350px] mx-auto py-20 rounded-md bg-white 
      px-6 md:px-0 "
       >
         <div className="w-full max-w-[500px] mx-auto align-center">
           <div className="text-[2rem] text-center font-bold">Log In</div>
           <p className="text-[1.2rem] mt-5 text-center text-gray-400">Enter your credentials to access your account </p>
-          <div>
+          <div className="mt-2">
             {error?.length ? (
               <div className="flex flex-col">
                 {error?.map((e) => (
@@ -126,26 +126,18 @@ export default function LoginPage() {
           </div>
           {/* button */}
           <div className="mt-10  flex flex-col">
-            {loading ? (
-              <div>
-                <AuthLoading />
-              </div>
-            ) : (
               <button
                 type="submit"
                 className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full"
               >
-                Log into Account
+                {!loading
+                ? ` Log into Account`
+                : "Loading..."}
               </button>
-            )}
           </div>
           <div className={`py-6 relative text-center `}>
             <h2>Or</h2>
           </div>
-          {/* <div className="flex flex-row mt-8 ">
-              <p className="text-1xl">Or signup with</p><button className="pl-2"><FcGoogle size={18} /></button>
-              <button><GrFacebookOption  size={25} className="pl-3a text-blue-800"/></button>
-              </div> */}
           <div>
             <p className="text-[1.2rem] mt-2 text-center ">
               Are you new here?{" "}

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Button from "../button/button";
 import Image from "next/image";
-import { TableHeader, WhatsappContact } from "@/core/types/data.interface";
-import Table from "../table/table";
+import { WhatsappContact } from "@/core/types/data.interface";
+import Table from "../table/index";
+import { TableHeader } from "@/typings/interface/component/table";
 
 // components/FileUpload.tsx
 const FileUpload: React.FC = () => {
@@ -12,27 +13,17 @@ const FileUpload: React.FC = () => {
         <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 rounded-md hover:border-blue-500 transition-colors duration-200">
           <div className="text-center m-auto flex flex-col items-center justify-center ">
             <div className="border-2 border-red h-10 w-10 p-2 rounded-full bg-gray-100 flex items-center justify-center">
-              <Image
-                src="/cloud-upload.png"
-                alt="upload"
-                width={30}
-                height={30}
-              />
+              <Image src="/cloud-upload.png" alt="upload" width={30} height={30} />
             </div>
             <p className="text-sm text-gray-600">
-              <span className="text-primary cursor-pointer hover:underline">
-                Click to upload
-              </span>{" "}
+              <span className="text-primary cursor-pointer hover:underline">Click to upload</span>{" "}
               or drag and drop
             </p>
             <p className="text-xs text-gray-500">CSV files only</p>
           </div>
         </div>
         <div className="mt-4 text-center flex items-center justify-center">
-          <Button
-            primary
-            className="px-4 py-2 rounded-md focus:ring-opacity-75"
-          >
+          <Button primary className="px-4 py-2 rounded-md focus:ring-opacity-75">
             Browse Files
           </Button>
         </div>
@@ -51,7 +42,6 @@ export default function CSV() {
       field: "name",
       title: "Name",
       icon: "/chevron.jpg",
-      action: { text: "name", avatar: "/path/to/avatar.png" },
     },
     { field: "country", title: "Country", icon: "/chevron.jpg" },
     {
@@ -98,9 +88,7 @@ export default function CSV() {
       <section className="flex justify-between items-center mt-12">
         <div>
           <h2 className="text-lg font-bold">Import from CSV File </h2>
-          <p className="text-gray-600 text-sm">
-            Import contact details from google contacts{" "}
-          </p>
+          <p className="text-gray-600 text-sm">Import contact details from google contacts </p>
         </div>
         <div>
           <Button primary>Import</Button>
@@ -116,11 +104,7 @@ export default function CSV() {
             Download our supported csv format template
           </span>
         </div>
-        <a
-          href="/path/to/template.csv"
-          download
-          className="text-orange-500 hover:underline"
-        >
+        <a href="/path/to/template.csv" download className="text-orange-500 hover:underline">
           Download Template
         </a>
       </div>

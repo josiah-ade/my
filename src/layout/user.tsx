@@ -8,14 +8,13 @@ export default function UserLayout(props: PropsWithChildren) {
   const [showDrawer, setShowDrawer] = useState(false);
   const { islLoggedIn, loaded } = useAuthContext();
   const router = useRouter();
-  // const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!loaded) return;
     if (!islLoggedIn) {
       router.push("/");
     }
-  }, [islLoggedIn]);
+  }, [islLoggedIn, loaded]);
 
   const toggleDrawer = () => {
     setShowDrawer((val) => !val);
@@ -29,7 +28,9 @@ export default function UserLayout(props: PropsWithChildren) {
           </div>
           <div className=" bg-background text-gray-900 flex flex-row gap-y-1 w-full   ">
             <AppDrawer display={showDrawer} onToggle={toggleDrawer} />
-            <div className="flex-col bg-background flex gap-y-1 w-full overflow-auto p-7">{props.children}</div>
+            <div className="flex-col mt-[5.3rem] lg:ml-[19rem]  bg-background flex gap-y-1 w-full  p-7">
+              {props.children}
+            </div>
           </div>
         </div>
       ) : (

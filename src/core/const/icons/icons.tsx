@@ -17,6 +17,7 @@ import { FaUserTimes } from "react-icons/fa";
 import { TiPencil } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
 import { FaRegCircleQuestion } from "react-icons/fa6";
+import { LuRefreshCcw } from "react-icons/lu";
 // import { FaTrashAlt } from "react-icons/fa";
 
 export const Link = (props: React.SVGProps<SVGSVGElement>) => (
@@ -63,5 +64,11 @@ export const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 export const QuesCircle = (props: React.SVGProps<SVGSVGElement>) => (
   <FaRegCircleQuestion {...props} />
+);
+export const UploadDel = (props: React.SVGProps<SVGSVGElement>) => (
+  <ImBin {...props} />
+);
+export const UploadRefresh = (props: React.SVGProps<SVGSVGElement>) => (
+  <LuRefreshCcw {...props} />
 );
 // export const Usercancel = (props: React.SVGProps<SVGSVGElement>) => <FaUserTimes  {...props} />;

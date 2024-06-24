@@ -7,7 +7,6 @@ import EmptyState from "../common/empty/empty";
 
 export default function WhatsAppList() {
   const { data: getaccountdata, loading } = useGetUsersAcount();
-  console.log(getaccountdata);
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4 mt-5">
       {loading ? (
