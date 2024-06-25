@@ -1,13 +1,13 @@
-import { IAPIFilter, IPaginatedQueryArgs, IQueryArgs } from "../../../typings/query";
+import { IQueryArgs } from "../../../typings/query";
 import { useGetResourcesQuery } from "../helper/query";
-import { ContactList } from "@/core/types/data.interface";
 import { IContactList } from "@/typings/interface/contacts";
-import { getContact } from "@/providers/services/contact";
+import { getBroadcastContact } from "@/providers/services/contact";
+import { IBroadcastContact } from "@/typings/interface/broadcasts";
 
-export function useGetUserContact() {
-  const users: IQueryArgs<IContactList, ContactList[]> = {
-    key: ["contact"],
-    callback: () => getContact(),
+export function useGetBroadcastContact(id: string) {
+  const users: IQueryArgs<string, IBroadcastContact[]> = {
+    key: ["broadcast_contact", { id }],
+    callback: () => getBroadcastContact(id),
   };
   return useGetResourcesQuery(users);
 }

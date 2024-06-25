@@ -168,7 +168,7 @@ export default function Table<T>(props: TableProps<T>) {
                     {headers.map((header, index) => (
                       <td key={header.field} className="px-6 py-6 whitespace-nowrap text-sm text-gray-900">
                         <section className="flex space-x-1">
-                          {index == 0 ? (
+                          {index == 0 && enableCheckbox ? (
                             <input
                               type="checkbox"
                               className="mr-3"
