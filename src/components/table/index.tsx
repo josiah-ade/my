@@ -21,8 +21,7 @@ interface TableProps<T = unknown> {
 }
 
 export default function Table<T>(props: TableProps<T>) {
-  const { headers, data, action, isOpen, setIsOpen, loading, search, checkboxAction, pagination } =
-    props;
+  const { headers, data, action, isOpen, setIsOpen, loading, search, checkboxAction, pagination } = props;
   const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data?.length).fill(false));
   const [selectAll, setSelectAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -167,12 +166,9 @@ export default function Table<T>(props: TableProps<T>) {
                 {currentItems?.map((row, rowIndex) => (
                   <tr key={rowIndex} className="relative">
                     {headers.map((header, index) => (
-                      <td
-                        key={header.field}
-                        className="px-6 py-6 whitespace-nowrap text-sm text-gray-900"
-                      >
+                      <td key={header.field} className="px-6 py-6 whitespace-nowrap text-sm text-gray-900">
                         <section className="flex space-x-1">
-                          {index == 0 ? (
+                          {index == 0 && enableCheckbox ? (
                             <input
                               type="checkbox"
                               className="mr-3"
@@ -185,9 +181,7 @@ export default function Table<T>(props: TableProps<T>) {
                               <header.action.component item={row} {...header.action.props} />
                             </div>
                           ) : (
-                            <section className="flex items-center space-x-2">
-                              {getDataComponent(header, row)}
-                            </section>
+                            <section className="flex items-center space-x-2">{getDataComponent(header, row)}</section>
                           )}
                         </section>
                       </td>
@@ -210,7 +204,7 @@ export default function Table<T>(props: TableProps<T>) {
 }
 
 function getDataComponent<T>(header: TableHeader<T>, data: T) {
-  let text = `${data[header.field as keyof typeof data] ?? header.default ??  ""}`;
+  let text = `${data[header.field as keyof typeof data] ?? header.default ?? ""}`;
   text = header.formatter ? header.formatter(text) : text;
 
   switch (header.type?.toLowerCase()) {

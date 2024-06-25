@@ -1,4 +1,7 @@
+import { handleError } from "@/components/common/exception/serviceexception";
 import { ContactList } from "@/core/types/data.interface";
+import { IGenericStatusResponse } from "@/typings/interface/api";
+import { IBroadcastContact, IEditBroadcastContact } from "@/typings/interface/broadcasts";
 import { IContactList } from "@/typings/interface/contacts";
 import axios, { AxiosResponse } from "axios";
 
@@ -8,30 +11,31 @@ export async function createContact(data: IContactList): Promise<ContactList> {
     .then((response: AxiosResponse<ContactList>) => {
       return response.data;
     })
-    .catch((e) => {
-      const message = e.response?.data?.message || "Network Error";
-      if (Array.isArray(message)) {
-        const error = message.join("\n");
-        console.log({ error });
-        throw new Error(error);
-      }
-      throw new Error(message);
-    });
+    .catch(handleError);
 }
 
-export async function getContact(): Promise<ContactList[]> {
+export async function getBroadcastContact(id: string): Promise<IBroadcastContact[]> {
   return axios
-    .get<ContactList[]>("/contact")
-    .then((response: AxiosResponse<ContactList[]>) => {
-      return response.data;
-    })
-    .catch((e) => {
-      const message = e.response?.data?.message || "Network Error";
-      if (Array.isArray(message)) {
-        const error = message.join("\n");
-        console.log({ error });
-        throw new Error(error);
-      }
-      throw new Error(message);
-    });
+    .get<IBroadcastContact[]>(`/broadcast/${id}/contact`)
+    .then((response) => response.data)
+    .catch(handleError);
+}
+
+export async function deleteContact(contact: IBroadcastContact): Promise<IGenericStatusResponse> {
+  return axios
+    .delete<IGenericStatusResponse>(`/broadcast/${contact.broadcastListId}/contact/${contact.id}`)
+    .then((response) => response.data)
+    .catch(handleError);
+}
+
+export async function editContact(contact: IBroadcastContact): Promise<IBroadcastContact> {
+  const payload: IEditBroadcastContact = {
+    contactName: contact.name,
+    contactEmail: contact.email,
+  };
+  console.log({contact})
+  return axios
+    .put<IBroadcastContact>(`/broadcast/${contact.broadcastListId}/contact/${contact.id}`, payload)
+    .then((response) => response.data)
+    .catch(handleError);
 }

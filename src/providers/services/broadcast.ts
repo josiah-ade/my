@@ -1,3 +1,5 @@
+import { handleError } from "@/components/common/exception/serviceexception";
+import { IGenericStatusResponse } from "@/typings/interface/api";
 import { IBroadcastList, ICreateBroadcastList } from "@/typings/interface/broadcasts";
 import axios, { AxiosResponse } from "axios";
 
@@ -33,4 +35,18 @@ export async function getBroadcast(): Promise<IBroadcastList[]> {
       }
       throw new Error(message);
     });
+}
+
+export async function getBroadcastDetail(id: string): Promise<IBroadcastList> {
+  return axios
+    .get<IBroadcastList>(`/broadcast/${id}`)
+    .then((response) => response.data)
+    .catch(handleError);
+}
+
+export async function deleteBroadcast(id: string): Promise<IGenericStatusResponse> {
+  return axios
+    .delete<IGenericStatusResponse>(`/broadcast/${id}`)
+    .then((response) => response.data)
+    .catch(handleError);
 }
