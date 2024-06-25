@@ -3,11 +3,11 @@ import React from "react";
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
-  pageSize:number;
+  pageSize: number;
   onPageChange: (page: number) => void;
 }
 
-function Pagination({ currentPage, totalPages,pageSize, onPageChange }: PaginationProps) {
+function Pagination({ currentPage, totalPages, pageSize, onPageChange }: PaginationProps) {
   const handleClick = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
@@ -40,7 +40,7 @@ function Pagination({ currentPage, totalPages,pageSize, onPageChange }: Paginati
   };
 
   return (
-    <nav className="flex items-center justify-center space-x-2 my-4">
+    <nav className="md:flex items-center md:justify-center space-x-2 my-8">
       <button
         className="px-4 py-2 bg-gray-200 text-gray-900 rounded hover:bg-gray-300"
         onClick={() => handleClick(currentPage - 1)}
@@ -56,18 +56,14 @@ function Pagination({ currentPage, totalPages,pageSize, onPageChange }: Paginati
           >
             1
           </button>
-          {currentPage > Math.floor(renderPageNumbers().length / 2) + 2 && (
-            <span className="px-2">...</span>
-          )}
+          {currentPage > Math.floor(renderPageNumbers().length / 2) + 2 && <span className="px-2">...</span>}
         </>
       )}
       {renderPageNumbers().map((number) => (
         <button
           key={number}
           className={`px-4 py-2 rounded ${
-            currentPage === number
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+            currentPage === number ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900 hover:bg-gray-300"
           }`}
           onClick={() => handleClick(number)}
         >

@@ -1,76 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../button/button";
 import Table from "../table/index";
 import { WhatsappContact } from "@/core/types/data.interface";
 import { TableHeader } from "@/typings/interface/component/table";
-export default function Whatsapp() {
-  const [search] = useState(true);
-  const headers: TableHeader[] = [
-    { field: "phoneNumber", title: "Phone Number", icon: "/chevron.jpg" },
-    {
-      field: "name",
-      title: "Name",
-      icon: "/chevron.jpg",
-    },
-    { field: "country", title: "Country", icon: "/chevron.jpg" },
-    {
-      field: "select",
-      title: "Select",
-      icon: "/chevron.jpg",
-      //   action: { text: "View All", href: "/user/broadcast/import-contact" },
-    },
-  ];
+import { useGetUsersContactAcount, useGetUsersAcount } from "@/providers/hooks/query/getaccount";
+import { useParams } from "next/navigation";
+import AccountForm from "../contacts/accountcontact/accountcontact";
 
-  const data: WhatsappContact[] = [
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png", // Replace with actual image path
-      selected: true,
-    },
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png",
-      selected: true,
-    },
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png",
-      selected: true,
-    },
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png",
-      selected: true,
-    },
-  ];
+interface whatsappNumber {
+  id: string;
+}
+export default function Whatsapp(props: whatsappNumber) {
+  const { id } = props;
+  // const { id } = useParams() ?? {};
+  const [search] = useState(true);
+  const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
+  // const { data: accounts } = useGetUsersAcount({ loadingConfig: { displayLoader: true } });
+  // const filterConnectedAccount = accounts?.filter((item) => {
+  //   return item.phoneNumber === id;
+  // });
+
+  // useEffect(() => {
+  //   const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
+  // }, [id]);
+
   return (
     <section className="mt-20">
-      <section className="flex justify-between items-center">
+      {/* <section className="flex justify-between items-center">
         <div>
-          <h2 className="text-lg font-bold">Import Contacts manually</h2>
-          <p className="text-gray-600 text-sm">Manually type contact details to be imported</p>
+          <h2 className="text-lg font-bold">Import WhatsApp Phone Contacts </h2>
+          <p className="text-gray-600 text-sm">import contact details from your whatsapp account</p>
         </div>
         <div>
           <Button primary>Import 35 contacts</Button>
         </div>
-      </section>
+      </section> */}
 
       <section>
-        <Table
+        {/* <Table
           //   setIsOpen={setIsOpen}
           //   isOpen={isOpen}
           headers={headers}
-          data={data}
+          data={contactAcount ?? []}
           search={search}
           //   actions={actions}
+        /> */}
+        <AccountForm
+          text={`Import WhatsApp Phone Contacts`}
+          title={`import contact details from your whatsapp account`}
+          contactAcount={contactAcount ?? []}
+          btnText={`Import contacts`}
         />
       </section>
     </section>

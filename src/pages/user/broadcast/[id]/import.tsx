@@ -12,21 +12,53 @@ import CSV from "@/components/imports/csv";
 import NewCustomer from "@/components/customer/newcustomer";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useGetUsersAcount } from "@/providers/hooks/query/getaccount";
+import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
+import { IBroadcastList } from "@/typings/interface/broadcasts";
 
 export default function ImportContacts() {
+  const { data: accounts } = useGetUsersAcount({ loadingConfig: { displayLoader: true } });
+  const filterConnectedAccount = accounts?.filter((item) => {
+    return item.status === "connected";
+  });
+
   const router = useRouter();
   const [showTable, setShowTable] = useState(true);
   const [source, setSelectContact] = useState(true);
   const [contactList, setContactList] = useState(true);
+  const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastList>();
+
   const [selectedValue, setSelectedValue] = useState<string>("");
+  const [broadcastSelectedValue, setBroadcastSelectedValue] = useState<string>("");
+  const { data: broadcastList = [] } = useGetUserBroadcast({ loadingConfig: { displayLoader: false } });
+
+  const [accountSelectedId, setAccountSelectedId] = useState<string>("");
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value);
+    console.log(event.target.value, "now");
+  };
+
+  const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    // setAccountSelected(event.target.value);
+    accounts
+      ?.filter((item) => {
+        return item.phoneNumber === event.target.value;
+      })
+      .map((item) => {
+        setAccountSelectedId(item.id);
+      });
   };
 
   const handleChangeCustomer = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(event.target.value);
-    router.push(`/user/broadcast/${event.target.value}`);
+    setBroadcastSelectedValue(event.target.value);
+    // router.push(`/user/broadcast/${event.target.value}`);
+  };
+
+  const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!broadcastList?.length) return;
+    const index = e.currentTarget.value;
+    setSelectedBroadcastList(broadcastList[parseInt(index)]);
   };
 
   return (
@@ -37,28 +69,17 @@ export default function ImportContacts() {
           <div className="bg-white mt-5 rounded-lg w-full">
             <div className="block md:flex justify-between items-center">
               <div>
-                <h2 className="text-xl font-bold text-black">
-                  Import Contacts into a broadcast list
-                </h2>
-                <p className=" text-gray-600 text-base">
-                  Import all your contacts here
-                </p>
+                <h2 className="text-xl font-bold text-black">Import Contacts into a broadcast list</h2>
+                <p className=" text-gray-600 text-base">Import all your contacts here</p>
                 {/* <p>{selectedValue}</p> */}
               </div>
               <div className="flex items-center space-x-2 mt-8 md:mt-0">
                 <Button className="border-2 border-gray-700 rounded-lg">
                   <div className="flex items-center space-x-2">
                     <span>
-                      <Image
-                        src="/goggle-icon.png"
-                        alt="goggle"
-                        width={20}
-                        height={20}
-                      />
+                      <Image src="/goggle-icon.png" alt="goggle" width={20} height={20} />
                     </span>
-                    <span className="text-gray-600 text-sm ">
-                      ekpenyong2510@gmail.com -{" "}
-                    </span>
+                    <span className="text-gray-600 text-sm ">ekpenyong2510@gmail.com - </span>
                     <span className="text-secondary text-sm">
                       <a href="#" className="">
                         Sign Out?
@@ -68,11 +89,13 @@ export default function ImportContacts() {
                 </Button>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
+            <div
+              className={`grid ${
+                selectedValue === "whatsapp" ? "md:grid-cols-4" : "md:grid-cols-3"
+              } grid-cols-1  gap-4 mt-12`}
+            >
               <div className="col-span-1">
-                <label className="block text-gray-900 font-semibold leading-8 text-sm">
-                  Select Source
-                </label>
+                <label className="block text-gray-900 font-semibold leading-8 text-sm">Select Source</label>
                 <select
                   className="w-full p-2 px-2 border border-gray-700 rounded focus:outline-none"
                   onChange={handleChange}
@@ -85,34 +108,54 @@ export default function ImportContacts() {
                   <option value="google">Google Contacts</option>
                   <option value="csv">Import CSV</option>
                 </select>
-                <p className="text-sm text-gray-500 mt-1">
-                  where are you importing from?
-                </p>
+                <p className="text-sm text-gray-500 mt-1">where are you importing from?</p>
               </div>
+
+              {selectedValue === "whatsapp" && (
+                <div className="col-span-1">
+                  <label className="block text-gray-900 font-semibold leading-8 text-sm">Account</label>
+                  <select
+                    className="w-full p-2 px-2 border border-gray-700 rounded focus:outline-none"
+                    onChange={handleAccountChange}
+                  >
+                    <option value="" className="hidden">
+                      Select account
+                    </option>
+                    {filterConnectedAccount?.map((item, idx) => (
+                      <option value={item.phoneNumber} key={item.id} className="px-2">
+                        {item?.phoneNumber}
+                      </option>
+                    ))}
+                    {/* <option value="manually">Import Manually</option>
+                  <option value="whatsapp">Whatsapp Phone Contacts</option>
+                  <option value="google">Google Contacts</option>
+                  <option value="csv">Import CSV</option> */}
+                  </select>
+                </div>
+              )}
+
               <div className="col-span-1">
-                <label className="block text-gray-900 font-semibold leading-8 text-sm">
-                  Select Broadcast List
-                </label>
+                <label className="block text-gray-900 font-semibold leading-8 text-sm">Select Broadcast List</label>
                 <select
-                  onChange={handleChangeCustomer}
+                  onChange={updateSelectedBroadcastList}
                   className="w-full p-2 border border-gray-700 rounded focus:outline-none"
                 >
-                  <option value="default">Select List</option>
-                  {/* <option value="default">Select list</option> */}
-                  <option value="newcustomer">
-                    New Customers
-                    {/* <Link href="/newcustomer"></Link> */}
+                  <option value="default" className="hidden">
+                    Select List
                   </option>
-                  {/* Add your options here */}
+                  {broadcastList?.map((item, index) => (
+                    <option value={index} key={item.id}>
+                      {item.listName}
+                    </option>
+                  ))}
+                  {/* <option value="customer">
+                    New Customers
+                  </option> */}
                 </select>
-                <p className="text-sm text-gray-500 mt-1">
-                  The list you are importing into?
-                </p>
+                <p className="text-sm text-gray-500 mt-1">The list you are importing into?</p>
               </div>
               <div className="col-span-1">
-                <label className="block text-gray-900 font-semibold leading-8 text-sm">
-                  Day Number on Automation
-                </label>
+                <label className="block text-gray-900 font-semibold leading-8 text-sm">Day Number on Automation</label>
                 <input
                   type="number"
                   className="w-full p-2 border border-gray-700 rounded focus:outline-none"
@@ -198,12 +241,12 @@ export default function ImportContacts() {
           //     </div>
           //   </section>
           <section>
-            {selectedValue === "manually" && <Manually />}
+            {selectedValue === "manually" && <Manually selectedValue={selectedBroadcastList} />}
             {selectedValue === "google" && <Google />}
-            {selectedValue === "whatsapp" && <Whatsapp />}
+            {selectedValue === "whatsapp" && accountSelectedId && <Whatsapp id={accountSelectedId} />}
             {selectedValue === "csv" && <CSV />}
-            {selectedValue === "default" && <Manually />}
-            {selectedValue === "customer" && <NewCustomer />}
+            {/* {selectedValue === "default" && <Manually />} */}
+            {/* {selectedValue === "customer" && <NewCustomer />} */}
           </section>
         ) : (
           <section className="my-20">
