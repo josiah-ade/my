@@ -8,6 +8,7 @@ import { Contact } from "@/typings/interface/contacts";
 import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
 import { useCreateContactList } from "@/providers/hooks/mutate/createcontact";
 import { IBroadcastList } from "@/typings/interface/broadcasts";
+import { useGetBroadcastContact } from "@/providers/hooks/query/getcontact";
 
 interface Selected {
   selectedValue?: IBroadcastList;
@@ -22,6 +23,8 @@ interface Selected {
 
 export default function Manually(props: Selected) {
   const { selectedValue } = props;
+  const id = selectedValue?.id;
+  const { data: contacts } = useGetBroadcastContact(id as string);
   const [source, setSelectContact] = useState(true);
   const [contactList, setContactList] = useState(true);
   const [contactListData, setContactListData] = useState<Contact>({
@@ -132,7 +135,7 @@ export default function Manually(props: Selected) {
         >
           {selectedValue ? (
             <section className="p-4 w-full">
-              <ContactsList />
+              <ContactsList contacts={contacts} selectedValue={selectedValue} />
             </section>
           ) : (
             <section>
