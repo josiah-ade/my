@@ -3,6 +3,8 @@ import Link from "next/link";
 import logo from "../../assets/logo.png";
 import profile from "../../assets/profile.png";
 import Image from "next/image";
+import { useState } from "react";
+import DropdownMenu from "../common/dropdown/dropdown";
 
 interface Props {
   onToggle: () => void;
@@ -10,6 +12,9 @@ interface Props {
 
 export default function AppBar(props: Props) {
   const currentMenuItem = useActiveMenu();
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
 
   return (
     <>
@@ -41,11 +46,14 @@ export default function AppBar(props: Props) {
             {/* <h2 className="text-xlg lg:text-2xl font-semibold"> {currentMenuItem?.title || "Dashboard"} </h2> */}
           </div>
         </div>
-        <div className=" hidden md:flex items-center gap-2">
+        <div className=" hidden md:flex items-center gap-2 cursor-pointer" onClick={toggleDropdown}>
           <Image src={profile} alt="profile" />
           <div className="text-xs">
             <h4 className="font-bold">David Eskor</h4>
             <p>eek@gmail.com</p>
+          </div>
+          <div className="">
+            <DropdownMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
           </div>
         </div>
       </div>

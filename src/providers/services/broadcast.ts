@@ -1,45 +1,29 @@
 import { handleError } from "@/components/common/exception/serviceexception";
 import { IGenericStatusResponse } from "@/typings/interface/api";
-import { IBroadcastList, ICreateBroadcastList } from "@/typings/interface/broadcasts";
+import { IBroadcastLists, ICreateBroadcastList } from "@/typings/interface/broadcasts";
 import axios, { AxiosResponse } from "axios";
 
-export async function createBroadcast(data: ICreateBroadcastList): Promise<IBroadcastList> {
+export async function createBroadcast(data: ICreateBroadcastList): Promise<IBroadcastLists> {
   return axios
-    .post<IBroadcastList>("/broadcast", data)
-    .then((response: AxiosResponse<IBroadcastList>) => {
+    .post<IBroadcastLists>("/broadcast", data)
+    .then((response: AxiosResponse<IBroadcastLists>) => {
       return response.data;
     })
-    .catch((e) => {
-      const message = e.response?.data?.message || "Network Error";
-      if (Array.isArray(message)) {
-        const error = message.join("\n");
-        console.log({ error });
-        throw new Error(error);
-      }
-      throw new Error(message);
-    });
+    .catch(handleError);
 }
 
-export async function getBroadcast(): Promise<IBroadcastList[]> {
+export async function getBroadcast(): Promise<IBroadcastLists[]> {
   return axios
-    .get<IBroadcastList[]>("/broadcast")
-    .then((response: AxiosResponse<IBroadcastList[]>) => {
+    .get<IBroadcastLists[]>("/broadcast")
+    .then((response: AxiosResponse<IBroadcastLists[]>) => {
       return response.data;
     })
-    .catch((e) => {
-      const message = e.response?.data?.message || "Network Error";
-      if (Array.isArray(message)) {
-        const error = message.join("\n");
-        console.log({ error });
-        throw new Error(error);
-      }
-      throw new Error(message);
-    });
+    .catch(handleError);
 }
 
-export async function getBroadcastDetail(id: string): Promise<IBroadcastList> {
+export async function getBroadcastDetail(id: string): Promise<IBroadcastLists> {
   return axios
-    .get<IBroadcastList>(`/broadcast/${id}`)
+    .get<IBroadcastLists>(`/broadcast/${id}`)
     .then((response) => response.data)
     .catch(handleError);
 }
@@ -50,3 +34,27 @@ export async function deleteBroadcast(id: string): Promise<IGenericStatusRespons
     .then((response) => response.data)
     .catch(handleError);
 }
+export async function editBroadcastId(data: IBroadcastLists): Promise<IBroadcastLists> {
+  const payload: ICreateBroadcastList = {
+    listName: data.listName,
+    description: data.description,
+  };
+
+  return axios
+    .put<IBroadcastLists>(`/broadcast/${data.id}`, payload)
+    .then((response) => response.data)
+    .catch(handleError);
+}
+export async function emptyBroadcastListContacts(broadcastId: string): Promise<IGenericStatusResponse> {
+  return axios
+    .delete<IGenericStatusResponse>(`/broadcast/${broadcastId}/contacts`)
+    .then((res) => res.data)
+    .catch(handleError);
+}
+
+// export async function deleteBroadcastId(broadcastId: string): Promise<> {
+//   return axios
+//     .delete<IGenericStatusResponse>(`/broadcast/${broadcastId}/contacts`)
+//     .then((response) => response.data)
+//     .catch(handleError);
+// }

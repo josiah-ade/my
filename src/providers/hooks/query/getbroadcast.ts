@@ -1,13 +1,12 @@
 import { IQueryArgs, IQueryOptions } from "../../../typings/query";
 import { useGetResourcesQuery } from "../helper/query";
-import { BroadCastList } from "@/core/types/data.interface";
 import { getBroadcast, getBroadcastDetail } from "@/providers/services/broadcast";
 import { useBroadcastStore } from "@/providers/stores/broadcastStore";
-import { IBroadcastList } from "@/typings/interface/broadcasts";
+import { IBroadcastLists } from "@/typings/interface/broadcasts";
 
 export function useGetUserBroadcast(options: IQueryOptions = {}) {
   const setBroadcast = useBroadcastStore((state) => state.setBroadcast);
-  const users: IQueryArgs<BroadCastList, IBroadcastList[]> = {
+  const users: IQueryArgs<IBroadcastLists, IBroadcastLists[]> = {
     key: ["broadcast"],
     callback: () =>
       getBroadcast().then((res) => {
@@ -19,7 +18,7 @@ export function useGetUserBroadcast(options: IQueryOptions = {}) {
 }
 
 export function useGetBroadcastDetail(id: string, options: IQueryOptions = {}) {
-  const users: IQueryArgs<BroadCastList, IBroadcastList> = {
+  const users: IQueryArgs<void, IBroadcastLists> = {
     key: ["broadcast_detail"],
     callback: () => getBroadcastDetail(id),
   };

@@ -26,6 +26,7 @@ export interface TableHeader<TData = unknown> {
   };
 
   formatter?: (val: string) => string;
+  component?: React.ElementType<TableHeaderActionProp<TData>>;
 }
 
 export interface ITablePagination {

@@ -1,5 +1,3 @@
-import { BroadCastList } from "@/core/types/data.interface";
-
 import { Bin, Qr, Circle, Plus, Userg, Pencil, Usercancel } from "@/core/const/icons/icons";
 import { TableHeaderActionProp } from "@/typings/interface/component/table";
 import { useState } from "react";

@@ -3,7 +3,7 @@ import { NotificationType } from "@/core/enum/notification";
 import { useCreateContactFromNewList } from "@/providers/hooks/mutate/createcontact";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { ContactAccount } from "@/typings/interface/account";
-import { IBroadcastList, ICreateBroadcastList } from "@/typings/interface/broadcasts";
+import {  ICreateBroadcastList } from "@/typings/interface/broadcasts";
 import { Contact } from "@/typings/interface/contacts";
 import { FormEvent, useState } from "react";
 
