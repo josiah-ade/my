@@ -1,17 +1,17 @@
 // components/ListBroadcasts.tsx
 import React, { useState } from "react";
 import Default from "../default/default";
-import BroadCastMessageTable from "./broadcastTable";
+import { useGetBroadcastMessages } from "@/providers/hooks/query/getmessage";
+import Table from "../table";
+import { TableHeader, TableHeaderActionProp } from "@/typings/interface/component/table";
+import { IMessageResponse } from "@/typings/interface/message";
+import Link from "next/link";
+import { dateFormatter } from "@/core/formatters/dateFormatter";
+import { DisplayDataTimeFormatOptions } from "@/core/const/formatOptions";
 
 function Img() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
@@ -22,60 +22,49 @@ function Img() {
   );
 }
 
-interface ListProps {
-  lists: string[];
+function StatusDisplay(props: TableHeaderActionProp<IMessageResponse> & { field: string }) {
+  return <span> {props.item?.stats[props.field] ?? "--"} </span>;
 }
 
-interface TableRow {
-  message: string;
-  lists: string[];
-  inQueue: number;
-  delivered: number;
-  failed: number;
-  paused: number;
-  sentToQueue: string;
-  deliveredTime: string;
-  actions: string;
+function ViewButton(props: TableHeaderActionProp<IMessageResponse>) {
+  return (
+    <Link href={`/user/broadcast-message/${props.item?.id}`}>
+      <p className="text-primary-base font-semibold text-sm cursor-pointer"> View </p>
+    </Link>
+  );
 }
 
-function ListBroadcasts() {
-  const [showTable, setShowTable] = useState(true);
-
-  const headers = [
-    { title: "Message", field: "message" },
+export default function ListBroadcasts() {
+  const headers: TableHeader<IMessageResponse>[] = [
+    { title: "Message", field: "text" },
     { title: "Lists", field: "lists" },
-    { title: "In Queue", field: "inQueue" },
-    { title: "Delivered", field: "delivered" },
-    { title: "Failed", field: "failed" },
-    { title: "Paused", field: "paused" },
-    { title: "Sent To Queue", field: "sentToQueue" },
-    { title: "Delivered Time", field: "deliveredTime" },
-    { title: "Actions", field: "actions" },
+    { title: "In Queue", field: "inQueue", component: (props) => <StatusDisplay {...props} field="pending" /> },
+    { title: "Delivered", field: "delivered", component: (props) => <StatusDisplay {...props} field="sent" /> },
+    { title: "Failed", field: "failed", component: (props) => <StatusDisplay {...props} field="failed" /> },
+    { title: "Paused", field: "paused", component: (props) => <StatusDisplay {...props} field="paused" /> },
+    {
+      title: "Sent To Queue",
+      field: "queuedTime",
+      formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions),
+    },
+    {
+      title: "Delivered Time",
+      field: "completedTime",
+      formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions),
+    },
+    {
+      title: "Actions",
+      field: "actions",
+      action: { component: (props) => <ViewButton {...props} /> },
+    },
   ];
 
-  const data = [
-    {
-      message: "Sample message",
-      lists: ["List1", "List2"],
-      inQueue: 100,
-      delivered: 90,
-      failed: 5,
-      paused: 0,
-      sentToQueue: "12 Feb 2024 at 12:34",
-      deliveredTime: "12 Feb 2024 at 12:34",
-      actions: "View",
-    },
-    // More rows...
-  ];
+  const { data, loading } = useGetBroadcastMessages();
 
   return (
-    <div>
-      {/* <h2>List Broadcasts</h2> */}
-      {/* Your List Broadcasts content here */}
-      {showTable ? (
-        <div className="mt-8">
-          <BroadCastMessageTable data={data} headers={headers} />
-        </div>
+    <div className="mt-8">
+      {!loading && data?.length ? (
+        <Table data={data} headers={headers} />
       ) : (
         <Default
           src="/phone.jpg"
@@ -93,5 +82,3 @@ function ListBroadcasts() {
     </div>
   );
 }
-
-export default ListBroadcasts;

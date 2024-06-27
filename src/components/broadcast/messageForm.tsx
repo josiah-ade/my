@@ -1,58 +1,47 @@
-import { FormData } from "@/core/types/data.interface";
-import React, { useState } from "react";
-import Button from "../button/button";
+import React, { useRef } from "react";
 import { QuesCircle } from "@/core/const/icons/icons";
 import FileUpload from "./fileUpload";
 import { useUploadStore } from "@/providers/stores/useUploadStore";
 import { FileUpload as FileUploadType } from "@/core/types/data.interface";
 
 interface MessageFormProps {
-  onSubmit: (data: FormData) => void;
-  onOpen: () => void;
+  onFileUpload: (data: FileList) => void;
+  onChange: (data: { name: string; value: string }) => void;
+  formValue: string;
 }
 
-export default function MessageForm({ onSubmit, onOpen }: MessageFormProps) {
-  const [upload, setUpload] = useState(true);
-  const [formData, setFormData] = useState<FormData>({
-    message: "",
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    files: [],
-  });
+export default function MessageForm({ onFileUpload, onChange, formValue }: MessageFormProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const {
-    uploads,
-    addUpload,
-    updateUploadProgress,
-    setUploadSuccess,
-    setUploadError,
-    retryUpload,
-  } = useUploadStore();
+  const { uploads, addUpload, updateUploadProgress, setUploadSuccess, setUploadError, retryUpload } = useUploadStore();
 
-  // const toggleModal = () => {
-  //   setIsOpen(true);
-  // };
+  const placeholders = [
+    { title: "Name", value: "name" },
+    { title: "Phone Number", value: "phoneNumber" },
+  ];
 
-  function handleInputChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    onChange({ name, value });
   }
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files) {
-      setFormData({ ...formData, files: Array.from(e.target.files) });
-    }
-  }
+  const insertPlaceholder = (text: string) => {
+    if (!textInputRef.current) return;
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    onSubmit(formData);
-  }
+    const textarea = textInputRef.current;
+    const startPos = textarea.selectionStart;
+    const endPos = textarea.selectionEnd;
+
+    textarea.setRangeText(`{{${text}}}`, startPos, endPos, "end");
+    textarea.focus();
+
+    const event = new Event("change", { bubbles: true });
+    textarea.dispatchEvent(event);
+  };
 
   const handleFileSelect = (files: FileList) => {
+    // onFileUpload(files);
     Array.from(files).forEach((file) => {
       const id = Date.now().toString();
       addUpload(file);
@@ -89,43 +78,32 @@ export default function MessageForm({ onSubmit, onOpen }: MessageFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="">
+    <>
       <div className="mb-4">
-        <label
-          htmlFor="message"
-          className="block text-sm font-medium text-gray-600 mb-3"
-        >
+        <label htmlFor="message" className="block text-sm font-medium text-gray-600 mb-3">
           Type Your Message
         </label>
         <textarea
           id="message"
-          name="message"
-          value={formData.message}
+          name="text"
+          ref={textInputRef}
           onChange={handleInputChange}
+          value={formValue}
           className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none"
           rows={8}
         ></textarea>
       </div>
       <div className="flex justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <Button
-            type="button"
-            className="bg-secondary-400 text-white text-xs px-4 py-2 rounded-lg"
-          >
-            First secondary 4{" "}
-          </Button>
-          <Button
-            type="button"
-            className="bg-secondary-400 text-white text-xs px-4 py-2 rounded-lg"
-          >
-            Last Name
-          </Button>
-          <Button
-            type="button"
-            className="bg-secondary-400 text-white text-xs px-4 py-2 rounded-lg"
-          >
-            Phone Number
-          </Button>
+        <div className="flex items-center gap-2 flex-wrap text-xs lg:text-sm text-white">
+          {placeholders.map((item) => (
+            <span
+              key={item.value}
+              onClick={() => insertPlaceholder(item.value)}
+              className="bg-secondary-400 cursor-pointer px-3 py-1 rounded-xl"
+            >
+              {item.title}
+            </span>
+          ))}
         </div>
         <div className="flex items-center space-x-1 ">
           <span>
@@ -142,13 +120,7 @@ export default function MessageForm({ onSubmit, onOpen }: MessageFormProps) {
         <div className="mt-1 flex justify-center px-6 py-10 border-2 border-dashed rounded-md">
           <div className="space-y-1 text-center">
             <div className="mx-auto flex items-center justify-center w-10 h-10 rounded-full p-2 bg-gray-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="29"
-                height="28"
-                viewBox="0 0 29 28"
-                fill="none"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" width="29" height="28" viewBox="0 0 29 28" fill="none">
                 <path
                   d="M7.50033 11.0835C7.50033 7.53967 10.3732 4.66683 13.917 4.66683C17.0562 4.66683 19.671 6.92221 20.2252 9.90129C20.3029 10.319 20.6016 10.6615 21.0049 10.7953C23.3275 11.5656 25.0003 13.7557 25.0003 16.3335C25.0003 19.5552 22.3887 22.1668 19.167 22.1668C18.5227 22.1668 18.0003 22.6892 18.0003 23.3335C18.0003 23.9778 18.5227 24.5002 19.167 24.5002C23.6773 24.5002 27.3337 20.8438 27.3337 16.3335C27.3337 12.959 25.2876 10.065 22.371 8.81967C21.373 5.0845 17.9674 2.3335 13.917 2.3335C9.0845 2.3335 5.16699 6.251 5.16699 11.0835C5.16699 11.2005 5.1693 11.317 5.17386 11.433C3.07922 12.6415 1.66699 14.9048 1.66699 17.5002C1.66699 21.3662 4.801 24.5002 8.66699 24.5002C9.31133 24.5002 9.83366 23.9778 9.83366 23.3335C9.83366 22.6892 9.31133 22.1668 8.66699 22.1668C6.08966 22.1668 4.00033 20.0775 4.00033 17.5002C4.00033 15.5666 5.17653 13.9051 6.85709 13.1971C7.3434 12.9923 7.63165 12.4865 7.56005 11.9637C7.52072 11.6765 7.50033 11.3827 7.50033 11.0835Z"
                   fill="#475367"
@@ -162,47 +134,26 @@ export default function MessageForm({ onSubmit, onOpen }: MessageFormProps) {
 
             <div
               className="flex text-sm text-gray-600 p-4 cursor-pointer"
-              onClick={() =>
-                document
-                  .querySelector<HTMLInputElement>("input[type=file]")
-                  ?.click()
-              }
+              onClick={() => fileInputRef.current?.click()}
             >
-              <label
-                htmlFor="file-upload"
-                className="relative cursor-pointer  rounded-md font-medium text-primary text-xs focus-within:outline-none"
-              >
+              <p className="relative cursor-pointer  rounded-md font-medium text-primary text-xs focus-within:outline-none">
                 <span>Click to upload your videos or images</span>
                 <input
-                  id="file-upload"
                   name="files"
                   type="file"
                   className="sr-only hidden"
+                  ref={fileInputRef}
                   multiple
-                  onChange={(e) =>
-                    e.target.files && handleFileSelect(e.target.files)
-                  }
+                  onChange={(e) => e.target.files && handleFileSelect(e.target.files)}
                 />
-              </label>
+              </p>
               <p className="pl-1 text-xs">or drag and drop</p>
             </div>
-            <p className="text-xs text-gray-500">
-              SVG, PNG, JPG or GIF (max 10 files)
-            </p>
+            <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (max 10 files)</p>
           </div>
         </div>
       </div>
-      <FileUpload
-        uploads={uploads}
-        onFileSelect={handleFileSelect}
-        onRetry={handleRetry}
-      />
-
-      <div className="">
-        <Button onClick={onOpen} primary className="px-4 py-2 rounded w-full">
-          Proceed
-        </Button>
-      </div>
-    </form>
+      {/* <FileUpload uploads={uploads} onFileSelect={handleFileSelect} onRetry={handleRetry} /> */}
+    </>
   );
 }

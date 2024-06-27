@@ -9,13 +9,7 @@ import { useRouter } from "next/router";
 
 function Img() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
@@ -41,10 +35,8 @@ export default function BroadcastMessage() {
       <section>
         <div className="flex justify-between items-center mb-[18px]">
           <section>
-            <h2 className="text-xl font-semibold text-[1.3rem]">
-              Broadcast Lists
-            </h2>
-            <p className="text[0.9rem]">View all your contacts here</p>
+            <h2 className="text-xl font-semibold text-[1.3rem]">Broadcast Message</h2>
+            <p className="text[0.9rem] capitalize">View your broadcast messages from here</p>
           </section>
           <section className="flex items-center space-x-2">
             <Button

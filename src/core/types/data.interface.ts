@@ -22,17 +22,6 @@ export interface AccountData {
   serviceStatus: string;
 }
 
-export interface BroadCastList {
-  listName: string;
-  id: string;
-  description: string;
-  contacts?: number;
-}
-export interface IBroadCastList {
-  listName: string;
-  id: string;
-  description: string;
-}
 
 export interface ContactList {
   name: string;

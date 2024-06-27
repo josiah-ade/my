@@ -3,14 +3,14 @@ import { NotificationType } from "@/core/enum/notification";
 import { useCreateContactList } from "@/providers/hooks/mutate/createcontact";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { ContactAccount } from "@/typings/interface/account";
-import { IBroadcastList, ICreateBroadcastList } from "@/typings/interface/broadcasts";
+import {  IBroadcastLists,  ICreateBroadcastList } from "@/typings/interface/broadcasts";
 import { Contact } from "@/typings/interface/contacts";
 import { FormEvent, useState } from "react";
 
 interface IProps {
   selectedContacts: ContactAccount[];
   handleClose: () => void;
-  broadcastList: IBroadcastList[];
+  broadcastList: IBroadcastLists[];
 }
 
 const defaultCreateBroadcastFormValue: ICreateBroadcastList = {
@@ -22,7 +22,7 @@ export default function AddExistingList(props: IProps) {
   const { selectedContacts, handleClose, broadcastList } = props;
   const setNotification = useNotificationStore((state) => state.setDisplay);
 
-  const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastList>();
+  const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists>();
 
   const { mutate: createFromExistingList, isLoading: createFromExistingLoader } = useCreateContactList({
     onSuccess() {
@@ -51,7 +51,6 @@ export default function AddExistingList(props: IProps) {
     const { value, name } = event.target;
     setCreateBroadcastListData({ ...createBroadcastListData, [name]: value });
   }
-
   const addToExistingList = (event: FormEvent) => {
     event.preventDefault();
 

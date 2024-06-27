@@ -128,7 +128,7 @@ export default function Table<T>(props: TableProps<T>) {
               <tr className="relative">
                 {headers.map((header, index) => (
                   <th
-                    key={header.title}
+                    key={`table_header_index_${header.title}`}
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-[#344054] uppercase cursor-pointer"
                     onClick={() => header.sortable && handleSort(header.field)}
@@ -164,7 +164,7 @@ export default function Table<T>(props: TableProps<T>) {
             ) : (
               <tbody className="bg-white ">
                 {currentItems?.map((row, rowIndex) => (
-                  <tr key={rowIndex} className="relative">
+                  <tr key={`table_row_index_${rowIndex}`} className="relative">
                     {headers.map((header, index) => (
                       <td key={header.field} className="px-6 py-6 whitespace-nowrap text-sm text-gray-900">
                         <section className="flex space-x-1">
@@ -180,6 +180,8 @@ export default function Table<T>(props: TableProps<T>) {
                             <div>
                               <header.action.component item={row} {...header.action.props} />
                             </div>
+                          ) : header.component ? (
+                            <header.component item={row} />
                           ) : (
                             <section className="flex items-center space-x-2">{getDataComponent(header, row)}</section>
                           )}

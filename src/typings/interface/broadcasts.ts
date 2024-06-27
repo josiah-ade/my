@@ -4,8 +4,9 @@ export interface ICreateBroadcastList {
   dayNumber?: number;
 }
 
-export interface IBroadcastList extends ICreateBroadcastList {
+export interface IBroadcastLists extends ICreateBroadcastList {
   id: string;
+  contacts: number;
 }
 
 export interface IBroadcastContact {

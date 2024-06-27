@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Button from "@/components/button/button";
 import Default from "@/components/default/default";
 import UserLayout from "@/layout/user";
-import { BroadCastList } from "@/core/types/data.interface";
 import Table from "@/components/table";
 import { Plus } from "@/core/const/icons/icons";
 import Image from "next/image";
@@ -12,37 +11,84 @@ import { TableHeader } from "@/typings/interface/component/table";
 import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
 import { CreateBroadcastModal } from "@/components/broadcast/addModal";
 import { useRouter } from "next/router";
+import { IBroadcastLists } from "@/typings/interface/broadcasts";
+import { useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";
+import ConfirmationModal from "@/components/account/deleteConfirmationModal";
+import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
+
+interface ModalItems {
+  confirmation: boolean;
+  edit: boolean;
+}
+
+let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 
 export default function User() {
+  const [currentBroadcast, setCurrentBroadcast] = useState<IBroadcastLists>();
   const { data: broadcastList } = useGetUserBroadcast();
-  console.log(broadcastList, "raw");
-  const router = useRouter()
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
 
-  const handleOpen = () => {
-    setIsOpen(true);
+  const handleOpenModal = (key: keyof ModalItems) => {
+    setModal((val) => ({ ...val, [key]: true }));
+  };
+  const handleCloseModal = (key: keyof ModalItems) => {
+    currentBroadcast && setCurrentBroadcast(undefined);
+    setModal((val) => ({ ...val, [key]: false }));
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
+  const { mutate: emptyList } = useEmptyBroadcastList({
+    onSuccess: () => handleCloseModal("confirmation"),
+    options: {
+      errorConfig: { title: "Failed to delete contact" },
+      successConfig: { title: "Contact Deleted", text: "The contact was successfully deleted." },
+    },
+  });
+
+  const handleDelete = (item: IBroadcastLists) => {
+    openConfirmationModal(
+      "Delete Broadcast List",
+      "Are you certain you want to delete the broadcast list? This will permanently erase all related contacts and information associated with this list",
+      "Delete BroadcastList",
+      // () => emptyList(item.id)
+      () => handleCloseModal("confirmation")
+    );
   };
 
-  const handleAction = (action: string, item: BroadCastList) => {
-    if(action=="import"){
-      router.push(`/user/broadcast/${item.id}/import`)
-      return
-    }
-    window.alert("working");
+  const handleEmpty = (item: IBroadcastLists) => {
+    item.contacts > 0
+      ? openConfirmationModal(
+          "Empty Broadcast Contact List",
+          "Are you certain you want to empty this broadcastList? This will permanently erase all related contacts associated with this list",
+          "Empty List",
+          () => emptyList(item.id)
+        )
+      : openConfirmationModal("Prompt", "Your list is already empty", "Close", () => handleCloseModal("confirmation"));
   };
 
-  const headers: TableHeader<BroadCastList>[] = [
+  const openConfirmationModal = (title: string, message: string, confirmText: string, onConfirm: () => void) => {
+    confirmationProp = { title, message, confirmText, onConfirm };
+    handleOpenModal("confirmation");
+  };
+
+  const actionLookup = {
+    ["empty"]: (item: IBroadcastLists) => handleEmpty(item),
+    ["delete"]: (item: IBroadcastLists) => handleDelete(item),
+    ["edit"]: (item: IBroadcastLists) => handleOpenModal("edit"),
+  };
+
+  const handleAction = (action: string, item: IBroadcastLists) => {
+    setCurrentBroadcast({ ...item });
+    actionLookup[action as keyof typeof actionLookup](item);
+  };
+
+  const headers: TableHeader<IBroadcastLists>[] = [
     { field: "listName", title: "List Name", icon: "/chevron.jpg" },
     { field: "description", title: "Description", icon: "/chevron.jpg" },
     { field: "contacts", title: "Subscribers", icon: "/chevron.jpg" },
     {
       field: "view",
-      title: "Actions",
+      title: "Action",
       action: {
         component: (props) => (
           <Link href={`/user/broadcast/${props.item?.id ?? ""}`}>
@@ -54,12 +100,9 @@ export default function User() {
       },
     },
     {
-      field: "actions",
+      field: "action",
       title: "Actions",
-      action: {
-        component: AccountTableActionComponent,
-        props: { clickHandler: handleAction },
-      },
+      action: { component: AccountTableActionComponent, props: { clickHandler: handleAction } },
     },
   ];
 
@@ -76,7 +119,11 @@ export default function User() {
               <img src="/goggle-icon.png" alt="Google" className="w-5 h-5 mr-2" />
               Connect Google Contacts
             </Button>
-            <Button className="bg-orange-500 text-white px-4 py-2 rounded-lg" icon={<Plus />} onClick={handleOpen}>
+            <Button
+              className="bg-orange-500 text-white px-4 py-2 rounded-lg"
+              icon={<Plus />}
+              onClick={() => handleOpenModal("edit")}
+            >
               Create List
             </Button>
           </section>
@@ -112,7 +159,17 @@ export default function User() {
         />
       )}
 
-      <CreateBroadcastModal isOpen={isOpen} onClose={handleClose} />
+      <CreateBroadcastModal
+        isOpen={modal.edit}
+        onClose={() => handleCloseModal("edit")}
+        broadcastDetail={currentBroadcast}
+        key={currentBroadcast?.id}
+      />
+      <ConfirmationModal
+        isOpen={modal.confirmation}
+        onClose={() => handleCloseModal("confirmation")}
+        {...confirmationProp}
+      />
     </UserLayout>
   );
 }
