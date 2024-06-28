@@ -16,6 +16,7 @@ import { useDeleteAccount, useDisconnectAccount } from "@/providers/hooks/mutate
 import { NotificationType } from "@/core/enum/notification";
 import { useRouter } from "next/router";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
+import { UserRoutes } from "@/core/const/routes.const";
 
 interface ModalItems {
   link: boolean;
@@ -42,7 +43,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     [AccountTableAction.unsubscribeKeyword]: () => {},
     [AccountTableAction.disconnect]: (item: IAccount) => handleDisconnect(item),
     [AccountTableAction.transferLicense]: (item: IAccount) => {},
-    [AccountTableAction.sendMessage]: (item: IAccount) => router.push("/user/broadcast-message"),
+    [AccountTableAction.sendMessage]: (item: IAccount) => router.push(UserRoutes.BROADCAST_MESSAGE_SEND), // TODO: pass account id to route
     [AccountTableAction.triggerListMove]: (item: IAccount) => {},
   };
 
@@ -58,7 +59,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
 
   const handleDelete = (item: IAccount) => {
     openConfirmationModal(
-      "Delete Account Confirmation",
+      "Delete Account",
       "Are you certain you want to delete this account? This will permanently erase all related information.",
       "Delete Account",
       () => deleteAccount(item.id)

@@ -16,9 +16,7 @@ export default function TabComponent() {
           <button
             key={index}
             className={`px-4 py-2 focus:outline-none ${
-              activeTab === index
-                ? "border-b-2 border-primary text-primary"
-                : "text-gray-600"
+              activeTab === index ? "border-b-2 border-primary text-primary" : "text-gray-600"
             }`}
             onClick={() => setActiveTab(index)}
           >

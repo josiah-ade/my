@@ -1,4 +1,5 @@
 import { handleError } from "@/components/common/exception/serviceexception";
+import { removeNullValue } from "@/core/services";
 import { ContactList } from "@/core/types/data.interface";
 import { IGenericStatusResponse } from "@/typings/interface/api";
 import { IBroadcastContact, IEditBroadcastContact } from "@/typings/interface/broadcasts";
@@ -32,10 +33,10 @@ export async function editContact(contact: IBroadcastContact): Promise<IBroadcas
   const payload: IEditBroadcastContact = {
     contactName: contact.name,
     contactEmail: contact.email,
+    automationDay: contact.automationDay,
   };
-  console.log({contact})
   return axios
-    .put<IBroadcastContact>(`/broadcast/${contact.broadcastListId}/contact/${contact.id}`, payload)
+    .put<IBroadcastContact>(`/broadcast/${contact.broadcastListId}/contact/${contact.id}`, removeNullValue(payload))
     .then((response) => response.data)
     .catch(handleError);
 }

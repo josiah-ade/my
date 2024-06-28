@@ -107,8 +107,8 @@ export default function Table<T>(props: TableProps<T>) {
 
   return (
     <section>
-      <div className="max-w-[20rem] mt-8">
-        {search ? (
+      {search ? (
+        <div className="max-w-[20rem] mt-8">
           <div className="mb-4 relative">
             <SearchIcon className="text-gray-400 mr-2 absolute top-3 left-3" />
             <input
@@ -119,11 +119,11 @@ export default function Table<T>(props: TableProps<T>) {
               className="border border-gray-300 text-sm focus:outline-none text-gray-600 rounded px-8 py-2 w-full"
             />
           </div>
-        ) : null}
-      </div>
-      <div className="flex items-center justify-center">
-        <div className="w-full shadow-md rounded-lg">
-          <table className="w-full overflow-x-auto divide-y divide-gray-200">
+        </div>
+      ) : null}
+      <div className="justify-center">
+        <div className="shadow-md overflow-x-auto rounded-lg">
+          <table className="w-full divide-y  border-collapse divide-gray-200">
             <thead className="bg-gray-50">
               <tr className="relative">
                 {headers.map((header, index) => (

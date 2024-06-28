@@ -10,7 +10,7 @@ import { FormEvent, useState } from "react";
 const defaultCreateBroadcastFormValue: ICreateBroadcastList = {
   listName: "",
   description: "",
-  dayNumber: 0,
+  automationDay: 0,
 };
 
 interface IProps {
@@ -109,7 +109,7 @@ export default function AddNewList(props: IProps) {
               autoComplete="off"
               placeholder="Enter Number on Automation"
               onChange={handleChange}
-              value={createBroadcastListData.dayNumber}
+              value={createBroadcastListData.automationDay}
               className="pl-[10px]   rounded-[6px] px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
             />
           </div>

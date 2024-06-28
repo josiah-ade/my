@@ -15,6 +15,7 @@ import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";
 import ConfirmationModal from "@/components/account/deleteConfirmationModal";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
+import { UserRoutes } from "@/core/const/routes.const";
 
 interface ModalItems {
   confirmation: boolean;
@@ -26,6 +27,7 @@ let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 export default function User() {
   const [currentBroadcast, setCurrentBroadcast] = useState<IBroadcastLists>();
   const { data: broadcastList } = useGetUserBroadcast();
+  const router = useRouter();
 
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
 
@@ -75,6 +77,7 @@ export default function User() {
     ["empty"]: (item: IBroadcastLists) => handleEmpty(item),
     ["delete"]: (item: IBroadcastLists) => handleDelete(item),
     ["edit"]: (item: IBroadcastLists) => handleOpenModal("edit"),
+    ["import"]: (item: IBroadcastLists) => router.push(`${UserRoutes.BROADCAST}/${item.id}/import`),
   };
 
   const handleAction = (action: string, item: IBroadcastLists) => {
@@ -91,7 +94,7 @@ export default function User() {
       title: "Action",
       action: {
         component: (props) => (
-          <Link href={`/user/broadcast/${props.item?.id ?? ""}`}>
+          <Link href={`${UserRoutes.BROADCAST}/${props.item?.id ?? ""}`}>
             <Button primary {...props}>
               View List
             </Button>

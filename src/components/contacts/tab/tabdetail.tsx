@@ -7,7 +7,8 @@ import { IconType } from "react-icons";
 interface IProps extends IContact {
   displayTotal?: boolean;
   totalKey?: string;
-  icon?:IconType,
+  total?: number;
+  icon?: IconType;
 }
 
 export default function TabLists(props: IProps) {
@@ -24,14 +25,16 @@ export default function TabLists(props: IProps) {
         <MdOutlineKeyboardArrowRight size="1.25rem" className="text-primary text-xl" />
       </div>
       {displayTotal ? (
-        <>  
-      <div className="py-4 mt-7">
-        <hr />
-      </div>
-        <div className="flex flex-row justify-between capitalize flex-wrap">
-          <p className="text-gray-500 text-xs">Total {totalKey}</p>
-          <p className="text-success font-bold">3 {totalKey}</p>
-        </div>
+        <>
+          <div className="py-4 mt-7">
+            <hr />
+          </div>
+          <div className="flex flex-row justify-between capitalize flex-wrap">
+            <p className="text-gray-500 text-xs">Total {totalKey}</p>
+            <p className="text-success font-bold">
+              {props.total} {totalKey}
+            </p>
+          </div>
         </>
       ) : null}
     </>

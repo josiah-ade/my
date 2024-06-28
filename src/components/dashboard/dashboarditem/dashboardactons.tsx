@@ -2,6 +2,7 @@ import BroadCastList from "@/components/common/actions/broadcasts/broadcast";
 import ContactList from "@/components/common/actions/contacts/contacts";
 import CreateForm from "@/components/common/actions/form/createform";
 import Automations from "@/components/common/actions/message_Automation/message";
+import { UserRoutes } from "@/core/const/routes.const";
 import Link from "next/link";
 
 export default function DashBoardAction() {
@@ -12,7 +13,7 @@ export default function DashBoardAction() {
         <hr />
       </div>
       <div className="cursor-pointer ">
-        <Link href={"/user/form"}>
+        <Link href={UserRoutes.FORM}>
           <CreateForm />
         </Link>
       </div>
@@ -20,7 +21,7 @@ export default function DashBoardAction() {
         <hr />
       </div>
       <div className="cursor-pointer ">
-        <Link href={"/user/contact"}>
+        <Link href={UserRoutes.CONTACTS}>
           <ContactList />
         </Link>
       </div>
@@ -28,7 +29,7 @@ export default function DashBoardAction() {
         <hr />
       </div>
       <div className="cursor-pointer ">
-        <Link href={"/user/broadcast"}>
+        <Link href={UserRoutes.BROADCAST}>
           <BroadCastList />
         </Link>
       </div>
@@ -36,7 +37,7 @@ export default function DashBoardAction() {
         <hr />
       </div>
       <div className="cursor-pointer ">
-        <Link href={"/user/automation"}>
+        <Link href={UserRoutes.LIST_AUTOMATION}>
           <Automations />
         </Link>
       </div>

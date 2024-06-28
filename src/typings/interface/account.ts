@@ -15,6 +15,8 @@ export interface IAccount extends ICreateAccount {
   id: string;
   status: string;
   activeTill: number;
+  contacts: number;
+  groups: number;
 }
 
 export interface IFileData {
@@ -58,9 +60,9 @@ interface LastMessage {
   status: string;
 }
 
- export interface Participant {
+export interface Participant {
   phoneNumber: string;
-  rank: string,
+  rank: string;
 }
 
 export interface IGroupAccount {

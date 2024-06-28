@@ -17,15 +17,16 @@ import EmptyState from "@/components/common/empty/empty";
 interface IProps {
   title?: string;
   text?: string;
+  btnText?: string;
   isGroup?: boolean;
   contactAcount: ContactAccount[];
 }
 
 export default function AccountForm(props: IProps) {
-  const { title, isGroup, contactAcount } = props;
+  const { title, isGroup, contactAcount, btnText } = props;
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams() ?? {};
-  const { data: broadcastList = [] } = useGetUserBroadcast();
+  const { data: broadcastList = [] } = useGetUserBroadcast({ loadingConfig: { displayLoader: false } });
   const [selectedContacts, setSelectedContacts] = useState<ContactAccount[]>([]);
   const handleModal = () => {
     setIsOpen(true);
@@ -69,7 +70,7 @@ export default function AccountForm(props: IProps) {
         <div>
           <Button onClick={handleModal} disabled={!selectedContacts.length} primary icon={<GoPlus />}>
             {/* Add {selectedContacts.length || ""} to List */}
-            Add to List
+            {btnText ? btnText : "Add to List"}
           </Button>
         </div>
       </div>

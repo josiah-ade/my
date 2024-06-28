@@ -39,9 +39,7 @@ const Default: React.FC<ImageProps & TextProps> = ({
       <div className="mt-8">
         {btn ? (
           <Button
-            className={`${
-              primary ? "" : "border-2 border-gray-400"
-            } text-sm text-gray-600 `}
+            className={`${primary ? "" : "border-2 border-gray-400"} text-sm text-gray-600 `}
             primary={primary}
             icon={imgE}
           >
