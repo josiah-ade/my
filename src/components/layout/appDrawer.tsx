@@ -10,6 +10,7 @@ import { FaTimes } from "react-icons/fa";
 interface Props {
   display: boolean;
   onToggle: () => void;
+  onLogout?: () => void;
 }
 
 export default function AppDrawer({ display, onToggle }: Props) {

@@ -37,7 +37,6 @@ export default function Context({ children }: { children: ReactNode }) {
   const [loaded, setLoaded] = React.useState(false);
   const [auth, setAuth] = useState<AuthResponse>();
 
-
   const {} = useGetUsersAcount({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
   const {} = useGetUserBroadcast({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
 
@@ -67,7 +66,7 @@ export default function Context({ children }: { children: ReactNode }) {
         setToken(res.data.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
-        router.push("/");
+        router.push("/user");
       })
       .catch((e) => {
         const message = e.response?.data?.message || "Network Error";
