@@ -20,7 +20,7 @@ interface TableProps<T = unknown> {
   pagination?: TablePagination;
 }
 
-export default function Table<T extends object>(props: TableProps<T>) {
+export default function Table<T>(props: TableProps<T>) {
   const { headers, data, action, isOpen, setIsOpen, loading, search, checkboxAction, pagination } = props;
   const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data?.length).fill(false));
   const [selectAll, setSelectAll] = useState(false);
@@ -80,9 +80,11 @@ export default function Table<T extends object>(props: TableProps<T>) {
     setSearchQuery(e.target.value);
   };
 
-  function filterData<T extends object>(data: T[], searchQuery: string): T[] {
-    return data.filter((item) =>
-      Object.values(item).some((val) => String(val).toLowerCase().includes(searchQuery.toLowerCase()))
+  function filterData(data: T[], searchQuery: string): T[] {
+    return data?.filter((item) =>
+      Object.values(item as Record<keyof T, T>).some((val) =>
+        String(val).toLowerCase().includes(searchQuery.toLowerCase())
+      )
     );
   }
 
@@ -97,8 +99,8 @@ export default function Table<T extends object>(props: TableProps<T>) {
     });
   }
 
-  const filteredData = useMemo(() => filterData(data, searchQuery), [searchQuery]);
-  const sortedData = useMemo(() => sortData(filteredData, sortColumn ?? ""), [data, sortColumn, sortOrder]);
+  const filteredData = useMemo(() => filterData(data, searchQuery), [data, searchQuery]);
+  const sortedData = useMemo(() => sortData(filteredData, sortColumn ?? ""), [filteredData, sortColumn, sortOrder]);
 
   // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;

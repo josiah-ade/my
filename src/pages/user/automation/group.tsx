@@ -69,7 +69,7 @@ export default function GroupAutomation(){
     {field: "daytorun", title: "Day to Run",},
     {field: "status", title: "Status",},
     {field: "timedelivery", title: "Time Delivery",
-      action: { component: AutomationTableActionComponent,  },
+      // action: { component: AutomationTableActionComponent,  },
     },
   ];
 
