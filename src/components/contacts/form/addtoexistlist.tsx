@@ -101,9 +101,9 @@ export default function AddExistingList(props: IProps) {
           <br></br>
           <div className="mt-2">
             <input
-              name="dayNumber"
+              name="automationDay"
               autoComplete="off"
-              placeholder="Enter business email"
+              placeholder="Day Number on Automation"
               onChange={handleChange}
               value={createBroadcastListData.automationDay}
               className="pl-[10px]  rounded-[6px] px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"

@@ -34,7 +34,7 @@ export default function WhatsappList() {
                   // icon={item.icon}
                   displayTotal={false}
                   phoneNumber={item.name}
-                  description={`${item.participants.length} contacts`}
+                  description={`${item.totalContacts} contacts`}
                   id={item.id}
                   // total={item.total}
                   // totaldescription={item.totaldescription}

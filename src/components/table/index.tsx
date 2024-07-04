@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useMemo } from "react";
 
 import Button from "../button/button";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ interface TableProps<T = unknown> {
   pagination?: TablePagination;
 }
 
-export default function Table<T>(props: TableProps<T>) {
+export default function Table<T extends object>(props: TableProps<T>) {
   const { headers, data, action, isOpen, setIsOpen, loading, search, checkboxAction, pagination } = props;
   const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data?.length).fill(false));
   const [selectAll, setSelectAll] = useState(false);
@@ -80,20 +80,25 @@ export default function Table<T>(props: TableProps<T>) {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = data?.filter((item) =>
-    Object.values(item as Record<keyof T, T>).some((val) =>
-      String(val).toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  function filterData<T extends object>(data: T[], searchQuery: string): T[] {
+    return data.filter((item) =>
+      Object.values(item).some((val) => String(val).toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  }
 
-  const sortedData = filteredData?.sort((a, b) => {
-    if (!sortColumn) return 0;
-    const aValue = a[sortColumn as keyof T];
-    const bValue = b[sortColumn as keyof T];
-    if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-    if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
-    return 0;
-  });
+  function sortData(data: T[], sortColumn: string) {
+    return data?.sort((a, b) => {
+      if (!sortColumn) return 0;
+      const aValue = a[sortColumn as keyof T];
+      const bValue = b[sortColumn as keyof T];
+      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+  }
+
+  const filteredData = useMemo(() => filterData(data, searchQuery), [searchQuery]);
+  const sortedData = useMemo(() => sortData(filteredData, sortColumn ?? ""), [data, sortColumn, sortOrder]);
 
   // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;

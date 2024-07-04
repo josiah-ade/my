@@ -39,7 +39,7 @@ export default function AccountForm(props: IProps) {
   const headers: TableHeader<ContactAccount>[] = [
     { field: "phoneNumber", title: "Phone Number" },
     { field: "country", title: "Country" },
-    { field: "name", title: "Name" },
+    { field: "name", title: "Name", sortable: true },
   ];
 
   const tabs = [
@@ -77,6 +77,7 @@ export default function AccountForm(props: IProps) {
       <div className="mt-5">
         {contactAcount && contactAcount.length ? (
           <Table
+            search={true}
             headers={headers}
             data={contactAcount}
             pagination={{ pageSize: 5 }}

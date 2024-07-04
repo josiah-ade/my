@@ -68,11 +68,5 @@ export interface Participant {
 export interface IGroupAccount {
   name: string;
   id: string;
-  type: string;
-  notSpam: boolean;
-  lastMessage: LastMessage;
-  participants: Participant[];
-  createdAt: number;
-  createdBy: string;
-  timestamp: number;
+  totalContacts: number;
 }

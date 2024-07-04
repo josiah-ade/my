@@ -5,7 +5,8 @@ import {
   getSingleAccount,
   getUserStatusAccount,
   getUsercontactAccount,
-  getsingleGroupContact,
+  getGroupDetails,
+  getGroupContacts,
 } from "@/providers/services/account";
 import {
   ContactAccount,
@@ -77,10 +78,19 @@ export function useGetGroupAcount(id: string) {
   };
   return useGetResourcesQuery(GroupAcount);
 }
-export function useGetSingleGroupContact(id: string, groupId: string) {
-  const singleGroupContact: IQueryArgs<string, Participant[]> = {
+
+export function useGetSingleGroup(id: string, groupId: string) {
+  const singleGroupContact: IQueryArgs<string, IGroupAccount> = {
     key: ["singleGroupContact", { id }],
-    callback: () => getsingleGroupContact(id, groupId),
+    callback: () => getGroupDetails(id, groupId),
+  };
+  return useGetResourcesQuery(singleGroupContact);
+}
+
+export function useGetGroupContacts(id: string, groupId: string) {
+  const singleGroupContact: IQueryArgs<string, ContactAccount[]> = {
+    key: ["singleGroupContact", { groupId }],
+    callback: () => getGroupContacts(id, groupId),
   };
   return useGetResourcesQuery(singleGroupContact);
 }

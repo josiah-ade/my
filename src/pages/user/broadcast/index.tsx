@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/components/button/button";
 import Default from "@/components/default/default";
 import UserLayout from "@/layout/user";
@@ -8,14 +8,16 @@ import Image from "next/image";
 import AccountTableActionComponent from "@/components/broadcast/tableAction";
 import Link from "next/link";
 import { TableHeader } from "@/typings/interface/component/table";
-import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
+import { useGetBroadcastDetail, useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
 import { CreateBroadcastModal } from "@/components/broadcast/addModal";
 import { useRouter } from "next/router";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
-import { useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";
+import { useDeleteBroadcast, useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";
 import ConfirmationModal from "@/components/account/deleteConfirmationModal";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
 import { UserRoutes } from "@/core/const/routes.const";
+import { NotificationType } from "@/core/enum/notification";
+import useNotificationStore from "@/providers/stores/notificationStore";
 
 interface ModalItems {
   confirmation: boolean;
@@ -25,12 +27,23 @@ interface ModalItems {
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 
 export default function User() {
+  const setNotification = useNotificationStore((state) => state.displayNotification);
   const [currentBroadcast, setCurrentBroadcast] = useState<IBroadcastLists>();
-  const { data: broadcastList } = useGetUserBroadcast();
   const router = useRouter();
-
+  const { data: broadcastList } = useGetUserBroadcast();
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
+  const { mutate: deleteBroadcast } = useDeleteBroadcast({
+    onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
+    options: { errorConfig: { title: "Failed to delete account" } },
+  });
 
+  const handleSuccess = (title: string, text: string) => {
+    setNotification({
+      type: NotificationType.success,
+      content: { title, text },
+    });
+    handleCloseModal("confirmation");
+  };
   const handleOpenModal = (key: keyof ModalItems) => {
     setModal((val) => ({ ...val, [key]: true }));
   };
@@ -52,8 +65,8 @@ export default function User() {
       "Delete Broadcast List",
       "Are you certain you want to delete the broadcast list? This will permanently erase all related contacts and information associated with this list",
       "Delete BroadcastList",
-      // () => emptyList(item.id)
-      () => handleCloseModal("confirmation")
+      () => { handleCloseModal("confirmation"),
+      deleteBroadcast(item.id)}
     );
   };
 

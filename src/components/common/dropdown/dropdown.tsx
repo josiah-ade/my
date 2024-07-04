@@ -33,14 +33,14 @@ const DropdownMenu = (props: IDropdown) => {
     };
 
     return (
-        <div className="absolute top-[5rem] right-0 bg-white shadow-md rounded-md px-4 py-5 w-[18rem]">
+        <div className="absolute top-[5rem] right-0 bg-white shadow-md rounded-md px-4 py-5 w-[18rem] z-[1000]">
             <div className="flex flex-col gap-4">
                 <h3 className="cursor-pointer" onClick={onClose}>Profile</h3>
                 <h3 className="cursor-pointer" onClick={onClose}>Settings</h3>
                 <h3 className="cursor-pointer" onClick={openModal}>Logout</h3>
             </div>
-            <Modal isOpen={open} onClose={closeModal}>
-                <div className="py-5 bg-white ">
+            <Modal isOpen={open} onClose={closeModal} >
+                <div className="py-5 bg-white">
                     <p className="text-center">Are you sure you want to logout?</p>
                     <div className="flex flex-row justify-around mt-5">
                         <Button primary className="cursor-pointer" onClick={handleLogout}>Yes</Button>

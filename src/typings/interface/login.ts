@@ -15,7 +15,7 @@ export interface AuthResponse {
     [x: string]: string | null;
     id: string;
     email: string;
-    fullName: string;
+    fullname: string;
     accessToken: string;
     refreshToken: string;
 }

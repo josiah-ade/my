@@ -147,10 +147,28 @@ export async function getGroupAccount(id: string): Promise<IGroupAccount[]> {
     });
 }
 
-export async function getsingleGroupContact(id: string, groupId: string): Promise<Participant[]> {
+export async function getGroupDetails(id: string, groupId: string): Promise<IGroupAccount> {
   return axios
-    .get<Participant[]>(`/account/${id}/groups/${groupId}`)
-    .then((response: AxiosResponse<Participant[]>) => {
+    .get<IGroupAccount>(`/account/${id}/groups/${groupId}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch(handleError);
+  // .catch((e) => {
+  //   const message = e.response?.data?.message || "Network Error";
+  //   if (Array.isArray(message)) {
+  //     const error = message.join("\n");
+  //     console.log({ error });
+  //     throw new Error(error);
+  //   }
+  //   throw new Error(message);
+  // });
+}
+
+export async function getGroupContacts(id: string, groupId: string): Promise<ContactAccount[]> {
+  return axios
+    .get<ContactAccount[]>(`/account/${id}/groups/${groupId}/contacts`)
+    .then((response) => {
       return response.data;
     })
     .catch(handleError);

@@ -1,21 +1,22 @@
 import { Menu } from "@/typings/interface/component/layout/menu";
 import { MdOutlineFormatAlignJustify } from "react-icons/md";
 import { UserRoutes } from "./routes.const";
+import { FaHashtag } from "react-icons/fa";
 
 export const AutomationMenus: Menu[] = [
   {
     title: "Lists Automations",
     id: "1",
-    icon: MdOutlineFormatAlignJustify,
+    icon:FaHashtag,
     path: `${UserRoutes.LIST_AUTOMATION}`,
-    disabled: true,
+    disabled: false,
   },
   {
     title: "Group Automations",
     id: "2",
-    icon: MdOutlineFormatAlignJustify,
+    icon: FaHashtag,
     path: `${UserRoutes.GROUP_AUTOMATION}`,
-    disabled: true,
+    disabled: false,
   },
   {
     title: "Group Templates",

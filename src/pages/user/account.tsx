@@ -21,7 +21,9 @@ export default function AccountPage() {
           <section className="flex justify-between items-center">
             <div>
               <h1 className="text-[1.3rem] leading-7 font-bold text-black">Manage Accounts</h1>
-              <p className="text-gray-600 leading-7 text-[0.9rem]">Link your Whatsapp accounts here</p>
+              <p className="text-gray-600 leading-7 text-[0.9rem]">
+                Link your Whatsapp accounts here
+              </p>
             </div>
             <div>
               <Button onClick={() => setModal(true)} primary icon={<Plus />}>
@@ -35,12 +37,18 @@ export default function AccountPage() {
               <div className="">
                 <p className="font-semibold text-gray-900 leading-6">Link your WhatsApp account</p>
                 <p className="text-sm text-gray-600 mt-1">
-                  Please update/verify your information before <br /> <strong>13th July 2023 </strong> to unlock level
-                  benefits
+                  Please update/verify your information before <br />{" "}
+                  <strong>13th July 2023 </strong> to unlock level benefits
                 </p>
               </div>
               <div className="mt-4 lg:mt-0">
-                <Image src="/whatsapp-img.png" alt="WhatsApp Logo" objectFit="contain" width={100} height={100} />
+                <Image
+                  src="/whatsapp-img.png"
+                  alt="WhatsApp Logo"
+                  objectFit="contain"
+                  width={100}
+                  height={100}
+                />
               </div>
             </section>
             <section className="px-4 py-4 mt-4 lg:mt-0 w-full  border-2 border-[#F7F9F] rounded-lg">

@@ -53,7 +53,9 @@ export default function TabContent(props: { currentAccount: IAccount; onClose: (
   }, [qrData?.expire]);
 
   const isConnected = (error as Error)?.message?.includes("authenticated");
-
+ const handleRetry=()=>{
+  
+ }
   return (
     <div className="max-w-md whitespace-break-spaces mx-auto bg-white p-6 rounded-lg">
       {!isConnected ? (
@@ -68,7 +70,26 @@ export default function TabContent(props: { currentAccount: IAccount; onClose: (
           </p>
           <div className="flex items-center justify-center mb-4">
             <div className=" px-4 py-2 rounded-md text-xl font-mono">
-              {qrData?.base64 ? <Image src={qrData.base64} alt="qr" width={200} height={300} /> : <></>}
+            {loading ? (
+                  <>
+                    loading...
+                  </>
+                ) : error ? (
+                  <>
+                   <button onClick={handleRetry}>Retry</button>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="px-4 py-2 rounded-md text-xl font-mono">
+                      {qrData?.base64 ? (
+                        <Image src={qrData.base64} alt="QR Code" width={200} height={300} />
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
+                )}
+              {/* {qrData?.base64 ? <Image src={qrData.base64} alt="qr" width={200} height={300} /> : <></>} */}
             </div>
           </div>
         </>

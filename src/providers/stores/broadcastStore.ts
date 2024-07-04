@@ -1,3 +1,4 @@
+import { IAutomationContact } from "@/typings/interface/automation";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { create } from "zustand";
 
@@ -14,3 +15,4 @@ export const useBroadcastStore = create<BroadcastStore>((set) => ({
     }));
   },
 }));
+

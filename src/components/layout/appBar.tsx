@@ -5,6 +5,7 @@ import profile from "../../assets/profile.png";
 import Image from "next/image";
 import { useState } from "react";
 import DropdownMenu from "../common/dropdown/dropdown";
+import { useAuthContext } from "@/providers/context/auth";
 
 interface Props {
   onToggle: () => void;
@@ -14,6 +15,7 @@ export default function AppBar(props: Props) {
   const currentMenuItem = useActiveMenu();
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
+  const {auth} =useAuthContext()
 
 
   return (
@@ -49,8 +51,8 @@ export default function AppBar(props: Props) {
         <div className=" hidden md:flex items-center gap-2 cursor-pointer" onClick={toggleDropdown}>
           <Image src={profile} alt="profile" />
           <div className="text-xs">
-            <h4 className="font-bold">David Eskor</h4>
-            <p>eek@gmail.com</p>
+            <h4 className="font-bold">{auth?.fullname}</h4>
+            <p>{auth?.email}</p>
           </div>
           <div className="">
             <DropdownMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />

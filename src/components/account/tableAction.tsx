@@ -51,6 +51,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
     options: { errorConfig: { title: "Failed to delete account" } },
   });
+ 
 
   const { mutate: disconnectAccount } = useDisconnectAccount({
     onSuccess: () => handleSuccess("Account disconnected successfully", "Your account was disconnected successfully"),

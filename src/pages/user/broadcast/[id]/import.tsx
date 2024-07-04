@@ -13,8 +13,10 @@ import { useGetBroadcastContact } from "@/providers/hooks/query/getcontact";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { useBroadcastStore } from "@/providers/stores/broadcastStore";
 import { useAccountStore } from "@/providers/stores/accountStore";
+import { useParams } from "next/navigation";
 
 export default function ImportContacts() {
+  const {id} = useParams() ?? {}
   const accounts = useAccountStore((state) => state.accounts);
   const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists>();
 
@@ -31,6 +33,7 @@ export default function ImportContacts() {
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value);
   };
+    const listIndex = broadcastList.findIndex((val) => val.id == id);
 
   const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
     accounts
@@ -41,7 +44,7 @@ export default function ImportContacts() {
         setAccountSelectedId(item.id);
       });
   };
-
+ 
   const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!broadcastList?.length) return;
     const index = e.currentTarget.value;
@@ -75,6 +78,7 @@ export default function ImportContacts() {
                 </Button>
               </div>
             </div>
+
             <div
               className={`grid ${
                 selectedValue === "whatsapp" ? "md:grid-cols-4" : "md:grid-cols-3"
@@ -108,7 +112,7 @@ export default function ImportContacts() {
                       Select account
                     </option>
                     {accounts?.map((item, idx) => (
-                      <option value={item.phoneNumber} key={item.id} className="px-2">
+                      <option value={item.phoneNumber  } key={item.id} className="px-2">
                         {item?.phoneNumber}
                       </option>
                     ))}
@@ -120,6 +124,7 @@ export default function ImportContacts() {
                 <label className="block text-gray-900 font-semibold leading-8 text-sm">Select Broadcast List</label>
                 <select
                   onChange={updateSelectedBroadcastList}
+                  defaultValue={listIndex}
                   className="w-full p-2 border border-gray-700 rounded focus:outline-none"
                 >
                   <option value="default" className="hidden">

@@ -166,7 +166,7 @@ export default function SendBroadast() {
           <div>
             <MessageForm onChange={updateFormState} formValue={formData.text} onFileUpload={handleFileUpload} />
             <div className="">
-              <Button disabled={!isValid} onClick={handleIsOpen} primary className="px-4 py-2 rounded w-full">
+              <Button onClick={handleIsOpen} primary className="px-4 py-2 rounded w-full">
                 Proceed
               </Button>
             </div>
