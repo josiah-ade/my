@@ -1,12 +1,3 @@
-export interface IAutomation{
-    list:string,
-    account:string,
-    automationType:string,
-    time:string,
-    daytorun:string,
-    status:string,
-    timedelivery:string
-}
 export interface IAutomationContact {
         accountId: string;
         id: string;
@@ -17,6 +8,11 @@ export interface IAutomationContact {
         status: string;
         tagCondition: string;
 }   
+export interface IAutomation extends IAutomationContact{
+    id: string;
+    accountId:string;
+}
+
 
 export interface ICreateAutomationList {
     accountId: string;

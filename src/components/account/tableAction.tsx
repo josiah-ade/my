@@ -22,6 +22,7 @@ interface ModalItems {
   link: boolean;
   add: boolean;
   confirmation: boolean;
+  pair:boolean;
 }
 
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
@@ -35,6 +36,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     link: false,
     add: false,
     confirmation: false,
+    pair:false
   });
 
   const actionLookup = {
@@ -104,7 +106,9 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     {
       label: "Link with Pairing Code",
       icon: <Home />,
-      content: <PairQrcode />,
+      content: currentAccount?.id ? ( <PairQrcode currentAccount={currentAccount} onClose={()=>handleCloseModal("link")}/> ) : (
+        <></>
+      ),
     },
     {
       label: "Link with QR Code",

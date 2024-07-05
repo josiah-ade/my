@@ -75,7 +75,7 @@ export default function AddExistingList(props: IProps) {
           <p className="text-[1rem] text-wrap pr-4 ">
             {selectedContacts.length} contacts you have selected would be added to an existing broadcast list{" "}
           </p>
-        </div>
+        </div> 
         <div className={`mt-5 relative `}>
           <label className="font-bold">Select List</label>
           <br></br>

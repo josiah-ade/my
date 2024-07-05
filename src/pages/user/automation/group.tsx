@@ -70,30 +70,33 @@ export default function GroupAutomation(){
     {field: "status", title: "Status",},
     {field: "timedelivery", title: "Time Delivery",
       // action: { component: AutomationTableActionComponent,  },
+      // action: { component: AutomationTableActionComponent,  },
     },
   ];
 
-  const data:IAutomation[]=[
-    {
-      list: "Buyers",
-      account: "+234 967 654 4457",
-      automationType: "Day 12",
-      time: "14:32 GMT+1",
-      daytorun: "Day 12",
-      status: "Active",
-      timedelivery: "",
-    },
-    {
-      list: "Buyers",
-      account: "+234 967 654 4457",
-      automationType: "Day 12",
-      time: "14:32 GMT+1",
-      daytorun: "Day 12",
-      status: "Active",
-      timedelivery: "",
-    }
-  ]
-  console.log("automation",data)
+  // const data:IAutomation[]=[
+  //   {
+  //     list: "Buyers",
+  //     account: "+234 967 654 4457",
+  //     automationType: "Day 12",
+  //     time: "14:32 GMT+1",
+  //     daytorun: "Day 12",
+  //     status: "Active",
+  //     timedelivery: "",
+  //   },
+  //   {
+  //     list: "Buyers",
+  //     account: "+234 967 654 4457",
+  //     automationType: "Day 12",
+  //     time: "14:32 GMT+1",
+  //     daytorun: "Day 12",
+  //     status: "Active",
+  //     timedelivery: "",
+  //   }
+  // ]
+
+  const data:IAutomation[] = []
+  
 
     return(
         <UserLayout>

@@ -3,7 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import {  IconType } from "react-icons";
 import { TableHeaderActionProp } from "@/typings/interface/component/table";
-import { IAutomation, IAutomationContact } from "@/typings/interface/automation";
+import {  IAutomationContact } from "@/typings/interface/automation";
 
 
 interface IDPRops {

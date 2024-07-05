@@ -13,6 +13,8 @@ export default function AccountPage() {
   const [modal, setModal] = useState(false);
 
   const { data: accounts } = useGetUsersAcount({ loadingConfig: { displayLoader: true } });
+  const currentAccountCount = accounts?.length ?? 0;
+  const maxAccountLimit = 10; 
 
   return (
     <>
@@ -54,7 +56,9 @@ export default function AccountPage() {
             <section className="px-4 py-4 mt-4 lg:mt-0 w-full  border-2 border-[#F7F9F] rounded-lg">
               <div className="rounded-lg">
                 <p className="text-[0.9] text-gray-500 font-bold">Account Usage</p>
-                <p className="text-[1rem] font-bold text-gray-900 mt-1">0/1</p>
+                <p className="text-[1rem] font-bold text-gray-900 mt-1">
+                {currentAccountCount}/{maxAccountLimit}
+                </p>
               </div>
               <div className="mt-8">
                 <Button primary>Upgrade</Button>

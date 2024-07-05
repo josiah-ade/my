@@ -18,6 +18,7 @@ import { ConfirmationProp } from "@/typings/interface/component/modal/confirmati
 import { UserRoutes } from "@/core/const/routes.const";
 import { NotificationType } from "@/core/enum/notification";
 import useNotificationStore from "@/providers/stores/notificationStore";
+import { BroadcastTableAction } from "@/core/enum/broadcast";
 
 interface ModalItems {
   confirmation: boolean;
@@ -36,6 +37,13 @@ export default function User() {
     onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
     options: { errorConfig: { title: "Failed to delete account" } },
   });
+
+  const actionLookup = {
+    ["empty"]: (item: IBroadcastLists) => handleEmpty(item),
+    [BroadcastTableAction.delete]: (item: IBroadcastLists) => handleDelete(item),
+    ["edit"]: (item: IBroadcastLists) => handleOpenModal("edit"),
+    ["import"]: (item: IBroadcastLists) => router.push(`${UserRoutes.BROADCAST}/${item.id}/import`),
+  };
 
   const handleSuccess = (title: string, text: string) => {
     setNotification({
@@ -86,16 +94,10 @@ export default function User() {
     handleOpenModal("confirmation");
   };
 
-  const actionLookup = {
-    ["empty"]: (item: IBroadcastLists) => handleEmpty(item),
-    ["delete"]: (item: IBroadcastLists) => handleDelete(item),
-    ["edit"]: (item: IBroadcastLists) => handleOpenModal("edit"),
-    ["import"]: (item: IBroadcastLists) => router.push(`${UserRoutes.BROADCAST}/${item.id}/import`),
-  };
-
+ 
   const handleAction = (action: string, item: IBroadcastLists) => {
     setCurrentBroadcast({ ...item });
-    actionLookup[action as keyof typeof actionLookup](item);
+    actionLookup[action as keyof typeof BroadcastTableAction](item);
   };
 
   const headers: TableHeader<IBroadcastLists>[] = [

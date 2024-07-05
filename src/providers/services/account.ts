@@ -7,6 +7,7 @@ import {
   ContactAccount,
   IGroupAccount,
   Participant,
+  IPairing,
 } from "@/typings/interface/account";
 import { IGenericStatusResponse } from "@/typings/interface/api";
 import axios, { AxiosResponse } from "axios";
@@ -83,6 +84,22 @@ export async function getQrCodeUserAccount(id: string): Promise<IFileData> {
   return axios
     .get<IFileData>(`/account/${id}/qr_code`)
     .then((response: AxiosResponse<IFileData>) => {
+      return response.data;
+    })
+    .catch((e) => {
+      const message = e.response?.data?.message || "Network Error";
+      if (Array.isArray(message)) {
+        const error = message.join("\n");
+        console.log({ error });
+        throw new Error(error);
+      }
+      throw new Error(message);
+    });
+}
+export async function getpairingCodeUserAccount(accountId: string): Promise<IPairing> {
+  return axios
+    .get<IPairing>(`/account/${accountId}/paring_code`)
+    .then((response: AxiosResponse<IPairing>) => {
       return response.data;
     })
     .catch((e) => {

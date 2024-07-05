@@ -1,5 +1,5 @@
 import { handleError } from "@/components/common/exception/serviceexception";
-import { IAutomation, IAutomationContact, ICreateAutomationList } from "@/typings/interface/automation";
+import {  IAutomationContact, ICreateAutomationList } from "@/typings/interface/automation";
 import axios, { AxiosResponse } from "axios";
 
 

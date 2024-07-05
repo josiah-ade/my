@@ -49,6 +49,7 @@ export default function Whatsapp(props: whatsappNumber) {
           text={`Import WhatsApp Phone Contacts`}
           title={`import contact details from your whatsapp account`}
           contactAcount={contactAcount ?? []}
+          addContact={false}
           btnText={`Import contacts`}
         />
       </section>

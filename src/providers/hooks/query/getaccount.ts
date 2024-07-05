@@ -7,6 +7,7 @@ import {
   getUsercontactAccount,
   getGroupDetails,
   getGroupContacts,
+  getpairingCodeUserAccount,
 } from "@/providers/services/account";
 import {
   ContactAccount,
@@ -14,6 +15,7 @@ import {
   IContact,
   IFileData,
   IGroupAccount,
+  IPairing,
   Participant,
   UserStatus,
 } from "@/typings/interface/account";
@@ -50,6 +52,17 @@ export function useGetQrcodeUsersAcount(id: string) {
     callback: () => getQrCodeUserAccount(id),
   };
   return useGetResourcesQuery(qrcode, {
+    retry: false,
+    cacheTime: 0,
+    loadingConfig: { displayLoader: false },
+  });
+}
+export function useGetPairingcodeUsersAcount(id: string) {
+  const pairingCode: IQueryArgs<string, IPairing> = {
+    key: ["pair_code", { id }],
+    callback: () => getpairingCodeUserAccount(id),
+  };
+  return useGetResourcesQuery(pairingCode, {
     retry: false,
     cacheTime: 0,
     loadingConfig: { displayLoader: false },

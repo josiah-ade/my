@@ -8,7 +8,7 @@ import UserLayout from "@/layout/user";
 import { CiHome } from "react-icons/ci";
 import Table from "@/components/table";
 import { TableHeader } from "@/typings/interface/component/table";
-import { IAutomation, IAutomationContact } from "@/typings/interface/automation";
+import {  IAutomationContact, ICreateAutomationList } from "@/typings/interface/automation";
 import { IoSearchOutline } from "react-icons/io5";
 import { useRouter } from "next/router"
 import AccountTableActionComponent from "@/components/account/tableAction";
@@ -16,19 +16,21 @@ import AutomationTableActionComponent from "@/components/automation/tableaction"
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
 import ConfirmationModal from "@/components/account/deleteConfirmationModal";
 import { useGetUserAutomation } from "@/providers/hooks/query/automation";
-
-
-
-
-const defaultValue: ICreateBroadcastMessage = {
-    list: [],
-    accountId: "",
-    text: "",
-    type: "",
-    tags: [],
-    excludeList: [],
-    isTest: false,
-  };
+import EmptyState from "@/components/common/empty/empty";
+import { useAutomationStore } from "@/providers/stores/automation";
+ 
+const defaultValue: ICreateAutomationList = {
+  accountId: "",
+  type: "",
+  tags: [],
+  typeValue: 0,
+  time: "",
+  timeZone: "",
+  status: "",
+  tagCondition: "",
+  files: [],
+  broadCastListId: ""
+};
   interface ModalItems {
     confirmation: boolean;
     edit: boolean;
@@ -43,14 +45,14 @@ export default function UserAutomation(){
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
   const [currentAutomation, setCurrentAutomation] = useState<IAutomationContact>();
   const[showTable, setShowTable]=useState(true)
-    const [formData, setFormData] = useState<ICreateBroadcastMessage>({ ...defaultValue });
+    const [formData, setFormData] = useState<ICreateAutomationList>({ ...defaultValue });
     const accounts = useAccountStore((state) => state.accounts);
+    const automationType = useAutomationStore((state) => state.automation);
     const [selectAllState, setSelectAllState] = useState(false);
     const broadcastList = useBroadcastStore((state) => state.broadcasts);
     const [selectedList, setSelectedList] = useState<(IBroadcastLists & { selected?: boolean })[]>([...broadcastList]);
     const router = useRouter()
     const {data: automationLists}=useGetUserAutomation()
-    console.log("hi automation",automationLists)
   
   const handleOpenModal = (key: keyof ModalItems) => {
     setModal((val) => ({ ...val, [key]: true }));
@@ -130,17 +132,18 @@ export default function UserAutomation(){
       action: { component: AutomationTableActionComponent, props: { clickHandler: handleAction }  },
     },
   ];
-  const automation: IAutomationContact[] = automationLists?.map((item) => ({
-    accountId: item.accountId ?? "",
-    id: item.id ?? "",
-    broadCastListId: item.broadCastListId ?? "",
-    type: item.type ?? "",
-    time: item.time ?? "",
-    timeZone: item.timeZone ?? "",
-    status: item.status ?? "",
-    tagCondition: item.tagCondition ?? "",
-  })) ?? []
-  console.log("rctvybuino",automation)
+  // const automation: IAutomationContact[] = automationLists?.map((item) => ({
+  //   accountId: item.accountId ?? "",
+  //   id: item.id ?? "",
+  //   broadCastListId: item.broadCastListId ?? "",
+  //   type: item.type ?? "",
+  //   time: item.time ?? "",
+  //   timeZone: item.timeZone ?? "",
+  //   status: item.status ?? "",
+  //   tagCondition: item.tagCondition ?? "",
+  // })) ?? []
+
+  
 
     return(
         <UserLayout>
@@ -177,31 +180,40 @@ export default function UserAutomation(){
                 handleChange(e);
                 handleSelectAll(true);
               }}
-              value={formData.type}
-              name="type"
+              value={formData.broadCastListId}
+              name="broadCastListId"
               className="w-full p-2 border border-gray-700 rounded focus:outline-none"
             >
-              <option>Filter by List</option>
-              <option value="list">List</option>
-              <option value="group">Groups</option>
+               <option className="px-2">{automationType.length ? "Filter by List" : "No List available"}</option>
+              {automationType.map((automationType) => (
+                <option key={automationType.id} value={automationType.id}>
+                  {automationType.broadCastListId}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex-1">
-      <select onChange={handleChange} className="w-full p-2 border border-gray-700 rounded focus:outline-none text-">
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            <div className="flex items-center">
-              {option.icon && <span className="mr-2">{option.icon}</span>}
-              {option.label}
-            </div>
-          </option>
-        ))}
+      <select 
+      value={formData.type} onChange={handleChange} className="w-full p-2 border border-gray-700 rounded focus:outline-none text-">
+      <option className="px-2">{automationType.length ? "Filter by Automation Type" : "No Type available"}</option>
+              {automationType.map((automationType) => (
+                <option key={automationType.id} value={automationType.id}>
+                  {automationType.type}
+                </option>
+              ))}
       </select>
           </div>
              
           <div className="flex-1">
-            <select onChange={handleChange} className="w-full p-2 border border-gray-700 rounded focus:outline-none">
-              <option value="">Filter by Status</option>
+            <select onChange={handleChange} 
+            className="w-full p-2 border border-gray-700 rounded focus:outline-none"
+            value={formData.status}>
+            <option className="px-2">{automationType.length ? "Filter by List" : "No List available"}</option>
+              {automationType.map((automationType) => (
+                <option key={automationType.id} value={automationType.id}>
+                  {automationType.status}
+                </option>
+              ))}
             </select>
           </div>
           </div>
@@ -216,8 +228,10 @@ export default function UserAutomation(){
     </div>
         </section>
         <div className="mt-2">
-          {automation ?
-          <Table headers={headers} data={automation} /> : <></>}
+          {automationLists && automationLists?.length > 0 ?
+          <Table headers={headers} data={automationLists} /> : <>
+          <EmptyState />
+          </>}
         </div>
         </div>
         <ConfirmationModal

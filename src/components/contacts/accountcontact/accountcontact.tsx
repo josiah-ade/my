@@ -13,6 +13,7 @@ import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
 import Button from "@/components/button/button";
 import { GoPlus } from "react-icons/go";
 import EmptyState from "@/components/common/empty/empty";
+import AddExistingBroadcastList from "@/components/broadcast/addtext";
 
 interface IProps {
   title?: string;
@@ -20,10 +21,11 @@ interface IProps {
   btnText?: string;
   isGroup?: boolean;
   contactAcount: ContactAccount[];
+  addContact?:boolean
 }
 
 export default function AccountForm(props: IProps) {
-  const { title, isGroup, contactAcount, btnText } = props;
+  const { title, isGroup, contactAcount, btnText, addContact=true } = props;
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams() ?? {};
   const { data: broadcastList = [] } = useGetUserBroadcast({ loadingConfig: { displayLoader: false } });
@@ -88,7 +90,9 @@ export default function AccountForm(props: IProps) {
         )}
       </div>
       <Modal isOpen={isOpen} onClose={handleClose}>
-        <Tabs tabs={tabs} />
+        {addContact?<Tabs tabs={tabs} />:<div>
+          {/* <AddExistingBroadcastList selectedContacts={selectedContacts} handleClose={handleClose} broadcastList={}  /> */}
+          </div>}
       </Modal>
     </div>
   );

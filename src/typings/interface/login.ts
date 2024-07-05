@@ -9,13 +9,19 @@ export interface ILogin{
     email:string,
     password:string,
 }
-
+  interface Business {
+    name: string;
+    line: string;
+    id: string;
+  }
 
 export interface AuthResponse {
-    [x: string]: string | null;
+    token:string;
     id: string;
     email: string;
     fullname: string;
     accessToken: string;
     refreshToken: string;
+    business: Business;
+
 }

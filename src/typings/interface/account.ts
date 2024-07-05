@@ -70,3 +70,6 @@ export interface IGroupAccount {
   id: string;
   totalContacts: number;
 }
+export interface IPairing{
+  code:string
+}
