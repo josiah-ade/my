@@ -30,7 +30,7 @@ export async function getBroadcastDetail(id: string): Promise<IBroadcastLists> {
 
 export async function deleteBroadcast(broadcastId: string): Promise<IBroadcastLists> {
   return axios
-    .delete<IBroadcastLists>(`/broadcast/${broadcastId}/contacts`)
+    .delete<IBroadcastLists>(`/broadcast/${broadcastId}`)
     .then((response) => response.data)
     .catch(handleError);
 }

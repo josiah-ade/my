@@ -8,11 +8,11 @@ import { useLimitsStore } from "@/providers/stores/statisticsStore";
 export function useUsersStats(options: IQueryOptions = {}) {
   const setLimitStore = useLimitsStore((state) => state.setLimitStore);
   const usersStats: IQueryArgs<Limit, ILimitData> = {
-    key: ["stats", ],
+    key: ["stats",],
     callback: () => getStatsDetails().then((res) => {
       setLimitStore(res);
       return res;
     }),
   };
-  return useGetResourcesQuery(usersStats);
+  return useGetResourcesQuery(usersStats, options);
 }

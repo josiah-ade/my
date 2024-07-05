@@ -30,7 +30,7 @@ export function useEmptyBroadcastList({ onSuccess, onError, options }: IMutation
 
 export function useDeleteBroadcast({ onSuccess, onError, options }: IMutationHook) {
   const mutationData: IMutationArgs<string, IBroadcastLists> = {
-    key: ["deletebroacast"],
+    key: ["broadcast"],
     callback: (id: string) => deleteBroadcast(id),
     onSuccess: onSuccess,
     onError: onError,
@@ -41,7 +41,7 @@ export function useDeleteBroadcast({ onSuccess, onError, options }: IMutationHoo
 
 export function useEditBroadCastId({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<IBroadcastLists, IBroadcastLists> = {
-    key: ["editbroadcast"],
+    key: ["broadcast"],
     callback: ( data:IBroadcastLists) => editBroadcastId(data),
     onSuccess: onSuccess,
     onError: onError,
