@@ -17,7 +17,7 @@ export const UserMenus: Menu[] = [
   {
     title: "Account",
     id: "2",
-    icon: LuUsers2   ,
+    icon: LuUsers2,
     path: "/user/account",
   },
   {
@@ -29,21 +29,21 @@ export const UserMenus: Menu[] = [
   {
     title: "Team",
     id: "2",
-    icon: LuUsers2 ,
+    icon: LuUsers2,
     path: "/user/teams",
     disabled: true,
   },
   {
     title: "Subscriptions",
     id: "2",
-    icon: FaHashtag ,
+    icon: FaHashtag,
     path: "/user/subscrition",
   },
   {
     title: "Forms",
     id: "6",
     icon: MdOutlineFormatAlignJustify,
-    disabled: true,
+    // disabled: true,
     path: "/user/form",
   },
   {
