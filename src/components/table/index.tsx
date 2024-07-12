@@ -29,7 +29,6 @@ export default function Table<T>(props: TableProps<T>) {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(pagination?.currentPage ?? 1);
   const itemsPerPage = pagination?.pageSize ?? 10;
-  
 
   const enableCheckbox = !!checkboxAction;
 
@@ -82,7 +81,7 @@ export default function Table<T>(props: TableProps<T>) {
   };
 
   function filterData(data: T[], searchQuery: string): T[] {
-    if (currentPage != 1) setCurrentPage(1)
+    if (currentPage != 1) setCurrentPage(1);
     return data?.filter((item) =>
       Object.values(item as Record<keyof T, T>).some((val) =>
         String(val).toLowerCase().includes(searchQuery.toLowerCase())

@@ -14,9 +14,10 @@ import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { useBroadcastStore } from "@/providers/stores/broadcastStore";
 import { useAccountStore } from "@/providers/stores/accountStore";
 import { useParams } from "next/navigation";
+import GoogleSignIn from "@/components/Test";
 
 export default function ImportContacts() {
-  const {id} = useParams() ?? {}
+  const { id } = useParams() ?? {};
   const accounts = useAccountStore((state) => state.accounts);
   const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists>();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
@@ -32,10 +33,11 @@ export default function ImportContacts() {
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value);
+    console.log(event.target.value, "now");
   };
-    const listIndex = broadcastList.findIndex((val) => val.id == id);
 
   const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    // setAccountSelected(event.target.value);
     accounts
       ?.filter((item) => {
         return item.phoneNumber === event.target.value;
@@ -44,7 +46,7 @@ export default function ImportContacts() {
         setAccountSelectedId(item.id);
       });
   };
- 
+
   // const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
   //   if (!broadcastList?.length) return;
   //   const index = e.currentTarget.value;
@@ -59,10 +61,10 @@ export default function ImportContacts() {
     }
     const selectedList = broadcastList[parseInt(index, 10)];
     setSelectedBroadcastList(selectedList);
-    setIsButtonEnabled(true); 
+    setIsButtonEnabled(true);
   };
   useEffect(() => {
-    if (listIndex !== undefined  && broadcastList?.[listIndex]) {
+    if (listIndex !== undefined && broadcastList?.[listIndex]) {
       setSelectedBroadcastList(broadcastList[listIndex]);
       setIsButtonEnabled(true);
     }
@@ -80,7 +82,7 @@ export default function ImportContacts() {
                 <p className=" text-gray-600 text-base">Import all your contacts here</p>
               </div>
               <div className="flex items-center space-x-2 mt-8 md:mt-0">
-                <Button className="border-2 border-gray-700 rounded-lg">
+                {/* <Button className="border-2 border-gray-700 rounded-lg">
                   <div className="flex items-center space-x-2">
                     <span>
                       <Image src="/goggle-icon.png" alt="goggle" width={20} height={20} />
@@ -92,10 +94,10 @@ export default function ImportContacts() {
                       </a>
                     </span>
                   </div>
-                </Button>
+                </Button> */}
+                <GoogleSignIn />
               </div>
             </div>
-
             <div
               className={`grid ${
                 selectedValue === "whatsapp" ? "md:grid-cols-4" : "md:grid-cols-3"
@@ -129,7 +131,7 @@ export default function ImportContacts() {
                       Select account
                     </option>
                     {accounts?.map((item, idx) => (
-                      <option value={item.phoneNumber  } key={item.id} className="px-2">
+                      <option value={item.phoneNumber} key={item.id} className="px-2">
                         {item?.phoneNumber}
                       </option>
                     ))}
@@ -170,8 +172,10 @@ export default function ImportContacts() {
 
         {selectedValue !== "" ? (
           <section>
-            {selectedValue === "manually" && <Manually selectedValue={selectedBroadcastList} contacts={contacts} isButtonEnabled={isButtonEnabled}/>}
-            {selectedValue === "google" && <Google />}
+            {selectedValue === "google" && <Google id={accountSelectedId} />}
+            {selectedValue === "manually" && (
+              <Manually selectedValue={selectedBroadcastList} contacts={contacts} isButtonEnabled={isButtonEnabled} />
+            )}
             {selectedValue === "whatsapp" && accountSelectedId && <Whatsapp id={accountSelectedId} />}
             {selectedValue === "csv" && <CSV />}
           </section>

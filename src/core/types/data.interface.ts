@@ -22,7 +22,6 @@ export interface AccountData {
   serviceStatus: string;
 }
 
-
 export interface ContactList {
   name: string;
   phone: string;
@@ -30,11 +29,11 @@ export interface ContactList {
 }
 
 export interface WhatsappContact {
-  phoneNumber: string;
-  name: string;
-  country: string;
-  avatar: string;
-  selected: boolean;
+  phoneNumber?: string;
+  name?: string;
+  country?: string;
+  avatar?: string;
+  selected?: boolean;
 }
 
 export interface NewCustomerType {

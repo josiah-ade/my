@@ -69,14 +69,7 @@ export default function Manually(props: IProps) {
             <div>
               <label className="block text-gray-900 font-semibold leading-8 text-sm">
                 Contact Name*
-                <input
-                  onChange={handleChange}
-                  value={contactListData.contactName}
-                  type="text"
-                  name="contactName"
-                  className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-                  placeholder="input name"
-                />
+                <input onChange={handleChange} name="contactName" placeholder="input name" />
               </label>
             </div>
             <div>

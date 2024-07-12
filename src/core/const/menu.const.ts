@@ -45,7 +45,7 @@ export const UserMenus: Menu[] = [
     title: "Forms",
     id: "6",
     icon: MdOutlineFormatAlignJustify,
-    disabled: true,
+    disabled: false,
     path: `${UserRoutes.FORM}`,
   },
   {

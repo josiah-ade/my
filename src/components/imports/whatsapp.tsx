@@ -24,6 +24,8 @@ export default function Whatsapp(props: whatsappNumber) {
   //   const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
   // }, [id]);
 
+  console.log(contactAcount);
+
   return (
     <section className="mt-20">
       {/* <section className="flex justify-between items-center">

@@ -19,6 +19,9 @@ import { UserRoutes } from "@/core/const/routes.const";
 import { NotificationType } from "@/core/enum/notification";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { BroadcastTableAction } from "@/core/enum/broadcast";
+import { GoogleLogin } from "@react-oauth/google";
+import Home from "@/components/Test";
+import useGoogleAuthState from "@/providers/stores/googleAuthStore";
 import { useLimitsStore } from "@/providers/stores/statisticsStore";
 
 interface ModalItems {
@@ -29,6 +32,8 @@ interface ModalItems {
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 
 export default function User() {
+  const { Google } = useGoogleAuthState();
+  console.log("zustand google", Google);
   const setNotification = useNotificationStore((state) => state.displayNotification);
   const [currentBroadcast, setCurrentBroadcast] = useState<IBroadcastLists>();
   const router = useRouter();
@@ -75,8 +80,9 @@ export default function User() {
       "Delete Broadcast List",
       "Are you certain you want to delete the broadcast list? This will permanently erase all related contacts and information associated with this list",
       "Delete BroadcastList",
-      () => { handleCloseModal("confirmation"),
-      deleteBroadcast(item.id)}
+      () => {
+        handleCloseModal("confirmation"), deleteBroadcast(item.id);
+      }
     );
   };
 
@@ -96,7 +102,6 @@ export default function User() {
     handleOpenModal("confirmation");
   };
 
- 
   const handleAction = (action: string, item: IBroadcastLists) => {
     setCurrentBroadcast({ ...item });
     actionLookup[action as keyof typeof BroadcastTableAction](item);
@@ -135,10 +140,19 @@ export default function User() {
             <p className="text[0.9rem]">View all your contacts here</p>
           </section>
           <section className="flex items-center space-x-2">
-            <Button className="text-gray-600 px-4 py-2 border-2 border-gray-400 rounded-lg flex items-center">
+            {/* <Button className="text-gray-600 px-4 py-2 border-2 border-gray-400 rounded-lg flex items-center">
               <img src="/goggle-icon.png" alt="Google" className="w-5 h-5 mr-2" />
               Connect Google Contacts
-            </Button>
+            </Button> */}
+            {/* <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            /> */}
+            <Home />
             <Button
               className="bg-orange-500 text-white px-4 py-2 rounded-lg"
               icon={<Plus />}
@@ -155,9 +169,8 @@ export default function User() {
                 <Image src="/warning.jpg" alt="waring" width={30} height={30} />
               </div>
               <div>
-                <h3 className="font-medium">Broadcast List Usage {" "}
-                   { stats?.total_broadcastLists ?? 0}/{stats?.broadcastLists ?? 0}
-
+                <h3 className="font-medium">
+                  Broadcast List Usage {stats?.total_broadcastLists ?? 0}/{stats?.broadcastLists ?? 0}
                 </h3>
                 <p className="text-gray-500">
                   Your current plan limits you to {broadcastList?.length} broadcast list, upgrade to create more lists
