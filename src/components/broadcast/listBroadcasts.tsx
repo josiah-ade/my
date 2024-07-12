@@ -9,6 +9,7 @@ import Link from "next/link";
 import { dateFormatter } from "@/core/formatters/dateFormatter";
 import { DisplayDataTimeFormatOptions } from "@/core/const/formatOptions";
 import { UserRoutes } from "@/core/const/routes.const";
+import ListPopover from "../common/dropdown/tabledropdown";
 
 function Img() {
   return (
@@ -35,10 +36,14 @@ function ViewButton(props: TableHeaderActionProp<IMessageResponse>) {
   );
 }
 
+
 export default function ListBroadcasts() {
+  const { data, loading } = useGetBroadcastMessages();
+  // const broadcastDetails = data?.map((detail) => detail?.broadcastDetail?.listName);
+
   const headers: TableHeader<IMessageResponse>[] = [
     { title: "Message", field: "text" },
-    { title: "Lists", field: "lists" },
+    { title: "Lists", field: "lists", action:{component:(props)=> <ListPopover  {...props}/>} },
     { title: "In Queue", field: "inQueue", component: (props) => <StatusDisplay {...props} field="pending" /> },
     { title: "Delivered", field: "delivered", component: (props) => <StatusDisplay {...props} field="sent" /> },
     { title: "Failed", field: "failed", component: (props) => <StatusDisplay {...props} field="failed" /> },
@@ -60,12 +65,16 @@ export default function ListBroadcasts() {
     },
   ];
 
-  const { data, loading } = useGetBroadcastMessages();
+  
+  const MAX_MESSAGE_LENGTH = 15;
+  const truncatedData = data?.map((item) => ({ ...item, text: item.text.slice(0, MAX_MESSAGE_LENGTH) + (item.text.length > MAX_MESSAGE_LENGTH ? '....' : '') }))
 
   return (
     <div className="mt-8">
-      {!loading && data?.length ? (
-        <Table data={data} headers={headers} />
+      {!loading && truncatedData?.length ? (
+        <Table
+          data={truncatedData}
+          headers={headers} />
       ) : (
         <Default
           src="/phone.jpg"

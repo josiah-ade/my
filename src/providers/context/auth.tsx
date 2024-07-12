@@ -18,7 +18,7 @@ interface AuthContextType {
   auth?: AuthResponse;
   AdminLogin: (data: ILogin) => void;
   SignUpApi: (data: ISignUp) => void;
-  logout: () => void;
+  logout: (callback?: Function) => void;
   islLoggedIn: boolean;
   loaded: boolean;
 }
@@ -110,9 +110,10 @@ export default function Context({ children }: { children: ReactNode }) {
     return Promise;
   };
 
-  const logout = () => {
+  const logout = (callback?: Function) => {
     localStorage.removeItem("token");
     setILoggedIn(false);
+    callback && callback();
   };
 
   // const UpdateToken = async (): Promise<Session | undefined> => {

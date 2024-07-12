@@ -1,23 +1,24 @@
 import PageHeading from "@/components/common/subheadings";
-import { ICreateBroadcastMessage } from "@/typings/interface/message";
 import { useEffect, useState } from "react";
 import { useAccountStore } from "@/providers/stores/accountStore";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { useBroadcastStore } from "@/providers/stores/broadcastStore";
 import UserLayout from "@/layout/user";
-import { CiHome } from "react-icons/ci";
 import Table from "@/components/table";
 import { TableHeader } from "@/typings/interface/component/table";
 import {  IAutomationContact, ICreateAutomationList } from "@/typings/interface/automation";
 import { IoSearchOutline } from "react-icons/io5";
 import { useRouter } from "next/router"
-import AccountTableActionComponent from "@/components/account/tableAction";
 import AutomationTableActionComponent from "@/components/automation/tableaction";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
 import ConfirmationModal from "@/components/account/deleteConfirmationModal";
 import { useGetUserAutomation } from "@/providers/hooks/query/automation";
 import EmptyState from "@/components/common/empty/empty";
 import { useAutomationStore } from "@/providers/stores/automation";
+import { useDeleteAutomation } from "@/providers/hooks/mutate/automation";
+import useNotificationStore from "@/providers/stores/notificationStore";
+import { NotificationType } from "@/core/enum/notification";
+import { BroadcastTableAction } from "@/core/enum/broadcast";
  
 const defaultValue: ICreateAutomationList = {
   accountId: "",
@@ -36,12 +37,8 @@ const defaultValue: ICreateAutomationList = {
     edit: boolean;
   }
   let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
-  const options = [
-    { value: '', label: 'Filter by Automation Type', icon: <CiHome /> },
-    { value: '', label: 'Same Day joined', icon: <CiHome /> },
-    { value: '', label: 'Immediately joined', icon: <CiHome /> },
-  ];
 export default function UserAutomation(){
+  const setNotification = useNotificationStore((state) => state.displayNotification);
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
   const [currentAutomation, setCurrentAutomation] = useState<IAutomationContact>();
   const[showTable, setShowTable]=useState(true)
@@ -52,7 +49,20 @@ export default function UserAutomation(){
     const broadcastList = useBroadcastStore((state) => state.broadcasts);
     const [selectedList, setSelectedList] = useState<(IBroadcastLists & { selected?: boolean })[]>([...broadcastList]);
     const router = useRouter()
-    const {data: automationLists}=useGetUserAutomation()
+    const {data: getautomationLists}=useGetUserAutomation()
+    console.log(getautomationLists)
+    const { mutate: deleteAutomation } = useDeleteAutomation({
+      onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
+      options: { errorConfig: { title: "Failed to delete automation list" } },
+    });
+
+    const handleSuccess = (title: string, text: string) => {
+      setNotification({
+        type: NotificationType.success,
+        content: { title, text },
+      });
+      handleCloseModal("confirmation");
+    };
   
   const handleOpenModal = (key: keyof ModalItems) => {
     setModal((val) => ({ ...val, [key]: true }));
@@ -75,7 +85,6 @@ export default function UserAutomation(){
   const updateFormState = ({ name, value }: { name: string; value: string }) => {
     setFormData({ ...formData, [name]: value });
   };
-
     const handleSelectAll = (clear = false) => {
     setSelectAllState((val) => {
       setSelectedList((list) =>
@@ -84,13 +93,13 @@ export default function UserAutomation(){
       return !val;
     });
   };
-
   const handleDelete = (item: IAutomationContact) => {
     openConfirmationModal(
       "Delete Automation List",
       "Are you certain you want to delete the automation list? This will permanently erase all related contacts and information associated with this list",
       "Delete Automation",
-      () => handleCloseModal("confirmation")
+      () => { handleCloseModal("confirmation"),
+        deleteAutomation(item.id)}
     );
   };
   const handleEdit = (item: IAutomationContact) => {
@@ -101,7 +110,7 @@ export default function UserAutomation(){
       "Edit Automation",
       () => {
         handleCloseModal("confirmation");
-        router.push(`/user/automation/createautomation`);
+        router.push(`/user/automation/createautomation${item.id}`);
       }
     );
   };
@@ -112,22 +121,22 @@ export default function UserAutomation(){
   };
 
   const actionLookup = {
-    ["delete"]: (item: IAutomationContact) => handleDelete(item),
+    [BroadcastTableAction.delete]: (item: IAutomationContact) => handleDelete(item),
     ["edit"]: (item: IAutomationContact) => handleEdit(item),
   };
 
   const handleAction = (action: string, item: IAutomationContact) => {
     setCurrentAutomation({ ...item });
-    actionLookup[action as keyof typeof actionLookup](item);
+    actionLookup[action as keyof typeof BroadcastTableAction](item);
   };
 
   const headers: TableHeader<IAutomationContact>[] = [
-    { field: "broadCastListId", title: "List", icon: "/chevron.jpg" },
     { field: "accountId", title: "Account", icon: "/chevron.jpg" },
+    { field: "broadCastListId", title: "List", icon: "/chevron.jpg" },
     { field: "type", title: "Automation Type", icon: "/chevron.jpg" },
     {field: "time", title: "Time",},
     {field: "daytorun", title: "Day to Run",},
-    {field: "status", title: "Status",},
+    {field: "status", title: "Status",  type: "chip"},
     {field: "timedelivery", title: "Time Delivery",
       action: { component: AutomationTableActionComponent, props: { clickHandler: handleAction }  },
     },
@@ -228,8 +237,8 @@ export default function UserAutomation(){
     </div>
         </section>
         <div className="mt-2">
-          {automationLists && automationLists?.length > 0 ?
-          <Table headers={headers} data={automationLists} /> : <>
+          {getautomationLists  ?
+          <Table headers={headers} data={getautomationLists} /> : <>
           <EmptyState />
           </>}
         </div>

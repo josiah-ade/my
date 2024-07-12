@@ -11,12 +11,13 @@ import { IBroadcastContact, IBroadcastLists } from "@/typings/interface/broadcas
 interface IProps {
   selectedValue?: IBroadcastLists;
   contacts?: IBroadcastContact[];
+  isButtonEnabled: boolean;
 }
 
 const defaultValue: Contact = { contactName: "", contactEmail: "", contactPhoneNumber: "" };
 
 export default function Manually(props: IProps) {
-  const { selectedValue } = props;
+  const { selectedValue, isButtonEnabled  } = props;
   const [contactListData, setContactListData] = useState<Contact>({ ...defaultValue });
 
   const setNotification = useNotificationStore((state) => state.setDisplay);
@@ -99,7 +100,8 @@ export default function Manually(props: IProps) {
             </div>
             <div className="mt-2">
               <Button
-                disabled={Object.values(contactListData).length < 1}
+                // disabled={Object.values(contactListData).length < 1}
+                disabled={!isButtonEnabled}
                 type="submit"
                 className="w-full flex justify-center  border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-400 hover:bg-gray-500"
               >

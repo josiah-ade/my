@@ -22,6 +22,7 @@ import { BroadcastTableAction } from "@/core/enum/broadcast";
 import { GoogleLogin } from "@react-oauth/google";
 import Home from "@/components/Test";
 import useGoogleAuthState from "@/providers/stores/googleAuthStore";
+import { useLimitsStore } from "@/providers/stores/statisticsStore";
 
 interface ModalItems {
   confirmation: boolean;
@@ -38,6 +39,7 @@ export default function User() {
   const router = useRouter();
   const { data: broadcastList } = useGetUserBroadcast();
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
+  const stats = useLimitsStore((state) => state.limit);
   const { mutate: deleteBroadcast } = useDeleteBroadcast({
     onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
     options: { errorConfig: { title: "Failed to delete account" } },
@@ -167,9 +169,11 @@ export default function User() {
                 <Image src="/warning.jpg" alt="waring" width={30} height={30} />
               </div>
               <div>
-                <h3 className="font-medium">Broadcast List Usage (0/1)</h3>
+                <h3 className="font-medium">
+                  Broadcast List Usage {stats?.total_broadcastLists ?? 0}/{stats?.broadcastLists ?? 0}
+                </h3>
                 <p className="text-gray-500">
-                  Your current plan limits you to 1 broadcast list, upgrade to create more lists
+                  Your current plan limits you to {broadcastList?.length} broadcast list, upgrade to create more lists
                 </p>
               </div>
             </div>

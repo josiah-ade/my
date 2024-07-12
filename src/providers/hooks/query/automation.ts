@@ -7,7 +7,7 @@ import { useAutomationStore } from "@/providers/stores/automation";
 export function useGetUserAutomation(options: IQueryOptions = {}) {
   const setAutomation = useAutomationStore((state) => state.setAutomation);
     const users: IQueryArgs<IAutomationContact, IAutomationContact[]> = {
-      key: ["broadcast"],
+      key: ["automation"],
       callback: () =>getAutomationList().then((res) => {
         setAutomation(res);
                 return res;

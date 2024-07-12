@@ -1,5 +1,5 @@
 import { handleError } from "@/components/common/exception/serviceexception";
-import {  IAutomationContact, ICreateAutomationList } from "@/typings/interface/automation";
+import {  IAutomation, IAutomationContact, ICreateAutomationList } from "@/typings/interface/automation";
 import axios, { AxiosResponse } from "axios";
 
 
@@ -20,5 +20,11 @@ export async function getAutomationList(): Promise<IAutomationContact[]> {
       .then((response: AxiosResponse<IAutomationContact[]>) => {
         return response.data;
       })
+      .catch(handleError);
+  }
+  export async function deleteAutomation(automationId: string): Promise<IAutomation> {
+    return axios
+      .delete<IAutomation>(`/automation/list/${automationId}`)
+      .then((response) => response.data)
       .catch(handleError);
   }

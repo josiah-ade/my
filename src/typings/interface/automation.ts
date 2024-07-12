@@ -10,7 +10,7 @@ export interface IAutomationContact {
 }   
 export interface IAutomation extends IAutomationContact{
     id: string;
-    accountId:string;
+    status:string;
 }
 
 
@@ -18,12 +18,12 @@ export interface ICreateAutomationList {
     accountId: string;
     broadCastListId: "list" | "group"| "";
     type: "immediately" | "sameday" | "all" | "";
-    typeValue: number;
-    time: string;
-    timeZone: string;
+    typeValue?: number;
+    time?: string;
+    timeZone?: string;
     status: "active" | "inactive"  | ""; 
-    tagCondition: string;
-    tags: string[];
-    files: Record<string, any>[]; 
+    tagCondition?: string;
+    tags?: string[];
+    files?: Record<string, any>[]; 
   }
   

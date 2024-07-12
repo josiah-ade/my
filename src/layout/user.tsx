@@ -27,9 +27,8 @@ export default function UserLayout(props: PropsWithChildren) {
     setLogoutModal((val) => !val);
   };
 
-  const handleLogout = (event: React.MouseEvent) => {
-    logout();
-    // router.push("/");
+  const handleLogout = () => {
+    logout(toggleLogoutModal);
   };
 
   return (
@@ -54,7 +53,7 @@ export default function UserLayout(props: PropsWithChildren) {
         <div className="py-5 bg-white">
           <p className="text-center">Are you sure you want to logout?</p>
           <div className="flex flex-row justify-around mt-5">
-            <Button primary className="cursor-pointer" onClick={logout}>
+            <Button primary className="cursor-pointer" onClick={handleLogout}>
               Yes
             </Button>
             <Button secondary className="cursor-pointer" onClick={toggleLogoutModal}>
