@@ -8,6 +8,7 @@ import { IMessageResponse } from "@/typings/interface/message";
 import Link from "next/link";
 import { dateFormatter } from "@/core/formatters/dateFormatter";
 import { DisplayDataTimeFormatOptions } from "@/core/const/formatOptions";
+import { UserRoutes } from "@/core/const/routes.const";
 
 function Img() {
   return (
@@ -28,7 +29,7 @@ function StatusDisplay(props: TableHeaderActionProp<IMessageResponse> & { field:
 
 function ViewButton(props: TableHeaderActionProp<IMessageResponse>) {
   return (
-    <Link href={`/user/broadcast-message/${props.item?.id}`}>
+    <Link href={`${UserRoutes.BROADCAST_MESSAGE}/${props.item?.id}`}>
       <p className="text-primary-base font-semibold text-sm cursor-pointer"> View </p>
     </Link>
   );

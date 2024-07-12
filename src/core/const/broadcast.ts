@@ -1,30 +1,26 @@
 import { Menu } from "@/typings/interface/component/layout/menu";
-import { MdOutlineDashboard } from "react-icons/md";
-import { RiContactsLine } from "react-icons/ri";
-import { LuUsers2 } from "react-icons/lu";
-import { VscAccount } from "react-icons/vsc";
 import { MdOutlineFormatAlignJustify } from "react-icons/md";
-import { IoSettingsOutline } from "react-icons/io5";
-import { FaHashtag } from "react-icons/fa";
+import { UserRoutes } from "./routes.const";
 
 export const BroadcastMenus: Menu[] = [
   {
     title: "Broadcast List",
     id: "1",
     icon: MdOutlineFormatAlignJustify,
-    path: "/user/broadcast",
+    path: `${UserRoutes.BROADCAST}`,
   },
   {
     title: "Broadcast Messages",
     id: "2",
     icon: MdOutlineFormatAlignJustify,
-    path: "/user/broadcast-message",
+    path: `${UserRoutes.BROADCAST_MESSAGE}`,
   },
   {
-    title: "Broadcast Reports",
+    title: "Broadcast Templates",
     id: "3",
     icon: MdOutlineFormatAlignJustify,
-    path: "/usersss/",
+    path: `${UserRoutes.BROADCAST_TEMPLATE}`,
+    disabled: true,
   },
 ];
 

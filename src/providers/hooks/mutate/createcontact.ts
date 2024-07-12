@@ -32,7 +32,7 @@ export function useCreateContactFromNewList({ onSuccess, onError, options }: IMu
 
 export function useEditBroadcastContact({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<IBroadcastContact, IBroadcastContact> = {
-    key: ["broadcast_contact"],
+    key: ["broadcastContact"],
     callback: (data) => editContact(data),
     onSuccess: onSuccess,
     onError: onError,
@@ -43,7 +43,7 @@ export function useEditBroadcastContact({ onSuccess, onError, options }: IMutati
 
 export function useDeleteBroadcastContact({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<IBroadcastContact, IGenericStatusResponse> = {
-    key: ["broadcast_contact"],
+    key: ["broadcastContact"],
     callback: (data) => deleteContact(data),
     onSuccess: onSuccess,
     onError: onError,

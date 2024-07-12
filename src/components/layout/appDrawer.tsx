@@ -10,6 +10,7 @@ import { FaTimes } from "react-icons/fa";
 interface Props {
   display: boolean;
   onToggle: () => void;
+  onLogout?: () => void;
 }
 
 export default function AppDrawer({ display, onToggle }: Props) {
@@ -25,16 +26,13 @@ export default function AppDrawer({ display, onToggle }: Props) {
         ${display ? "top-0 h-screen" : ""} `}
       >
         <div className="flex mb-8 lg:hidden justify-between">
-          <h2 className="text-2xl lg:text-2xl font-semibold">
-            {currentMenuItem?.title || "Dashboard"}
-          </h2>
+          <h2 className="text-2xl lg:text-2xl font-semibold">{currentMenuItem?.title || "Dashboard"}</h2>
           <div className="flex justify-end cursor-pointer" onClick={onToggle}>
             <FaTimes />
           </div>
         </div>
         {UserMenus.map((item) => {
-          const isActive =
-            currentMenuItem && currentMenuItem.path != "" && item.path == currentMenuItem.path;
+          const isActive = currentMenuItem && currentMenuItem.path != "" && item.path == currentMenuItem.path;
           return (
             <Link href={item.disabled ? "#" : item.path} key={item.path}>
               <div
@@ -45,10 +43,7 @@ export default function AppDrawer({ display, onToggle }: Props) {
               >
                 <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
                   {item.icon ? (
-                    <item.icon
-                      size={18}
-                      className={`${isActive ? " text-primary " : "text-primary-4"}`}
-                    />
+                    <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
                   ) : null}
                 </span>
                 <span className="pl-2">{item.title}</span>
@@ -63,11 +58,9 @@ export default function AppDrawer({ display, onToggle }: Props) {
           <p className="text-primary-7 px-4">Broadcast</p>
           {BroadcastMenus.map((item) => {
             const isActive =
-              currentBroadcastItem &&
-              currentBroadcastItem.path != "" &&
-              item.path == currentBroadcastItem.path;
+              currentBroadcastItem && currentBroadcastItem.path != "" && item.path == currentBroadcastItem.path;
             return (
-              <Link href={item.path} key={item.path}>
+              <Link href={item.disabled ? "#" : item.path} key={item.path}>
                 <div
                   className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF]
                     ${item.disabled ? "cursor-not-allowed" : "cursor-pointer"}
@@ -76,10 +69,7 @@ export default function AppDrawer({ display, onToggle }: Props) {
                 >
                   <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
                     {item.icon ? (
-                      <item.icon
-                        size={18}
-                        className={`${isActive ? " text-primary " : "text-primary-4"}`}
-                      />
+                      <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
                     ) : null}
                   </span>
                   <span className="pl-2">{item.title}</span>
@@ -95,11 +85,9 @@ export default function AppDrawer({ display, onToggle }: Props) {
           <p className="text-primary-7 px-4">Automation</p>
           {AutomationMenus.map((item) => {
             const isActive =
-              currentAutomationItem &&
-              currentAutomationItem.path != "" &&
-              item.path == currentAutomationItem.path;
+              currentAutomationItem && currentAutomationItem.path != "" && item.path == currentAutomationItem.path;
             return (
-              <Link href={item.path} key={item.path}>
+              <Link href={item.disabled ? "#" : item.path} key={item.path}>
                 <div
                   className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF]
                   ${item.disabled ? "cursor-not-allowed" : "cursor-pointer"}
@@ -108,10 +96,7 @@ export default function AppDrawer({ display, onToggle }: Props) {
                 >
                   <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
                     {item.icon ? (
-                      <item.icon
-                        size={18}
-                        className={`${isActive ? " text-primary " : "text-primary-4"}`}
-                      />
+                      <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
                     ) : null}
                   </span>
                   <span className="pl-2">{item.title}</span>
@@ -122,10 +107,7 @@ export default function AppDrawer({ display, onToggle }: Props) {
         </div>
       </div>
       {display ? (
-        <div
-          onClick={onToggle}
-          className="opacity-30 fixed inset-0 z-10 bg-black lg:hidden h-screen"
-        ></div>
+        <div onClick={onToggle} className="opacity-30 fixed inset-0 z-10 bg-black lg:hidden h-screen"></div>
       ) : null}
     </>
   );

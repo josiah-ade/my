@@ -1,7 +1,7 @@
 export interface ICreateBroadcastList {
   listName: string;
   description: string;
-  dayNumber?: number;
+  automationDay?: number;
 }
 
 export interface IBroadcastLists extends ICreateBroadcastList {
@@ -22,4 +22,5 @@ export interface IBroadcastContact {
 export interface IEditBroadcastContact {
   contactName: string;
   contactEmail: string;
+  automationDay: number;
 }

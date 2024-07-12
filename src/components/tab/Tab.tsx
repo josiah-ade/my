@@ -22,6 +22,8 @@ export default function Tabs({ tabs, searchPlaceholder, onTabChange }: TabCompon
     onTabChange && onTabChange(activeTab);
   }, [activeTab]);
 
+
+
   return (
     <div className="w-full ">
       <div className="flex  w-full items-center justify-center">

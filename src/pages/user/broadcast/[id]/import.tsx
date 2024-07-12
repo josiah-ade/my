@@ -1,7 +1,6 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent } from "react";
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
 import Button from "@/components/button/button";
-import ContactsList from "@/components/contactlist/contactlist";
 import Default from "@/components/default/default";
 import UserLayout from "@/layout/user";
 import Image from "next/image";
@@ -9,30 +8,28 @@ import Manually from "@/components/imports/manually";
 import Google from "@/components/imports/google";
 import Whatsapp from "@/components/imports/whatsapp";
 import CSV from "@/components/imports/csv";
-import NewCustomer from "@/components/customer/newcustomer";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useGetUsersAcount } from "@/providers/hooks/query/getaccount";
-import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
-import { IBroadcastList } from "@/typings/interface/broadcasts";
+import { useGetBroadcastContact } from "@/providers/hooks/query/getcontact";
+
+import { IBroadcastLists } from "@/typings/interface/broadcasts";
+import { useBroadcastStore } from "@/providers/stores/broadcastStore";
+import { useAccountStore } from "@/providers/stores/accountStore";
+import { useParams } from "next/navigation";
+import GoogleSignIn from "@/components/Test";
 
 export default function ImportContacts() {
-  const { data: accounts } = useGetUsersAcount({ loadingConfig: { displayLoader: true } });
-  const filterConnectedAccount = accounts?.filter((item) => {
-    return item.status === "connected";
-  });
-
-  const router = useRouter();
-  const [showTable, setShowTable] = useState(true);
-  const [source, setSelectContact] = useState(true);
-  const [contactList, setContactList] = useState(true);
-  const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastList>();
+  const { id } = useParams() ?? {};
+  const accounts = useAccountStore((state) => state.accounts);
+  const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists>();
 
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [broadcastSelectedValue, setBroadcastSelectedValue] = useState<string>("");
-  const { data: broadcastList = [] } = useGetUserBroadcast({ loadingConfig: { displayLoader: false } });
 
+  const broadcastList = useBroadcastStore((state) => state.broadcasts);
   const [accountSelectedId, setAccountSelectedId] = useState<string>("");
+
+  const { data: contacts } = useGetBroadcastContact(selectedBroadcastList?.id ?? "", {
+    enabled: !!selectedBroadcastList?.id && selectedValue == "manually",
+  });
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value);
@@ -49,11 +46,17 @@ export default function ImportContacts() {
         setAccountSelectedId(item.id);
       });
   };
+  const listIndex = broadcastList.findIndex((val) => val.id == id);
 
-  const handleChangeCustomer = (event: ChangeEvent<HTMLSelectElement>) => {
-    setBroadcastSelectedValue(event.target.value);
-    // router.push(`/user/broadcast/${event.target.value}`);
-  };
+  // const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  //   accounts
+  //     ?.filter((item) => {
+  //       return item.phoneNumber === event.target.value;
+  //     })
+  //     .map((item) => {
+  //       setAccountSelectedId(item.id);
+  //     });
+  // };
 
   const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!broadcastList?.length) return;
@@ -71,10 +74,9 @@ export default function ImportContacts() {
               <div>
                 <h2 className="text-xl font-bold text-black">Import Contacts into a broadcast list</h2>
                 <p className=" text-gray-600 text-base">Import all your contacts here</p>
-                {/* <p>{selectedValue}</p> */}
               </div>
               <div className="flex items-center space-x-2 mt-8 md:mt-0">
-                <Button className="border-2 border-gray-700 rounded-lg">
+                {/* <Button className="border-2 border-gray-700 rounded-lg">
                   <div className="flex items-center space-x-2">
                     <span>
                       <Image src="/goggle-icon.png" alt="goggle" width={20} height={20} />
@@ -86,7 +88,8 @@ export default function ImportContacts() {
                       </a>
                     </span>
                   </div>
-                </Button>
+                </Button> */}
+                <GoogleSignIn />
               </div>
             </div>
             <div
@@ -121,15 +124,11 @@ export default function ImportContacts() {
                     <option value="" className="hidden">
                       Select account
                     </option>
-                    {filterConnectedAccount?.map((item, idx) => (
+                    {accounts?.map((item, idx) => (
                       <option value={item.phoneNumber} key={item.id} className="px-2">
                         {item?.phoneNumber}
                       </option>
                     ))}
-                    {/* <option value="manually">Import Manually</option>
-                  <option value="whatsapp">Whatsapp Phone Contacts</option>
-                  <option value="google">Google Contacts</option>
-                  <option value="csv">Import CSV</option> */}
                   </select>
                 </div>
               )}
@@ -138,6 +137,7 @@ export default function ImportContacts() {
                 <label className="block text-gray-900 font-semibold leading-8 text-sm">Select Broadcast List</label>
                 <select
                   onChange={updateSelectedBroadcastList}
+                  defaultValue={listIndex}
                   className="w-full p-2 border border-gray-700 rounded focus:outline-none"
                 >
                   <option value="default" className="hidden">
@@ -148,9 +148,6 @@ export default function ImportContacts() {
                       {item.listName}
                     </option>
                   ))}
-                  {/* <option value="customer">
-                    New Customers
-                  </option> */}
                 </select>
                 <p className="text-sm text-gray-500 mt-1">The list you are importing into?</p>
               </div>
@@ -158,6 +155,7 @@ export default function ImportContacts() {
                 <label className="block text-gray-900 font-semibold leading-8 text-sm">Day Number on Automation</label>
                 <input
                   type="number"
+                  name=""
                   className="w-full p-2 border border-gray-700 rounded focus:outline-none"
                   defaultValue={0}
                 />
@@ -167,95 +165,20 @@ export default function ImportContacts() {
         </div>
 
         {selectedValue !== "" ? (
-          //   <section className="mt-20 overflow-x-hidden">
-          //     <div className="block lg:flex ">
-          //       <div className="bg-white w-full lg:w-[40%]">
-          //         <h2 className="text-xl font-bold">Import Contacts manually</h2>
-          //         <p className="text-gray-600 text-base">
-          //           Manually type contact details to be imported
-          //         </p>
-          //         <form className="space-y-4 mt-8">
-          //           <div>
-          //             <label className="block text-gray-900 font-semibold leading-8 text-sm">
-          //               Contact Name*
-          //               <input
-          //                 type="text"
-          //                 className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-          //                 placeholder="input name"
-          //               />
-          //             </label>
-          //           </div>
-          //           <div>
-          //             <label className="block text-gray-900 font-semibold leading-8 text-sm">
-          //               Phone Number*
-          //               <input
-          //                 type="text"
-          //                 className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-          //                 placeholder="input phone"
-          //               />
-          //             </label>
-          //           </div>
-          //           <div>
-          //             <label className="block text-gray-900 font-semibold leading-8 text-sm">
-          //               Contact email
-          //               <input
-          //                 type="email"
-          //                 className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-          //                 placeholder="input email"
-          //               />
-          //             </label>
-          //           </div>
-          //           <div className="mt-2">
-          //             <Button
-          //               disabled
-          //               type="submit"
-          //               className="w-full flex justify-center  border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-400 hover:bg-gray-500"
-          //             >
-          //               Import
-          //             </Button>
-          //           </div>
-          //         </form>
-          //       </div>
-          //       <div
-          //         className={`bg-gray-50 w-full flex ${
-          //           contactList ? "" : "items-center justify-center"
-          //         }  lg:w-[60%] min-h-40  md:ml-8`}
-          //       >
-          //         {contactList ? (
-          //           <section className="p-4 w-full">
-          //             <ContactsList />
-          //           </section>
-          //         ) : (
-          //           <section>
-          //             <Default
-          //               src="/book.png"
-          //               alt="No Source Selelcted"
-          //               height={100}
-          //               width={100}
-          //               mainText="No Source Selelcted"
-          //               subText="Select a source you are importing your contacts from to begin"
-          //             />
-          //           </section>
-          //         )}
-          //       </div>
-          //     </div>
-          //   </section>
           <section>
-            {selectedValue === "manually" && <Manually selectedValue={selectedBroadcastList} />}
-            {selectedValue === "google" && <Google />}
+            {selectedValue === "manually" && <Manually selectedValue={selectedBroadcastList} contacts={contacts} />}
+            {selectedValue === "google" && <Google id={accountSelectedId} />}
             {selectedValue === "whatsapp" && accountSelectedId && <Whatsapp id={accountSelectedId} />}
             {selectedValue === "csv" && <CSV />}
-            {/* {selectedValue === "default" && <Manually />} */}
-            {/* {selectedValue === "customer" && <NewCustomer />} */}
           </section>
         ) : (
           <section className="my-20">
             <Default
               src="/book.png"
-              alt="No Source Selelcted"
+              alt="No Source Selected"
               height={100}
               width={100}
-              mainText="No Source Selelcted"
+              mainText="No Source Selected"
               subText="Select a source you are importing your contacts from to begin"
             />
           </section>

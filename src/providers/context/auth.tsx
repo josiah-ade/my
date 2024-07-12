@@ -7,6 +7,7 @@ import { ReactElement, ReactNode, createContext, useContext, useEffect, useState
 import { useGetUsersAcount } from "../hooks/query/getaccount";
 import { useGetUserBroadcast } from "../hooks/query/getbroadcast";
 import { useQueryClient } from "react-query";
+import { useUsersStats } from "../hooks/query/statistics";
 
 interface Session {
   accessToken: string;
@@ -36,10 +37,11 @@ export default function Context({ children }: { children: ReactNode }) {
   const [islLoggedIn, setILoggedIn] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [auth, setAuth] = useState<AuthResponse>();
-
+  // const { data: stats } = useUsersStats()
 
   const {} = useGetUsersAcount({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
   const {} = useGetUserBroadcast({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
+  const {} = useUsersStats({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
 
   useEffect(() => {
     let storedToken = localStorage.getItem("token");
@@ -63,11 +65,11 @@ export default function Context({ children }: { children: ReactNode }) {
       .post<AuthResponse>("/auth/signup", data)
       .then((res) => {
         const data = res.data;
-        localStorage.setItem("token", JSON.stringify(res.data));
-        setToken(res.data.token);
+        localStorage.setItem("token", JSON.stringify(res?.data));
+        setToken(res.data?.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
-        router.push("/");
+        router.push("/user");
       })
       .catch((e) => {
         const message = e.response?.data?.message || "Network Error";

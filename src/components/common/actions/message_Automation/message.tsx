@@ -13,7 +13,7 @@ export default function Automations(){
             <div className="mt-2"><MdOutlineFlashAuto size={20}   className="bg-primary-2 rounded "/></div>
                 <div>
                 <h3 className="font-bold">Create Automations</h3>
-                <p className="text-primary-6">Find a doctor and specialization</p>
+                <p className="text-primary-6">Make things happen on autopilot</p>
                 </div>
             </div>
             <div>

@@ -2,20 +2,26 @@ export interface ISignUp{
     email:string,
     password:string,
     fullname:string,
-    businessline:string,
-    phoneNumber:string,
+    line:string,
+    name:string,
 }
 export interface ILogin{
     email:string,
     password:string,
 }
-
+  interface Business {
+    name: string;
+    line: string;
+    id: string;
+  }
 
 export interface AuthResponse {
-    [x: string]: string | null;
+    token:string;
     id: string;
     email: string;
-    fullName: string;
+    fullname: string;
     accessToken: string;
     refreshToken: string;
+    business: Business;
+
 }

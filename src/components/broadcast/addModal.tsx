@@ -51,7 +51,6 @@ export function CreateBroadcastModal({ isOpen, onClose, broadcastDetail }: IProp
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    //validate form state
     isEditing ? editBroadcast({ ...broadcastDetail, ...formData }) : createBroadcast(formData);
   };
 

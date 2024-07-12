@@ -7,6 +7,7 @@ import { IconType } from "react-icons";
 interface IProps extends IContact {
   displayTotal?: boolean;
   totalKey?: string;
+  total?: number;
   icon?: IconType;
 }
 
@@ -30,7 +31,9 @@ export default function TabLists(props: IProps) {
           </div>
           <div className="flex flex-row justify-between capitalize flex-wrap">
             <p className="text-gray-500 text-xs">Total {totalKey}</p>
-            <p className="text-success font-bold">3 {totalKey}</p>
+            <p className="text-success font-bold">
+              {props.total} {totalKey}
+            </p>
           </div>
         </>
       ) : null}

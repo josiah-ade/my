@@ -5,7 +5,9 @@ import {
   getSingleAccount,
   getUserStatusAccount,
   getUsercontactAccount,
-  getsingleGroupContact,
+  getGroupDetails,
+  getGroupContacts,
+  getpairingCodeUserAccount,
 } from "@/providers/services/account";
 import {
   ContactAccount,
@@ -13,6 +15,7 @@ import {
   IContact,
   IFileData,
   IGroupAccount,
+  IPairing,
   Participant,
   UserStatus,
 } from "@/typings/interface/account";
@@ -54,6 +57,17 @@ export function useGetQrcodeUsersAcount(id: string) {
     loadingConfig: { displayLoader: false },
   });
 }
+export function useGetPairingcodeUsersAcount(id: string) {
+  const pairingCode: IQueryArgs<string, IPairing> = {
+    key: ["pair_code", { id }],
+    callback: () => getpairingCodeUserAccount(id),
+  };
+  return useGetResourcesQuery(pairingCode, {
+    retry: false,
+    cacheTime: 0,
+    loadingConfig: { displayLoader: false },
+  });
+}
 
 export function useGetUsersStatusAcount(id: string) {
   const qrcode: IQueryArgs<string, UserStatus> = {
@@ -77,10 +91,19 @@ export function useGetGroupAcount(id: string) {
   };
   return useGetResourcesQuery(GroupAcount);
 }
-export function useGetSingleGroupContact(id: string, groupId: string) {
-  const singleGroupContact: IQueryArgs<string, Participant[]> = {
+
+export function useGetSingleGroup(id: string, groupId: string) {
+  const singleGroupContact: IQueryArgs<string, IGroupAccount> = {
     key: ["singleGroupContact", { id }],
-    callback: () => getsingleGroupContact(id, groupId),
+    callback: () => getGroupDetails(id, groupId),
+  };
+  return useGetResourcesQuery(singleGroupContact);
+}
+
+export function useGetGroupContacts(id: string, groupId: string) {
+  const singleGroupContact: IQueryArgs<string, ContactAccount[]> = {
+    key: ["singleGroupContact", { groupId }],
+    callback: () => getGroupContacts(id, groupId),
   };
   return useGetResourcesQuery(singleGroupContact);
 }

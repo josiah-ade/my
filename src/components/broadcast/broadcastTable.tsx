@@ -41,7 +41,7 @@ export default function BroadCastMessageTable({
   const router = useRouter();
 
   const handleRoute = (value: string) => {
-    router.push(`/user/broadcast-message/view-broadcast`);
+    router.push(`/user/broadcast/message/view-broadcast`);
   };
 
   return (

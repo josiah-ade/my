@@ -1,12 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../button/button";
 import Table from "../table/index";
 import { WhatsappContact } from "@/core/types/data.interface";
 import Default from "../default/default";
 import { TableHeader } from "@/typings/interface/component/table";
-export default function Google() {
+import AccountForm from "../contacts/accountcontact/accountcontact";
+import { useGetUsersContactAcount } from "@/providers/hooks/query/getaccount";
+import useGoogleAuthState from "@/providers/stores/googleAuthStore";
+import GoogleSignIn from "../Test";
+import axios from "axios";
+import { Contact } from "@/typings/interface/contacts";
+
+interface WhatsappNumber {
+  id: string;
+}
+export default function Google(props: WhatsappNumber) {
+  const { id } = props;
   const [search] = useState(true);
   const [showTable, setShowTable] = useState(true);
+  const [formatedData, setFormatedData] = useState();
+  const { Google } = useGoogleAuthState();
+  // const { data: contactAcount, loading: false } = useGetUsersContactAcount(id as string);
+
+  useEffect(() => {
+    if (Google.length > 0 && Google[0]?.accessToken != "") {
+      axios
+        .get("https://people.googleapis.com/v1/people/me/connections?personFields=names,emailAddresses,phoneNumbers", {
+          headers: {
+            Authorization: `Bearer ${Google[0]?.accessToken}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          const formatedValue = res.data.connections.map(
+            (value: { names: { displayName: string }[]; phoneNumbers: { canonicalForm: string }[] }) => {
+              return {
+                name: value.names?.[0]?.displayName ?? "..",
+                // email: item.emailAddresses[0].value,
+                phoneNumber: value.phoneNumbers?.[0]?.canonicalForm ?? "..",
+              };
+            }
+          );
+          setFormatedData(formatedValue);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [formatedData, Google.length]);
+
   const headers: TableHeader[] = [
     { field: "phoneNumber", title: "Phone Number", icon: "/chevron.jpg" },
     {
@@ -23,39 +65,9 @@ export default function Google() {
     },
   ];
 
-  const data: WhatsappContact[] = [
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png", // Replace with actual image path
-      selected: true,
-    },
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png",
-      selected: true,
-    },
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png",
-      selected: true,
-    },
-    {
-      phoneNumber: "+234 915 336 1212",
-      name: "Kobe Nuels",
-      country: "Nigeria",
-      avatar: "/path/to/avatar.png",
-      selected: true,
-    },
-  ];
   return (
     <section className="mt-20">
-      <section className="flex justify-between items-center">
+      {/* <section className="flex justify-between items-center">
         <div>
           <h2 className="text-lg font-bold">Import from Google Contacts</h2>
           <p className="text-gray-600 text-sm">Import contact details from google contacts</p>
@@ -63,9 +75,9 @@ export default function Google() {
         <div>
           <Button primary>Import</Button>
         </div>
-      </section>
+      </section> */}
 
-      <section>
+      {/* <section>
         {showTable ? (
           <Table
             //   setIsOpen={setIsOpen}
@@ -88,7 +100,16 @@ export default function Google() {
             />
           </section>
         )}
-      </section>
+      </section> */}
+      {Google[0]?.accessToken != "" ? (
+        <AccountForm
+          text={`Import from Google Contacts`}
+          title={`Import contact details from google contacts`}
+          contactAcount={formatedData ?? []}
+        />
+      ) : (
+        <GoogleSignIn />
+      )}
     </section>
   );
 }

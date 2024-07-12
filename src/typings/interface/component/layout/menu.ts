@@ -8,10 +8,22 @@ export interface Menu {
   path: string;
   disabled?: boolean;
 }
-export interface dashboard {
+export interface Limit {
   title: string;
-  id: string;
-  amount: string;
-  field?: string;
-  total: string;
+  field: keyof  ILimitData;
+  totalField: keyof  ILimitData;
+}
+export interface ILimitData {
+  leads: number;
+  total_leads: number;
+  forms: number;
+  total_forms: number;
+  automations: number;
+  total_automations: number;
+  broadcastLists: number;
+  total_broadcastLists: number;
+  chatbots: number;
+  total_chatbots: number;
+  accounts: number;
+  total_accounts: number;
 }

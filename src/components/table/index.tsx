@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useMemo } from "react";
 
 import Button from "../button/button";
 import { useRouter } from "next/navigation";
@@ -80,20 +80,28 @@ export default function Table<T>(props: TableProps<T>) {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = data?.filter((item) =>
-    Object.values(item as Record<keyof T, T>).some((val) =>
-      String(val).toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  function filterData(data: T[], searchQuery: string): T[] {
+    if (currentPage != 1) setCurrentPage(1);
+    return data?.filter((item) =>
+      Object.values(item as Record<keyof T, T>).some((val) =>
+        String(val).toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }
 
-  const sortedData = filteredData?.sort((a, b) => {
-    if (!sortColumn) return 0;
-    const aValue = a[sortColumn as keyof T];
-    const bValue = b[sortColumn as keyof T];
-    if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-    if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
-    return 0;
-  });
+  function sortData(data: T[], sortColumn: string) {
+    return data?.sort((a, b) => {
+      if (!sortColumn) return 0;
+      const aValue = a[sortColumn as keyof T];
+      const bValue = b[sortColumn as keyof T];
+      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+  }
+
+  const filteredData = useMemo(() => filterData(data, searchQuery), [data, searchQuery]);
+  const sortedData = useMemo(() => sortData(filteredData, sortColumn ?? ""), [filteredData, sortColumn, sortOrder]);
 
   // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -107,8 +115,8 @@ export default function Table<T>(props: TableProps<T>) {
 
   return (
     <section>
-      <div className="max-w-[20rem] mt-8">
-        {search ? (
+      {search ? (
+        <div className="max-w-[20rem] mt-8">
           <div className="mb-4 relative">
             <SearchIcon className="text-gray-400 mr-2 absolute top-3 left-3" />
             <input
@@ -119,11 +127,11 @@ export default function Table<T>(props: TableProps<T>) {
               className="border border-gray-300 text-sm focus:outline-none text-gray-600 rounded px-8 py-2 w-full"
             />
           </div>
-        ) : null}
-      </div>
-      <div className="md:flex items-center justify-center">
-        <div className="w-full shadow-md rounded-lg">
-          <table className="w-full overflow-x-auto divide-y divide-gray-200">
+        </div>
+      ) : null}
+      <div className="justify-center">
+        <div className="shadow-md overflow-x-auto rounded-lg">
+          <table className="w-full divide-y  border-collapse divide-gray-200">
             <thead className="bg-gray-50">
               <tr className="relative">
                 {headers.map((header, index) => (

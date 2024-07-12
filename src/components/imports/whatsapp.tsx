@@ -24,6 +24,8 @@ export default function Whatsapp(props: whatsappNumber) {
   //   const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
   // }, [id]);
 
+  console.log(contactAcount);
+
   return (
     <section className="mt-20">
       {/* <section className="flex justify-between items-center">
@@ -49,6 +51,7 @@ export default function Whatsapp(props: whatsappNumber) {
           text={`Import WhatsApp Phone Contacts`}
           title={`import contact details from your whatsapp account`}
           contactAcount={contactAcount ?? []}
+          addContact={false}
           btnText={`Import contacts`}
         />
       </section>

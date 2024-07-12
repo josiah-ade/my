@@ -13,6 +13,7 @@ import { useParams } from "next/navigation";
 import { useGetBroadcastDetail } from "@/providers/hooks/query/getbroadcast";
 import { useGetBroadcastContact } from "@/providers/hooks/query/getcontact";
 import EmptyState from "@/components/common/empty/empty";
+import { UserRoutes } from "@/core/const/routes.const";
 
 export default function NewCustomer({}) {
   const { id } = useParams() ?? {};
@@ -45,11 +46,11 @@ export default function NewCustomer({}) {
             <p className="text-gray-600 text-base"> {broadcastDetail.description} </p>
           </section>
           <section className="flex items-center space-x-6">
-            <Link href={`broadcast/${id}/import`}>
+            <Link href={`${UserRoutes.BROADCAST}/${id}/import`}>
               <Button className="border-2 border-primary text-primary text-sm">Import</Button>
             </Link>
             {/* <Link href={`broadcast-message/${id}/import`}> */}
-            <Link href={`broadcast-message`}>
+            <Link href={UserRoutes.BROADCAST_MESSAGE_SEND}>
               <Button className="py-2" primary>
                 Send Broadcast
               </Button>

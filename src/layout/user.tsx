@@ -1,12 +1,15 @@
+import Button from "@/components/button/button";
 import AppBar from "@/components/layout/appBar";
 import AppDrawer from "@/components/layout/appDrawer";
+import Modal from "@/components/modal/modal";
 import { useAuthContext } from "@/providers/context/auth";
 import { useRouter } from "next/router";
 import { PropsWithChildren, useEffect, useState } from "react";
 
 export default function UserLayout(props: PropsWithChildren) {
   const [showDrawer, setShowDrawer] = useState(false);
-  const { islLoggedIn, loaded } = useAuthContext();
+  const [logoutModal, setLogoutModal] = useState(false);
+  const { islLoggedIn, loaded, logout } = useAuthContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -19,16 +22,26 @@ export default function UserLayout(props: PropsWithChildren) {
   const toggleDrawer = () => {
     setShowDrawer((val) => !val);
   };
+
+  const toggleLogoutModal = () => {
+    setLogoutModal((val) => !val);
+  };
+
+  const handleLogout = (event: React.MouseEvent) => {
+    logout();
+    // router.push("/");
+  };
+
   return (
     <>
       {islLoggedIn ? (
         <div className="h-screen w-full">
           <div className="">
-            <AppBar onToggle={toggleDrawer} />
+            <AppBar onLogout={toggleLogoutModal} onToggle={toggleDrawer} />
           </div>
           <div className=" bg-background text-gray-900 flex flex-row gap-y-1 w-full   ">
-            <AppDrawer display={showDrawer} onToggle={toggleDrawer} />
-            <div className="flex-col mt-[5.3rem] lg:ml-[19rem]  bg-background flex gap-y-1 w-full  p-7">
+            <AppDrawer onLogout={toggleLogoutModal} display={showDrawer} onToggle={toggleDrawer} />
+            <div className="flex-col mt-[5.3rem] lg:pl-[19rem]  bg-background flex gap-y-1 w-full  p-7">
               {props.children}
             </div>
           </div>
@@ -36,6 +49,20 @@ export default function UserLayout(props: PropsWithChildren) {
       ) : (
         <></>
       )}
+
+      <Modal isOpen={logoutModal} onClose={() => setLogoutModal(false)}>
+        <div className="py-5 bg-white">
+          <p className="text-center">Are you sure you want to logout?</p>
+          <div className="flex flex-row justify-around mt-5">
+            <Button primary className="cursor-pointer" onClick={logout}>
+              Yes
+            </Button>
+            <Button secondary className="cursor-pointer" onClick={toggleLogoutModal}>
+              No
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

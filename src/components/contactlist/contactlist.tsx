@@ -1,18 +1,15 @@
-// pages/contacts-list.tsx
 import React, { useState } from "react";
-import { ContactList } from "@/core/types/data.interface";
-import { TiPencil } from "react-icons/ti";
-import { FaTrashAlt } from "react-icons/fa";
 import { Bin, Edit } from "@/core/const/icons/icons";
-import { IBroadcastContact, IBroadcastList } from "@/typings/interface/broadcasts";
+import { IBroadcastContact, IBroadcastLists } from "@/typings/interface/broadcasts";
 import { useDeleteBroadcastContact } from "@/providers/hooks/mutate/createcontact";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
 import ConfirmationModal from "../account/deleteConfirmationModal";
 import { EditBroadcastContactModal } from "../broadcast/editContactModal";
+import EmptyState from "../common/empty/empty";
 
 interface IProps {
   contacts?: IBroadcastContact[];
-  selectedValue?: IBroadcastList;
+  selectedValue: IBroadcastLists;
 }
 
 interface ContactlistModalItems {
@@ -39,20 +36,24 @@ export default function ContactsList(props: IProps) {
     },
   });
 
-  const displayConfirmation = () => {
+  const displayConfirmation = (item: IBroadcastContact) => {
     confirmationProp = {
-      title: "Delete Confirmation",
+      title: "Delete Contact",
       message: "Are you sure you want to delete this contact? This action cannot be undone.",
-      onConfirm: () => deleteContact(selected!),
+      onConfirm: () => deleteContact(item!),
     };
     handleOpenModal("delete");
   };
 
-  const handleOpenModal = (key: keyof ContactlistModalItems, value?: IBroadcastContact) => {
-    setModal((val) => ({ ...val, [key]: true }));
-    setSelected(value);
-    // console.log(value, "V");
+  const handleEdit = (item: IBroadcastContact) => {
+    setSelected(item);
+    handleOpenModal("edit");
   };
+
+  const handleOpenModal = (key: keyof ContactlistModalItems) => {
+    setModal((val) => ({ ...val, [key]: true }));
+  };
+
   const handleCloseModal = (key: keyof ContactlistModalItems) => {
     setModal((val) => ({ ...val, [key]: false }));
   };
@@ -72,9 +73,9 @@ export default function ContactsList(props: IProps) {
           } list`}</p>
           <hr className="mt-6 border-1 border-gray-700" />
         </div>
-        <ul>
-          {contacts &&
-            contacts.map((contact, index) => (
+        {contacts && contacts.length ? (
+          <ul>
+            {contacts.map((contact, index) => (
               <li key={index} className="flex justify-between py-4">
                 <div>
                   <p className="font-semibold text-base text-gray-900">{contact.name}</p>
@@ -83,25 +84,30 @@ export default function ContactsList(props: IProps) {
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <button className="text-gray-600" onClick={() => handleOpenModal("edit")}>
+                  <button className="text-gray-600" onClick={() => handleEdit(contact)}>
                     <Edit />
                   </button>
-                  <button className="text-gray-600" onClick={() => handleOpenModal("delete", contact)}>
+                  <button className="text-gray-600" onClick={() => displayConfirmation(contact)}>
                     <Bin />
                   </button>
                 </div>
               </li>
             ))}
-        </ul>
+          </ul>
+        ) : (
+          <EmptyState title="Empty List" />
+        )}
 
         <ConfirmationModal isOpen={modal.delete} onClose={() => handleCloseModal("delete")} {...confirmationProp} />
 
-        <EditBroadcastContactModal
-          key={selected?.id}
-          isOpen={modal.edit}
-          onClose={() => handleCloseModal("edit")}
-          contact={selected!}
-        />
+        {selected && (
+          <EditBroadcastContactModal
+            key={selected.id}
+            isOpen={modal.edit}
+            onClose={() => handleCloseModal("edit")}
+            contact={selected}
+          />
+        )}
       </div>
     </div>
   );

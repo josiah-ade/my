@@ -5,6 +5,7 @@ import TabLists from "@/components/contacts/tab/tabdetail";
 import { useGetGroupAcount, useGetSingleUsersAcount } from "@/providers/hooks/query/getaccount";
 import { useParams } from "next/navigation";
 import { IGroupAccount } from "@/typings/interface/account";
+import EmptyState from "@/components/common/empty/empty";
 
 export default function WhatsappList() {
   const { id } = useParams() ?? {};
@@ -21,9 +22,9 @@ export default function WhatsappList() {
           <h1 className="font-bold text-2xl"> {accountDetails?.phoneNumber ?? ""} </h1>
           <p className="mt-2">View all your groups for this account</p>
         </div>
-        <div className=" grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4 mt-5">
-          {groupAccount &&
-            groupAccount?.map((item: IGroupAccount) => (
+        {groupAccount && groupAccount.length ? (
+          <div className=" grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4 mt-5">
+            {groupAccount?.map((item: IGroupAccount) => (
               <Link
                 href={`/user/contacts/${id}/group/${item.id}`}
                 key={item.id}
@@ -33,7 +34,7 @@ export default function WhatsappList() {
                   // icon={item.icon}
                   displayTotal={false}
                   phoneNumber={item.name}
-                  description={`${item.participants.length} contacts`}
+                  description={`${item.totalContacts} contacts`}
                   id={item.id}
                   // total={item.total}
                   // totaldescription={item.totaldescription}
@@ -41,7 +42,10 @@ export default function WhatsappList() {
                 />
               </Link>
             ))}
-        </div>
+          </div>
+        ) : (
+          <EmptyState />
+        )}
       </div>
     </UserLayout>
   );

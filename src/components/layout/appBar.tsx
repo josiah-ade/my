@@ -5,42 +5,39 @@ import profile from "../../assets/profile.png";
 import Image from "next/image";
 import { useState } from "react";
 import DropdownMenu from "../common/dropdown/dropdown";
+import { useAuthContext } from "@/providers/context/auth";
 
 interface Props {
   onToggle: () => void;
+  onLogout?: () => void;
 }
 
 export default function AppBar(props: Props) {
   const currentMenuItem = useActiveMenu();
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
+  const { auth } = useAuthContext();
 
+  const handleDropdownAction = (action: string) => {
+    if (action == "logout") {
+      props.onLogout && props.onLogout();
+    }
+    setIsOpen(false);
+  };
 
   return (
     <>
       <div className="flex w-full fixed bg-white justify-between  items-center px-10 py-5 border-b ">
         <div className="flex h-full items-center gap-3 ">
           <div className="py-2 lg:hidden" onClick={props.onToggle}>
-            <svg
-              className="h-6 w-6 text-blue-3"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
+            <svg className="h-6 w-6 text-blue-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
             </svg>
           </div>
           <div className="hidden  md:flex lg:flex cursor-pointer gap-8 ">
             <Image src={logo} alt="Logo" height={200} width={100} />
             <div className="mt-2">
-              <button className="bg-primary-5 text-white rounded-2xl px-3 py-1 text-center text-sm">
-                Free plan
-              </button>
+              <button className="bg-primary-5 text-white rounded-2xl px-3 py-1 text-center text-sm">Free plan</button>
               <span className="text-primary-5 text-sm pl-2">Upgrade</span>
             </div>
             {/* <h2 className="text-xlg lg:text-2xl font-semibold"> {currentMenuItem?.title || "Dashboard"} </h2> */}
@@ -49,11 +46,13 @@ export default function AppBar(props: Props) {
         <div className=" hidden md:flex items-center gap-2 cursor-pointer" onClick={toggleDropdown}>
           <Image src={profile} alt="profile" />
           <div className="text-xs">
-            <h4 className="font-bold">David Eskor</h4>
-            <p>eek@gmail.com</p>
+            <h4 className="font-bold">{auth?.fullname}</h4>
+            <p>{auth?.email}</p>
           </div>
           <div className="">
-            <DropdownMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            {isOpen ? (
+              <DropdownMenu isOpen={isOpen} onClick={handleDropdownAction} onClose={() => setIsOpen(false)} />
+            ) : null}
           </div>
         </div>
       </div>

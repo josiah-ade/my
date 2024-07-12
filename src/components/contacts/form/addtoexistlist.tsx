@@ -16,7 +16,7 @@ interface IProps {
 const defaultCreateBroadcastFormValue: ICreateBroadcastList = {
   listName: "",
   description: "",
-  dayNumber: 0,
+  automationDay: 0,
 };
 export default function AddExistingList(props: IProps) {
   const { selectedContacts, handleClose, broadcastList } = props;
@@ -75,7 +75,7 @@ export default function AddExistingList(props: IProps) {
           <p className="text-[1rem] text-wrap pr-4 ">
             {selectedContacts.length} contacts you have selected would be added to an existing broadcast list{" "}
           </p>
-        </div>
+        </div> 
         <div className={`mt-5 relative `}>
           <label className="font-bold">Select List</label>
           <br></br>
@@ -101,11 +101,11 @@ export default function AddExistingList(props: IProps) {
           <br></br>
           <div className="mt-2">
             <input
-              name="dayNumber"
+              name="automationDay"
               autoComplete="off"
-              placeholder="Enter business email"
+              placeholder="Day Number on Automation"
               onChange={handleChange}
-              value={createBroadcastListData.dayNumber}
+              value={createBroadcastListData.automationDay}
               className="pl-[10px]  rounded-[6px] px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
             />
           </div>

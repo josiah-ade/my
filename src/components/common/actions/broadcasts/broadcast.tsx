@@ -13,7 +13,7 @@ export default function BroadCastList(){
             <div className="mt-2"><PiBroadcastFill size={20}   className="bg-primary-2 rounded "/></div>
                 <div>
                 <h3 className="font-bold">Create Broadcast Message</h3>
-                <p className="text-primary-6">Find a doctor and specialization</p>
+                <p className="text-primary-6">Send a message to a group of people at once.</p>
                 </div>
             </div>
             <div>

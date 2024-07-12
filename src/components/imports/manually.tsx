@@ -5,33 +5,19 @@ import Button from "../button/button";
 import { NotificationType } from "@/core/enum/notification";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { Contact } from "@/typings/interface/contacts";
-import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
 import { useCreateContactList } from "@/providers/hooks/mutate/createcontact";
-import { IBroadcastList } from "@/typings/interface/broadcasts";
-import { useGetBroadcastContact } from "@/providers/hooks/query/getcontact";
+import { IBroadcastContact, IBroadcastLists } from "@/typings/interface/broadcasts";
 
-interface Selected {
-  selectedValue?: IBroadcastList;
-  // broadcastList: IBroadcastList[];
+interface IProps {
+  selectedValue?: IBroadcastLists;
+  contacts?: IBroadcastContact[];
 }
 
-// interface ContactListData {
-//   contactName: string;
-//   contactEmail: string;
-//   contactPhoneNumber: string;
-// }
+const defaultValue: Contact = { contactName: "", contactEmail: "", contactPhoneNumber: "" };
 
-export default function Manually(props: Selected) {
+export default function Manually(props: IProps) {
   const { selectedValue } = props;
-  const id = selectedValue?.id;
-  const { data: contacts } = useGetBroadcastContact(id as string);
-  const [source, setSelectContact] = useState(true);
-  const [contactList, setContactList] = useState(true);
-  const [contactListData, setContactListData] = useState<Contact>({
-    contactName: "",
-    contactEmail: "",
-    contactPhoneNumber: "",
-  });
+  const [contactListData, setContactListData] = useState<Contact>({ ...defaultValue });
 
   const setNotification = useNotificationStore((state) => state.setDisplay);
   const [isOpen, setIsOpen] = useState(false);
@@ -57,6 +43,7 @@ export default function Manually(props: Selected) {
           text: `The contact ${contactListData.contactPhoneNumber} was imported successfully`,
         },
       });
+      setContactListData({ ...defaultValue });
       handleClose();
     },
   });
@@ -81,14 +68,7 @@ export default function Manually(props: Selected) {
             <div>
               <label className="block text-gray-900 font-semibold leading-8 text-sm">
                 Contact Name*
-                <input
-                  onChange={handleChange}
-                  value={contactListData.contactName}
-                  type="text"
-                  name="contactName"
-                  className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-                  placeholder="input name"
-                />
+                <input onChange={handleChange} name="contactName" placeholder="input name" />
               </label>
             </div>
             <div>
@@ -128,14 +108,10 @@ export default function Manually(props: Selected) {
             </div>
           </form>
         </div>
-        <div
-          className={`bg-gray-50 w-full flex ${
-            contactList ? "" : "items-center justify-center"
-          }  lg:w-[60%] min-h-40  md:ml-8`}
-        >
+        <div className={`bg-gray-50 w-full flex lg:w-[60%] min-h-40  md:ml-8`}>
           {selectedValue ? (
             <section className="p-4 w-full">
-              <ContactsList contacts={contacts} selectedValue={selectedValue} />
+              <ContactsList contacts={props.contacts ?? []} selectedValue={selectedValue} />
             </section>
           ) : (
             <section>

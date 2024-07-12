@@ -12,7 +12,7 @@ export default function CreateForm(){
             <div className="mt-2"><FaWpforms size={20}   className="bg-primary-2 rounded "/></div>
                 <div>
                 <h3 className="font-bold">Create Form</h3>
-                <p className="text-primary-6">Find a doctor and specialization</p>
+                <p className="text-primary-6">Build your own survey</p>
                 </div>
             </div>
             <div>

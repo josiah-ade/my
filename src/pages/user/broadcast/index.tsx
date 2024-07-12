@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/components/button/button";
 import Default from "@/components/default/default";
 import UserLayout from "@/layout/user";
@@ -8,13 +8,20 @@ import Image from "next/image";
 import AccountTableActionComponent from "@/components/broadcast/tableAction";
 import Link from "next/link";
 import { TableHeader } from "@/typings/interface/component/table";
-import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
+import { useGetBroadcastDetail, useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
 import { CreateBroadcastModal } from "@/components/broadcast/addModal";
 import { useRouter } from "next/router";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
-import { useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";
+import { useDeleteBroadcast, useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";
 import ConfirmationModal from "@/components/account/deleteConfirmationModal";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
+import { UserRoutes } from "@/core/const/routes.const";
+import { NotificationType } from "@/core/enum/notification";
+import useNotificationStore from "@/providers/stores/notificationStore";
+import { BroadcastTableAction } from "@/core/enum/broadcast";
+import { GoogleLogin } from "@react-oauth/google";
+import Home from "@/components/Test";
+import useGoogleAuthState from "@/providers/stores/googleAuthStore";
 
 interface ModalItems {
   confirmation: boolean;
@@ -24,11 +31,32 @@ interface ModalItems {
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 
 export default function User() {
+  const { Google } = useGoogleAuthState();
+  console.log("zustand google", Google);
+  const setNotification = useNotificationStore((state) => state.displayNotification);
   const [currentBroadcast, setCurrentBroadcast] = useState<IBroadcastLists>();
+  const router = useRouter();
   const { data: broadcastList } = useGetUserBroadcast();
-
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
+  const { mutate: deleteBroadcast } = useDeleteBroadcast({
+    onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
+    options: { errorConfig: { title: "Failed to delete account" } },
+  });
 
+  const actionLookup = {
+    ["empty"]: (item: IBroadcastLists) => handleEmpty(item),
+    [BroadcastTableAction.delete]: (item: IBroadcastLists) => handleDelete(item),
+    ["edit"]: (item: IBroadcastLists) => handleOpenModal("edit"),
+    ["import"]: (item: IBroadcastLists) => router.push(`${UserRoutes.BROADCAST}/${item.id}/import`),
+  };
+
+  const handleSuccess = (title: string, text: string) => {
+    setNotification({
+      type: NotificationType.success,
+      content: { title, text },
+    });
+    handleCloseModal("confirmation");
+  };
   const handleOpenModal = (key: keyof ModalItems) => {
     setModal((val) => ({ ...val, [key]: true }));
   };
@@ -50,8 +78,9 @@ export default function User() {
       "Delete Broadcast List",
       "Are you certain you want to delete the broadcast list? This will permanently erase all related contacts and information associated with this list",
       "Delete BroadcastList",
-      // () => emptyList(item.id)
-      () => handleCloseModal("confirmation")
+      () => {
+        handleCloseModal("confirmation"), deleteBroadcast(item.id);
+      }
     );
   };
 
@@ -71,15 +100,9 @@ export default function User() {
     handleOpenModal("confirmation");
   };
 
-  const actionLookup = {
-    ["empty"]: (item: IBroadcastLists) => handleEmpty(item),
-    ["delete"]: (item: IBroadcastLists) => handleDelete(item),
-    ["edit"]: (item: IBroadcastLists) => handleOpenModal("edit"),
-  };
-
   const handleAction = (action: string, item: IBroadcastLists) => {
     setCurrentBroadcast({ ...item });
-    actionLookup[action as keyof typeof actionLookup](item);
+    actionLookup[action as keyof typeof BroadcastTableAction](item);
   };
 
   const headers: TableHeader<IBroadcastLists>[] = [
@@ -91,7 +114,7 @@ export default function User() {
       title: "Action",
       action: {
         component: (props) => (
-          <Link href={`/user/broadcast/${props.item?.id ?? ""}`}>
+          <Link href={`${UserRoutes.BROADCAST}/${props.item?.id ?? ""}`}>
             <Button primary {...props}>
               View List
             </Button>
@@ -115,10 +138,19 @@ export default function User() {
             <p className="text[0.9rem]">View all your contacts here</p>
           </section>
           <section className="flex items-center space-x-2">
-            <Button className="text-gray-600 px-4 py-2 border-2 border-gray-400 rounded-lg flex items-center">
+            {/* <Button className="text-gray-600 px-4 py-2 border-2 border-gray-400 rounded-lg flex items-center">
               <img src="/goggle-icon.png" alt="Google" className="w-5 h-5 mr-2" />
               Connect Google Contacts
-            </Button>
+            </Button> */}
+            {/* <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            /> */}
+            <Home />
             <Button
               className="bg-orange-500 text-white px-4 py-2 rounded-lg"
               icon={<Plus />}

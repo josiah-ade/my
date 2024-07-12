@@ -6,52 +6,54 @@ import { VscAccount } from "react-icons/vsc";
 import { MdOutlineFormatAlignJustify } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
+import { UserRoutes } from "./routes.const";
 
 export const UserMenus: Menu[] = [
   {
     title: "Dashboard",
     id: "1",
     icon: FaHashtag,
-    path: "/user",
+    path: `${UserRoutes.DASHBOARD}`,
   },
   {
     title: "Account",
     id: "2",
     icon: LuUsers2,
-    path: "/user/account",
+    path: `${UserRoutes.ACCOUNT}`,
   },
   {
     title: "Contacts",
     id: "3",
     icon: RiContactsLine,
-    path: "/user/contacts",
+    path: `${UserRoutes.CONTACTS}`,
   },
   {
     title: "Team",
     id: "2",
     icon: LuUsers2,
-    path: "/user/teams",
+    path: `${UserRoutes.TEAMS}`,
     disabled: true,
   },
   {
     title: "Subscriptions",
     id: "2",
     icon: FaHashtag,
-    path: "/user/subscrition",
+    disabled: true,
+    path: `${UserRoutes.SUBSCRIPTION}`,
   },
   {
     title: "Forms",
     id: "6",
     icon: MdOutlineFormatAlignJustify,
-    // disabled: true,
-    path: "/user/form",
+    disabled: false,
+    path: `${UserRoutes.FORM}`,
   },
   {
     title: "Chatbot",
     id: "7",
     icon: MdOutlineFormatAlignJustify,
     disabled: true,
-    path: "/user/chatbot",
+    path: `${UserRoutes.CHAT_BOT}`,
   },
   {
     title: "Login",

@@ -9,6 +9,7 @@ import { GoDotFill } from "react-icons/go";
 import AuthLoading from "@/components/common/loading/authloading";
 import logo from "../assets/logo.png";
 import Image from "next/image";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,6 +51,14 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <GoogleLogin
+        onSuccess={(credentialResponse) => {
+          console.log(credentialResponse);
+        }}
+        onError={() => {
+          console.log("Login Failed");
+        }}
+      />
       <form
         onSubmit={handleClick}
         className="w-full width-[100%] max-w-[350px] mx-auto py-20 rounded-md bg-white 
@@ -126,14 +135,12 @@ export default function LoginPage() {
           </div>
           {/* button */}
           <div className="mt-10  flex flex-col">
-              <button
-                type="submit"
-                className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full"
-              >
-                {!loading
-                ? ` Log into Account`
-                : "Loading..."}
-              </button>
+            <button
+              type="submit"
+              className="items-center text-2xl bg-primary py-4 px-7 rounded-2xl text-white  max-w-[1000px] w-full"
+            >
+              {!loading ? ` Log into Account` : "Loading..."}
+            </button>
           </div>
           <div className={`py-6 relative text-center `}>
             <h2>Or</h2>

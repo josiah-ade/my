@@ -16,11 +16,13 @@ import { useDeleteAccount, useDisconnectAccount } from "@/providers/hooks/mutate
 import { NotificationType } from "@/core/enum/notification";
 import { useRouter } from "next/router";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
+import { UserRoutes } from "@/core/const/routes.const";
 
 interface ModalItems {
   link: boolean;
   add: boolean;
   confirmation: boolean;
+  pair:boolean;
 }
 
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
@@ -34,6 +36,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     link: false,
     add: false,
     confirmation: false,
+    pair:false
   });
 
   const actionLookup = {
@@ -42,7 +45,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     [AccountTableAction.unsubscribeKeyword]: () => {},
     [AccountTableAction.disconnect]: (item: IAccount) => handleDisconnect(item),
     [AccountTableAction.transferLicense]: (item: IAccount) => {},
-    [AccountTableAction.sendMessage]: (item: IAccount) => router.push("/user/broadcast-message"),
+    [AccountTableAction.sendMessage]: (item: IAccount) => router.push(UserRoutes.BROADCAST_MESSAGE_SEND), // TODO: pass account id to route
     [AccountTableAction.triggerListMove]: (item: IAccount) => {},
   };
 
@@ -50,6 +53,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
     options: { errorConfig: { title: "Failed to delete account" } },
   });
+ 
 
   const { mutate: disconnectAccount } = useDisconnectAccount({
     onSuccess: () => handleSuccess("Account disconnected successfully", "Your account was disconnected successfully"),
@@ -58,7 +62,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
 
   const handleDelete = (item: IAccount) => {
     openConfirmationModal(
-      "Delete Account Confirmation",
+      "Delete Account",
       "Are you certain you want to delete this account? This will permanently erase all related information.",
       "Delete Account",
       () => deleteAccount(item.id)
@@ -102,7 +106,9 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     {
       label: "Link with Pairing Code",
       icon: <Home />,
-      content: <PairQrcode />,
+      content: currentAccount?.id ? ( <PairQrcode currentAccount={currentAccount} onClose={()=>handleCloseModal("link")}/> ) : (
+        <></>
+      ),
     },
     {
       label: "Link with QR Code",

@@ -16,9 +16,12 @@ const queryClient = new QueryClient({
   },
 });
 
+
+
 type Page = NextPage & { Layout?: React.FC };
 
 export default function App({ Component, pageProps }: AppProps) {
+  let clientID: string;
   const PageComponent = Component as Page;
   const Layout = PageComponent.Layout ? PageComponent.Layout : React.Fragment;
 
@@ -26,13 +29,13 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Loader />
       <NotificationComponent />
-      <QueryClientProvider client={queryClient}>
-        <Context>
-          <Layout>
-            <PageComponent {...pageProps} />
-          </Layout>
-        </Context>
-      </QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <Context>
+            <Layout>
+              <PageComponent {...pageProps} />
+            </Layout>
+          </Context>
+      </GoogleOAuthProvider>
     </>
   );
 }

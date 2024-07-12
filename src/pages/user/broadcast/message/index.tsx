@@ -6,6 +6,7 @@ import Image from "next/image";
 import ListBroadcasts from "@/components/broadcast/listBroadcasts";
 import GroupBroadcasts from "@/components/broadcast/groupBroadcasts";
 import { useRouter } from "next/router";
+import { UserRoutes } from "@/core/const/routes.const";
 
 function Img() {
   return (
@@ -24,7 +25,7 @@ export default function BroadcastMessage() {
   const [activeTab, setActiveTab] = useState("List Broadcasts");
   const router = useRouter();
   const handleRouter = () => {
-    router.push("/user/broadcast-message/send-broadcast");
+    router.push(UserRoutes.BROADCAST_MESSAGE_SEND);
   };
   function handleTabChange(tab: string) {
     setActiveTab(tab);

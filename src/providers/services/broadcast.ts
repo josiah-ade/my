@@ -28,9 +28,9 @@ export async function getBroadcastDetail(id: string): Promise<IBroadcastLists> {
     .catch(handleError);
 }
 
-export async function deleteBroadcast(id: string): Promise<IGenericStatusResponse> {
+export async function deleteBroadcast(broadcastId: string): Promise<IBroadcastLists> {
   return axios
-    .delete<IGenericStatusResponse>(`/broadcast/${id}`)
+    .delete<IBroadcastLists>(`/broadcast/${broadcastId}`)
     .then((response) => response.data)
     .catch(handleError);
 }

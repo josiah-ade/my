@@ -1,53 +1,35 @@
-import { dashboard } from "@/typings/interface/component/layout/menu";
+import { Limit } from "@/typings/interface/component/layout/menu";
 
-export const dashboardItem: dashboard[] = [
+export const dashboardItems: Limit[] = [
   {
-    title: "Total Lead",
-    id: "1",
-    field:"lead",
-    amount: "--",
-    total: "--",
+    title: 'Accounts',
+    field: "accounts",
+    totalField: "total_accounts"
   },
   {
-    title: "Forms",
-    id: "2",
-    field:"forms",
-    amount: "--",
-    total: "--",
+    title: 'Leads',
+    field: "leads",
+    totalField:"total_leads"
   },
   {
-    title: "Automations",
-    id: "3",
-    field:"automations",
-    amount: "--",
-    total: "--",
+    title: 'Forms',
+    field: "forms",
+    totalField: "total_forms"
   },
   {
-    title: "Broadcast Lists",
-    id: "4",
-    field:"lists",
-    amount: "--",
-    total: "--",
+    title: 'Automations',
+    field: "automations",
+    totalField: "total_automations"
   },
   {
-    title: "Total Lead",
-    id: "5",
-    field:"lead",
-    amount: "--",
-    total: "--",
+    title: 'Broadcast Lists',
+    field: "broadcastLists",
+    totalField: "total_broadcastLists"
   },
   {
-    title: "Chatbots",
-    id: "6",
-    field:"chatbots",
-    amount: "--",
-    total: "--",
+    title: 'Chatbots',
+    field: "chatbots",
+    totalField: "total_chatbots"
   },
-  {
-    title: "Chatbots",
-    id: "7",
-    field:"chatbots",
-    amount: "--",
-    total: "--",
-  },
+ 
 ];

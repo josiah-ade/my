@@ -6,7 +6,7 @@ export interface IAPIFilter {
 }
 
 export interface IMutationArgs<IArg, IReturn, TError = Error> {
-  key: [string, IAPIFilter?];
+  key: (string | IAPIFilter)[];
   callback: (arg: IArg) => Promise<IReturn>;
   onSuccess?: (data?: IReturn) => void;
   onError?: (error: TError) => void;
