@@ -1,13 +1,12 @@
 import { handleError } from "@/components/common/exception/serviceexception";
 import { ILimitData } from "@/typings/interface/component/layout/menu";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
-export async function getStatsDetails() :Promise<ILimitData> {
-    return axios
+export async function getStatsDetails(): Promise<ILimitData> {
+  return axios
     .get<ILimitData>("/business/config")
-    .then((response)=>{
-      console.log(response)
+    .then((response) => {
       return response.data;
-    }).catch(handleError);
+    })
+    .catch(handleError);
 }
-  

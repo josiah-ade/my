@@ -38,12 +38,12 @@ export function useGetUsersAcount(options: IQueryOptions = {}) {
   return useGetResourcesQuery(users, options);
 }
 
-export function useGetSingleUsersAcount(id: string) {
+export function useGetSingleUsersAcount(id: string, options: IQueryOptions = {}) {
   const singleuser: IQueryArgs<string, IAccount> = {
     key: ["singleuser", { id }],
     callback: () => getSingleAccount(id),
   };
-  return useGetResourcesQuery(singleuser);
+  return useGetResourcesQuery(singleuser, options);
 }
 
 export function useGetQrcodeUsersAcount(id: string) {
@@ -84,12 +84,12 @@ export function useGetUsersContactAcount(id: string) {
   };
   return useGetResourcesQuery(contactaccount);
 }
-export function useGetGroupAcount(id: string) {
+export function useGetGroupAccount(id: string, options: IQueryOptions = {}) {
   const GroupAcount: IQueryArgs<string, IGroupAccount[]> = {
     key: ["qr_code", { id }],
     callback: () => getGroupAccount(id),
   };
-  return useGetResourcesQuery(GroupAcount);
+  return useGetResourcesQuery(GroupAcount, options);
 }
 
 export function useGetSingleGroup(id: string, groupId: string) {

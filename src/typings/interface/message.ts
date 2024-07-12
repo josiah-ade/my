@@ -12,6 +12,7 @@ export interface ICreateBroadcastMessage {
   type: "group" | "list" | "";
   files?: FileList;
   testNumber?: string;
+  sendToIndividual?: boolean;
   joinedFrom?: string;
   joinedTo?: string;
   tags?: string[];

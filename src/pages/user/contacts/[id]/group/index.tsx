@@ -2,14 +2,14 @@ import Link from "next/link";
 import UserLayout from "@/layout/user";
 import HasBack from "@/components/common/hasback/hasback";
 import TabLists from "@/components/contacts/tab/tabdetail";
-import { useGetGroupAcount, useGetSingleUsersAcount } from "@/providers/hooks/query/getaccount";
+import { useGetGroupAccount, useGetSingleUsersAcount } from "@/providers/hooks/query/getaccount";
 import { useParams } from "next/navigation";
 import { IGroupAccount } from "@/typings/interface/account";
 import EmptyState from "@/components/common/empty/empty";
 
 export default function WhatsappList() {
   const { id } = useParams() ?? {};
-  const { data: groupAccount } = useGetGroupAcount(id as string);
+  const { data: groupAccount } = useGetGroupAccount(id as string);
   const { data: accountDetails } = useGetSingleUsersAcount(id as string);
 
   return (

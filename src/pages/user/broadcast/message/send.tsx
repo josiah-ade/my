@@ -1,4 +1,5 @@
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
+import GroupSelector from "@/components/broadcast/groupSelector";
 import ListSelector from "@/components/broadcast/listSelector";
 import MessageConfigModal from "@/components/broadcast/messageConfigModal";
 import MessageForm from "@/components/broadcast/messageForm";
@@ -6,8 +7,6 @@ import Button from "@/components/button/button";
 import UserLayout from "@/layout/user";
 import { useCreateBroadcastMessage } from "@/providers/hooks/mutate/message";
 import { useAccountStore } from "@/providers/stores/accountStore";
-import { useBroadcastStore } from "@/providers/stores/broadcastStore";
-import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { ICreateBroadcastMessage } from "@/typings/interface/message";
 import React, { useState, useEffect, useMemo } from "react";
 
@@ -17,27 +16,22 @@ const defaultValue: ICreateBroadcastMessage = {
   text: "",
   type: "",
   tags: [],
+  sendToIndividual: false,
   excludeList: [],
   isTest: false,
 };
 
 export default function SendBroadast() {
   const [isOpen, setIsOpen] = useState(false);
-  const broadcastList = useBroadcastStore((state) => state.broadcasts);
   const accounts = useAccountStore((state) => state.accounts);
-
-  const [selectAllState, setSelectAllState] = useState(false);
-  const [selectedList, setSelectedList] = useState<(IBroadcastLists & { selected?: boolean })[]>([...broadcastList]);
+  const [selectedId, setSelectedId] = useState<string[]>([]);
+  const [clearFlag, setClearFlag] = useState<boolean>(false);
   const [formData, setFormData] = useState<ICreateBroadcastMessage>({ ...defaultValue });
-
-  useEffect(() => {
-    !selectedList.length && setSelectedList(broadcastList);
-  }, [broadcastList]);
 
   const createMessageMutation = useCreateBroadcastMessage({
     onSuccess: () => {
       setFormData({ ...defaultValue });
-      handleSelectAll(true);
+      setClearFlag(true);
       handleIsClose();
     },
     options: {
@@ -75,32 +69,10 @@ export default function SendBroadast() {
     const payload: ICreateBroadcastMessage = {
       ...formData,
       list: selectedId,
+      sendToIndividual: Boolean(formData.sendToIndividual),
       isTest,
     };
     createMessageMutation.mutate(payload);
-  };
-
-  const selectedId = useMemo(
-    () =>
-      selectedList.reduce<string[]>((val, item) => {
-        item.selected && val.push(item.id);
-        return val;
-      }, []),
-    [selectedList]
-  );
-
-  const handleToggle = (index: number) => {
-    selectedList[index].selected = !!!selectedList[index].selected;
-    setSelectedList([...selectedList]);
-  };
-
-  const handleSelectAll = (clear = false) => {
-    setSelectAllState((val) => {
-      setSelectedList((list) =>
-        list.map((item) => ({ ...item, selected: item.contacts ? (clear ? false : !val) : false }))
-      );
-      return !val;
-    });
   };
 
   //to use form validation
@@ -127,7 +99,9 @@ export default function SendBroadast() {
               onChange={handleChange}
               value={formData.accountId}
             >
-              <option className="px-2">{accounts.length ? "Select Account" : "No account available"}</option>
+              <option value="" className="px-2">
+                {accounts.length ? "Select Account" : "No account available"}
+              </option>
               {accounts.map((account) => (
                 <option key={account.id} value={account.id}>
                   {account.phoneNumber}
@@ -141,13 +115,13 @@ export default function SendBroadast() {
             <select
               onChange={(e) => {
                 handleChange(e);
-                handleSelectAll(true);
+                setClearFlag(true);
               }}
               value={formData.type}
               name="type"
               className="w-full p-2 border border-gray-700 rounded focus:outline-none"
             >
-              <option>Select broadcast target</option>
+              <option value="">Select broadcast target</option>
               <option value="list">List</option>
               <option value="group">Groups</option>
             </select>
@@ -164,20 +138,31 @@ export default function SendBroadast() {
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-8">
           <div>
-            <MessageForm onChange={updateFormState} formValue={formData.text} onFileUpload={handleFileUpload} />
+            <MessageForm onChange={updateFormState} broadcastType={formData.type} formValue={formData.text} onFileUpload={handleFileUpload} />
             <div className="">
-              <Button onClick={handleIsOpen} primary className="px-4 py-2 rounded w-full">
+              <Button disabled={!isValid} onClick={handleIsOpen} primary className="px-4 py-2 rounded w-full">
                 Proceed
               </Button>
             </div>
           </div>
           <div>
-            {formData.type == "list" ? (
-              <div>
-                <ListSelector lists={selectedList} onToggle={handleToggle} onSelectAll={() => handleSelectAll()} />
-              </div>
-            ) : (
-              <></>
+            {formData.type == "list" && (
+              <ListSelector
+                key={formData.type + "_listSelector"}
+                setValue={setSelectedId}
+                clearFlag={clearFlag}
+                updateClearFlag={setClearFlag}
+              />
+            )}
+
+            {formData.type == "group" && (
+              <GroupSelector
+                key={`${formData.accountId}_groupSelector`}
+                setValue={setSelectedId}
+                accountId={formData.accountId}
+                clearFlag={clearFlag}
+                updateClearFlag={setClearFlag}
+              />
             )}
           </div>
         </section>

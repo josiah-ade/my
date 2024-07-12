@@ -51,7 +51,7 @@ export default function DashBoardItems() {
               <p className="text-sm text-gray-600">{item.title}</p>
               <p className="text-xl font-medium">
                 {/* {stats[item.totalField][item.field] } */}
-                { stats?.[item.totalField] ?? 0}/{stats?.[item.field]}
+                { stats?.[item.totalField] ?? 0}/{stats?.[item.field]?? 0}
               </p>
             </div>
           </div>

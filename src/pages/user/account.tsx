@@ -8,13 +8,13 @@ import EmptyState from "@/components/common/empty/empty";
 import { useGetUsersAcount } from "@/providers/hooks/query/getaccount";
 import AddAccountModal from "@/components/account/addModal";
 import { AccountTableHeaders } from "@/core/const/account/table";
+import { useLimitsStore } from "@/providers/stores/statisticsStore";
 
 export default function AccountPage() {
   const [modal, setModal] = useState(false);
+  const stats = useLimitsStore((state) => state.limit);
 
   const { data: accounts } = useGetUsersAcount({ loadingConfig: { displayLoader: true } });
-  const currentAccountCount = accounts?.length ?? 0;
-  const maxAccountLimit = 10; 
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function AccountPage() {
               <div className="rounded-lg">
                 <p className="text-[0.9] text-gray-500 font-bold">Account Usage</p>
                 <p className="text-[1rem] font-bold text-gray-900 mt-1">
-                {currentAccountCount}/{maxAccountLimit}
+                { stats?.total_accounts ?? 0}/{stats?.accounts?? 0}
                 </p>
               </div>
               <div className="mt-8">

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
 import Button from "@/components/button/button";
 import Default from "@/components/default/default";
@@ -19,7 +19,7 @@ export default function ImportContacts() {
   const {id} = useParams() ?? {}
   const accounts = useAccountStore((state) => state.accounts);
   const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists>();
-
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [broadcastSelectedValue, setBroadcastSelectedValue] = useState<string>("");
 
@@ -45,11 +45,28 @@ export default function ImportContacts() {
       });
   };
  
+  // const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   if (!broadcastList?.length) return;
+  //   const index = e.currentTarget.value;
+  //   setSelectedBroadcastList(broadcastList[parseInt(index)]);
+  // };
   const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!broadcastList?.length) return;
     const index = e.currentTarget.value;
-    setSelectedBroadcastList(broadcastList[parseInt(index)]);
+    if (index === "default" || !broadcastList?.length) {
+      setSelectedBroadcastList(broadcastList[parseInt(index)]);
+      setIsButtonEnabled(false);
+      return;
+    }
+    const selectedList = broadcastList[parseInt(index, 10)];
+    setSelectedBroadcastList(selectedList);
+    setIsButtonEnabled(true); 
   };
+  useEffect(() => {
+    if (listIndex !== undefined  && broadcastList?.[listIndex]) {
+      setSelectedBroadcastList(broadcastList[listIndex]);
+      setIsButtonEnabled(true);
+    }
+  }, [listIndex, broadcastList]);
 
   return (
     <UserLayout>
@@ -153,7 +170,7 @@ export default function ImportContacts() {
 
         {selectedValue !== "" ? (
           <section>
-            {selectedValue === "manually" && <Manually selectedValue={selectedBroadcastList} contacts={contacts} />}
+            {selectedValue === "manually" && <Manually selectedValue={selectedBroadcastList} contacts={contacts} isButtonEnabled={isButtonEnabled}/>}
             {selectedValue === "google" && <Google />}
             {selectedValue === "whatsapp" && accountSelectedId && <Whatsapp id={accountSelectedId} />}
             {selectedValue === "csv" && <CSV />}

@@ -7,7 +7,9 @@ import EmptyState from "@/components/common/empty/empty";
 
 export default function ContactPage() {
   const { id } = useParams() ?? {};
-  const { data: accountDetails, loading: accountLoader } = useGetSingleUsersAcount(id as string);
+  const { data: accountDetails, loading: accountLoader } = useGetSingleUsersAcount(id as string, {
+    loadingConfig: { displayLoader: false },
+  });
   const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
 
   return (

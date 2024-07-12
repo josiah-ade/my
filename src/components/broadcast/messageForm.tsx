@@ -8,9 +8,10 @@ interface MessageFormProps {
   onFileUpload: (data: FileList) => void;
   onChange: (data: { name: string; value: string }) => void;
   formValue: string;
+  broadcastType: string;
 }
 
-export default function MessageForm({ onFileUpload, onChange, formValue }: MessageFormProps) {
+export default function MessageForm({ onFileUpload, broadcastType, onChange, formValue }: MessageFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -93,25 +94,27 @@ export default function MessageForm({ onFileUpload, onChange, formValue }: Messa
           rows={8}
         ></textarea>
       </div>
-      <div className="flex justify-between mb-4">
-        <div className="flex items-center gap-2 flex-wrap text-xs lg:text-sm text-white">
-          {placeholders.map((item) => (
-            <span
-              key={item.value}
-              onClick={() => insertPlaceholder(item.value)}
-              className="bg-secondary-400 cursor-pointer px-3 py-1 rounded-xl"
-            >
-              {item.title}
+      {broadcastType == "list" && (
+        <div className="flex justify-between mb-4">
+          <div className="flex items-center gap-2 flex-wrap text-xs lg:text-sm text-white">
+            {placeholders.map((item) => (
+              <span
+                key={item.value}
+                onClick={() => insertPlaceholder(item.value)}
+                className="bg-secondary-400 cursor-pointer px-3 py-1 rounded-xl"
+              >
+                {item.title}
+              </span>
+            ))}
+          </div>
+          <div className="flex items-center space-x-1 ">
+            <span>
+              <QuesCircle />
             </span>
-          ))}
+            <span className="text-xs text-gray-500">What are these</span>
+          </div>
         </div>
-        <div className="flex items-center space-x-1 ">
-          <span>
-            <QuesCircle />
-          </span>
-          <span className="text-xs text-gray-500">What are these</span>
-        </div>
-      </div>
+      )}
 
       <div className="mb-4">
         {/* <label className="block text-sm font-medium text-gray-700">
