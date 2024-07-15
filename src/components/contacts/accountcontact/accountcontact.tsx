@@ -14,18 +14,22 @@ import Button from "@/components/button/button";
 import { GoPlus } from "react-icons/go";
 import EmptyState from "@/components/common/empty/empty";
 import AddExistingBroadcastList from "@/components/broadcast/addtext";
+import { IBroadcastLists } from "@/typings/interface/broadcasts";
 
 interface IProps {
   title?: string;
   text?: string;
+  titleClass?: string;
   btnText?: string;
   isGroup?: boolean;
-  contactAcount: ContactAccount[];
+  contactAccount: ContactAccount[];
   addContact?: boolean;
+  selectedList?: IBroadcastLists;
+  selectedAutomationDay?: number;
 }
 
 export default function AccountForm(props: IProps) {
-  const { title, isGroup, contactAcount, btnText, addContact = true } = props;
+  const { title, isGroup, contactAccount, btnText, titleClass, selectedList, selectedAutomationDay } = props;
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams() ?? {};
   const { data: broadcastList = [] } = useGetUserBroadcast({ loadingConfig: { displayLoader: false } });
@@ -65,23 +69,22 @@ export default function AccountForm(props: IProps) {
     <div>
       <div className="mt-5 flex flex-row justify-between">
         <div>
-          <h1 className="font-bold text-2xl"> {props.title}</h1>
-          <p> {props.text}</p>
+          <h1 className={`font-bold text-2xl ${titleClass}`}> {props.title}</h1>
+          <p className="text-gray-600"> {props.text}</p>
           <p className="mt-2">{props.isGroup}</p>
         </div>
         <div>
           <Button onClick={handleModal} disabled={!selectedContacts.length} primary icon={<GoPlus />}>
-            {/* Add {selectedContacts.length || ""} to List */}
             {btnText ? btnText : "Add to List"}
           </Button>
         </div>
       </div>
       <div className="mt-5">
-        {contactAcount && contactAcount.length ? (
+        {contactAccount && contactAccount.length ? (
           <Table
             search={true}
             headers={headers}
-            data={contactAcount}
+            data={contactAccount}
             pagination={{ pageSize: 5 }}
             checkboxAction={(val) => setSelectedContacts([...val])}
           />
@@ -90,11 +93,16 @@ export default function AccountForm(props: IProps) {
         )}
       </div>
       <Modal isOpen={isOpen} onClose={handleClose}>
-        {addContact ? (
+        {!selectedList ? (
           <Tabs tabs={tabs} />
         ) : (
           <div>
-            {/* <AddExistingBroadcastList selectedContacts={selectedContacts} handleClose={handleClose} broadcastList={}  /> */}
+            <AddExistingBroadcastList
+              selectedContacts={selectedContacts}
+              handleClose={handleClose}
+              selectedAutomationDay={selectedAutomationDay ?? 0}
+              selectedBroadcastList={selectedList}
+            />
           </div>
         )}
       </Modal>

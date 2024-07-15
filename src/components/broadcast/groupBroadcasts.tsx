@@ -6,6 +6,13 @@ import {
   HeaderBroadcast,
   TableRowBroadcast,
 } from "@/core/types/data.interface";
+import Table from "../table";
+import { useGetBroadcastMessages } from "@/providers/hooks/query/getmessage";
+import { TableHeader } from "@/typings/interface/component/table";
+import ListPopover from "../common/dropdown/tabledropdown";
+import { IMessageResponse } from "@/typings/interface/message";
+import { dateFormatter } from "@/core/formatters/dateFormatter";
+import { DisplayDataTimeFormatOptions } from "@/core/const/formatOptions";
 
 function Img() {
   return (
@@ -26,39 +33,28 @@ function Img() {
   );
 }
 
-interface ListProps {
-  lists: string[];
-}
 
 function GroupBroadcasts() {
-  const [showTable, setShowTable] = useState(true);
+  const params ={ type: 'group' }; 
+  const { data, loading } = useGetBroadcastMessages(params);
 
-  const headers: HeaderBroadcast[] = [
-    { title: "Groups In Broadcast", field: "lists" },
-    { title: "Message goes here", field: "message" },
-    { title: "Time Sent To Queue", field: "sentToQueue" },
-    { title: "Time Delivered", field: "deliveredTime" },
+  const headers: TableHeader<IMessageResponse>[] = [
+    { title: "Groups In Broadcast", field: "lists",  action:{component:(props)=> <ListPopover  {...props}/> }},
+    { title: "Message", field: "text" },
+    { title: "Time Sent To Queue", field: "queuedTime", formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions), },
+    { title: "Time Delivered", field: "completedTime", formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions), },
     { title: "Status", field: "status" },
   ];
 
-  const data: TableRowBroadcast[] = [
-    {
-      lists: ["List1", "List2"],
-      message: "Sample message",
-      sentToQueue: "12 Feb 2024 at 12:34",
-      deliveredTime: "12 Feb 2024 at 12:34",
-      status: "Pending",
-    },
-    // More rows...
-  ];
+  const MAX_MESSAGE_LENGTH = 15;
+  const truncatedData = data?.map((item) => ({ ...item, text: item.text.slice(0, MAX_MESSAGE_LENGTH) + (item.text.length > MAX_MESSAGE_LENGTH ? '....' : '') }))
+
   return (
-    <div>
-      {/* <h2>List Broadcasts</h2> */}
-      {/* Your List Broadcasts content here */}
-      {showTable ? (
-        <div className="mt-8">
-          <BroadCastMessageTable data={data} headers={headers} />
-        </div>
+    <div className="mt-8">
+      {!loading && truncatedData?.length ? (
+        <Table
+          data={truncatedData}
+          headers={headers} />
       ) : (
         <Default
           src="/phone.jpg"

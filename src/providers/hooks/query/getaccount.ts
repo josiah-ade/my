@@ -77,12 +77,12 @@ export function useGetUsersStatusAcount(id: string) {
   return useGetResourcesQuery(qrcode);
 }
 
-export function useGetUsersContactAcount(id: string) {
-  const contactaccount: IQueryArgs<string, ContactAccount[]> = {
+export function useGetAccountContacts(id: string, options: IQueryOptions = {}) {
+  const contactQuery: IQueryArgs<string, ContactAccount[]> = {
     key: ["contactaccount", { id }],
     callback: () => getUsercontactAccount(id),
   };
-  return useGetResourcesQuery(contactaccount);
+  return useGetResourcesQuery(contactQuery, options);
 }
 export function useGetGroupAccount(id: string, options: IQueryOptions = {}) {
   const GroupAcount: IQueryArgs<string, IGroupAccount[]> = {

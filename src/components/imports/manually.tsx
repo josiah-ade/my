@@ -10,6 +10,7 @@ import { IBroadcastContact, IBroadcastLists } from "@/typings/interface/broadcas
 
 interface IProps {
   selectedValue?: IBroadcastLists;
+  selectedAutomationDay?: number;
   contacts?: IBroadcastContact[];
   isButtonEnabled: boolean;
 }
@@ -17,18 +18,10 @@ interface IProps {
 const defaultValue: Contact = { contactName: "", contactEmail: "", contactPhoneNumber: "" };
 
 export default function Manually(props: IProps) {
-  const { selectedValue, isButtonEnabled  } = props;
+  const { selectedValue, isButtonEnabled, selectedAutomationDay } = props;
   const [contactListData, setContactListData] = useState<Contact>({ ...defaultValue });
 
   const setNotification = useNotificationStore((state) => state.setDisplay);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleModal = () => {
-    setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -45,7 +38,6 @@ export default function Manually(props: IProps) {
         },
       });
       setContactListData({ ...defaultValue });
-      handleClose();
     },
   });
 
@@ -54,6 +46,7 @@ export default function Manually(props: IProps) {
 
     selectedValue &&
       createFromExistingList({
+        automatedDay: selectedAutomationDay ?? 0,
         contacts: [contactListData],
         broadcastListId: selectedValue.id,
       });
@@ -69,7 +62,12 @@ export default function Manually(props: IProps) {
             <div>
               <label className="block text-gray-900 font-semibold leading-8 text-sm">
                 Contact Name*
-                <input onChange={handleChange} name="contactName" placeholder="input name" />
+                <input
+                  onChange={handleChange}
+                  name="contactName"
+                  className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
+                  placeholder="input name"
+                />
               </label>
             </div>
             <div>

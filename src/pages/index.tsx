@@ -51,14 +51,14 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <GoogleLogin
+      {/* <GoogleLogin
         onSuccess={(credentialResponse) => {
           console.log(credentialResponse);
         }}
         onError={() => {
           console.log("Login Failed");
         }}
-      />
+      /> */}
       <form
         onSubmit={handleClick}
         className="w-full width-[100%] max-w-[350px] mx-auto py-20 rounded-md bg-white 

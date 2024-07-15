@@ -1,6 +1,6 @@
 // import { content } from "@/core/const/tab/phone";
 import { useState } from "react";
-import EmailList from "../email";
+import GoogleContacts from "../email";
 import WhatsAppList from "../whatsapp";
 import Phonelists from "../phonelist";
 
@@ -27,8 +27,7 @@ export default function TabComponent() {
       <div className="">
         {activeTab === 0 && <Phonelists />}
         {activeTab === 1 && <Phonelists isGroup={true} />}
-        {/* {activeTab === 1 && <WhatsAppList />} */}
-        {activeTab === 2 && <EmailList />}
+        {activeTab === 2 && <GoogleContacts />}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
+import BroadCastConfigModal from "@/components/broadcast/broadcastConfigModal";
 import GroupSelector from "@/components/broadcast/groupSelector";
 import ListSelector from "@/components/broadcast/listSelector";
 import MessageConfigModal from "@/components/broadcast/messageConfigModal";
@@ -22,16 +23,19 @@ const defaultValue: ICreateBroadcastMessage = {
 };
 
 export default function SendBroadast() {
+  const [selectedBroadcastTarget, setSelectedBroadcastTarget] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const accounts = useAccountStore((state) => state.accounts);
   const [selectedId, setSelectedId] = useState<string[]>([]);
-  const [clearFlag, setClearFlag] = useState<boolean>(false);
+  const [clearListFlag, setClearListFlag] = useState<boolean>(false);
+  const [clearFileFlag, setClearFileFlag] = useState<boolean>(false);
   const [formData, setFormData] = useState<ICreateBroadcastMessage>({ ...defaultValue });
 
   const createMessageMutation = useCreateBroadcastMessage({
     onSuccess: () => {
       setFormData({ ...defaultValue });
-      setClearFlag(true);
+      setClearListFlag(true);
+      setClearFileFlag(true);
       handleIsClose();
     },
     options: {
@@ -53,6 +57,9 @@ export default function SendBroadast() {
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { value, name } = event.target;
+    if (name === "type") {
+      setSelectedBroadcastTarget(value);
+    }
     value != undefined && updateFormState({ name, value });
   }
 
@@ -60,7 +67,7 @@ export default function SendBroadast() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFileUpload = (files: FileList) => {
+  const handleFileUpload = (files: File[]) => {
     formData.files = files;
     setFormData((val) => ({ ...val }));
   };
@@ -115,7 +122,7 @@ export default function SendBroadast() {
             <select
               onChange={(e) => {
                 handleChange(e);
-                setClearFlag(true);
+                setClearListFlag(true);
               }}
               value={formData.type}
               name="type"
@@ -138,7 +145,14 @@ export default function SendBroadast() {
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-8">
           <div>
-            <MessageForm onChange={updateFormState} broadcastType={formData.type} formValue={formData.text} onFileUpload={handleFileUpload} />
+            <MessageForm
+              onChange={updateFormState}
+              broadcastType={formData.type}
+              formValue={formData.text}
+              clearFlag={clearFileFlag}
+              updateClearFlag={setClearFileFlag}
+              onFileUpload={handleFileUpload}
+            />
             <div className="">
               <Button disabled={!isValid} onClick={handleIsOpen} primary className="px-4 py-2 rounded w-full">
                 Proceed
@@ -150,8 +164,8 @@ export default function SendBroadast() {
               <ListSelector
                 key={formData.type + "_listSelector"}
                 setValue={setSelectedId}
-                clearFlag={clearFlag}
-                updateClearFlag={setClearFlag}
+                clearFlag={clearListFlag}
+                updateClearFlag={setClearListFlag}
               />
             )}
 
@@ -160,8 +174,8 @@ export default function SendBroadast() {
                 key={`${formData.accountId}_groupSelector`}
                 setValue={setSelectedId}
                 accountId={formData.accountId}
-                clearFlag={clearFlag}
-                updateClearFlag={setClearFlag}
+                clearFlag={clearListFlag}
+                updateClearFlag={setClearListFlag}
               />
             )}
           </div>

@@ -21,8 +21,8 @@ export function useCreateContactList({ onSuccess, onError, options }: IMutationH
 export function useCreateContactFromNewList({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<CreateContactFromNewListDTO, ContactList> = {
     key: ["broadcast"],
-    callback: ({ contacts, broadcast }: CreateContactFromNewListDTO) =>
-      createBroadcast(broadcast).then((resp) => createContact({ contacts, broadcastListId: resp.id })),
+    callback: ({ contacts, broadcast, automatedDay }: CreateContactFromNewListDTO) =>
+      createBroadcast(broadcast).then((resp) => createContact({ contacts, broadcastListId: resp.id, automatedDay })),
     onSuccess: onSuccess,
     onError: onError,
     options,

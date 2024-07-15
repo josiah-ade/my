@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@/components/button/button";
 import Default from "@/components/default/default";
 import UserLayout from "@/layout/user";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import AccountTableActionComponent from "@/components/broadcast/tableAction";
 import Link from "next/link";
 import { TableHeader } from "@/typings/interface/component/table";
-import { useGetBroadcastDetail, useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
+import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
 import { CreateBroadcastModal } from "@/components/broadcast/addModal";
 import { useRouter } from "next/router";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
@@ -19,9 +19,7 @@ import { UserRoutes } from "@/core/const/routes.const";
 import { NotificationType } from "@/core/enum/notification";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { BroadcastTableAction } from "@/core/enum/broadcast";
-import { GoogleLogin } from "@react-oauth/google";
-import Home from "@/components/Test";
-import useGoogleAuthState from "@/providers/stores/googleAuthStore";
+import GoogleSignInButton from "@/components/contacts/googleSignInButton";
 import { useLimitsStore } from "@/providers/stores/statisticsStore";
 
 interface ModalItems {
@@ -31,9 +29,7 @@ interface ModalItems {
 
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 
-export default function User() {
-  const { Google } = useGoogleAuthState();
-  console.log("zustand google", Google);
+export default function BroadcastListPage() {
   const setNotification = useNotificationStore((state) => state.displayNotification);
   const [currentBroadcast, setCurrentBroadcast] = useState<IBroadcastLists>();
   const router = useRouter();
@@ -140,24 +136,8 @@ export default function User() {
             <p className="text[0.9rem]">View all your contacts here</p>
           </section>
           <section className="flex items-center space-x-2">
-            {/* <Button className="text-gray-600 px-4 py-2 border-2 border-gray-400 rounded-lg flex items-center">
-              <img src="/goggle-icon.png" alt="Google" className="w-5 h-5 mr-2" />
-              Connect Google Contacts
-            </Button> */}
-            {/* <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                console.log(credentialResponse);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            /> */}
-            <Home />
-            <Button
-              className="bg-orange-500 text-white px-4 py-2 rounded-lg"
-              icon={<Plus />}
-              onClick={() => handleOpenModal("edit")}
-            >
+            <GoogleSignInButton />
+            <Button className="px-4 py-2 rounded-lg" primary icon={<Plus />} onClick={() => handleOpenModal("edit")}>
               Create List
             </Button>
           </section>
@@ -177,7 +157,9 @@ export default function User() {
                 </p>
               </div>
             </div>
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg">Upgrade</button>
+            <Button primary className="px-4 py-2 rounded-lg">
+              Upgrade
+            </Button>
           </div>
         </section>
       </div>

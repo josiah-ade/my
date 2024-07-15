@@ -49,7 +49,6 @@ export default function NewCustomer({}) {
             <Link href={`${UserRoutes.BROADCAST}/${id}/import`}>
               <Button className="border-2 border-primary text-primary text-sm">Import</Button>
             </Link>
-            {/* <Link href={`broadcast-message/${id}/import`}> */}
             <Link href={UserRoutes.BROADCAST_MESSAGE_SEND}>
               <Button className="py-2" primary>
                 Send Broadcast

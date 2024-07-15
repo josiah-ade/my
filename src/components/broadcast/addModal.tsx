@@ -58,7 +58,6 @@ export function CreateBroadcastModal({ isOpen, onClose, broadcastDetail }: IProp
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="bg-white">
         <h2 className="text-2xl font-semibold mb-4">{isEditing ? "Edit Broadcast List" : "Create Broadcast List"}</h2>
-        <p className="text-gray-600 mb-6">{isEditing ? "Edit Broadcast List" : "Create Broadcast List"}</p>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="listName" className="block text-sm font-medium text-gray-900">
@@ -90,21 +89,6 @@ export function CreateBroadcastModal({ isOpen, onClose, broadcastDetail }: IProp
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
             />
             <p className="mt-2 text-sm text-gray-500">What is this list for?</p>
-          </div>
-          <div className="mb-6">
-            <label htmlFor="dayNumber" className="block text-sm font-medium text-gray-900">
-              Day Number on Automation
-            </label>
-            <input
-              required
-              id="dayNumber"
-              name="dayNumber"
-              type="number"
-              placeholder="0"
-              defaultValue={0}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-            />
           </div>
           <button
             type="submit"

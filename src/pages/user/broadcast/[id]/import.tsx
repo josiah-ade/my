@@ -14,7 +14,7 @@ import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { useBroadcastStore } from "@/providers/stores/broadcastStore";
 import { useAccountStore } from "@/providers/stores/accountStore";
 import { useParams } from "next/navigation";
-import GoogleSignIn from "@/components/Test";
+import GoogleSignInButton from "@/components/contacts/googleSignInButton";
 
 export default function ImportContacts() {
   const { id } = useParams() ?? {};
@@ -22,7 +22,7 @@ export default function ImportContacts() {
   const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists>();
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>("");
-  const [broadcastSelectedValue, setBroadcastSelectedValue] = useState<string>("");
+  const [automationDay, setAutomationDay] = useState(0);
 
   const broadcastList = useBroadcastStore((state) => state.broadcasts);
   const [accountSelectedId, setAccountSelectedId] = useState<string>("");
@@ -33,25 +33,20 @@ export default function ImportContacts() {
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value);
-    console.log(event.target.value, "now");
+    accountSelectedId && setAccountSelectedId("");
+  };
+
+  const handleAutomationDayChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value);
+    if (value || value == 0) setAutomationDay(value);
   };
 
   const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    // setAccountSelected(event.target.value);
-    accounts
-      ?.filter((item) => {
-        return item.phoneNumber === event.target.value;
-      })
-      .map((item) => {
-        setAccountSelectedId(item.id);
-      });
+    const selectedAccount = accounts[parseInt(event.target.value)];
+    setAccountSelectedId(selectedAccount ? selectedAccount.id : "");
   };
+  const listIndex = broadcastList.findIndex((val) => val.id == id);
 
-  // const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   if (!broadcastList?.length) return;
-  //   const index = e.currentTarget.value;
-  //   setSelectedBroadcastList(broadcastList[parseInt(index)]);
-  // };
   const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const index = e.currentTarget.value;
     if (index === "default" || !broadcastList?.length) {
@@ -82,20 +77,7 @@ export default function ImportContacts() {
                 <p className=" text-gray-600 text-base">Import all your contacts here</p>
               </div>
               <div className="flex items-center space-x-2 mt-8 md:mt-0">
-                {/* <Button className="border-2 border-gray-700 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    <span>
-                      <Image src="/goggle-icon.png" alt="goggle" width={20} height={20} />
-                    </span>
-                    <span className="text-gray-600 text-sm ">ekpenyong2510@gmail.com - </span>
-                    <span className="text-secondary text-sm">
-                      <a href="#" className="">
-                        Sign Out?
-                      </a>
-                    </span>
-                  </div>
-                </Button> */}
-                <GoogleSignIn />
+                <GoogleSignInButton />
               </div>
             </div>
             <div
@@ -109,7 +91,7 @@ export default function ImportContacts() {
                   className="w-full p-2 px-2 border border-gray-700 rounded focus:outline-none"
                   onChange={handleChange}
                 >
-                  <option value="default" className="px-2">
+                  <option value="" className="px-2">
                     Select source
                   </option>
                   <option value="manually">Import Manually</option>
@@ -130,11 +112,13 @@ export default function ImportContacts() {
                     <option value="" className="hidden">
                       Select account
                     </option>
-                    {accounts?.map((item, idx) => (
-                      <option value={item.phoneNumber} key={item.id} className="px-2">
-                        {item?.phoneNumber}
-                      </option>
-                    ))}
+                    {accounts
+                      ?.filter((item) => item.status == "connected")
+                      .map((item, idx) => (
+                        <option value={idx} key={item.id} className="px-2">
+                          {item?.phoneNumber}
+                        </option>
+                      ))}
                   </select>
                 </div>
               )}
@@ -161,7 +145,8 @@ export default function ImportContacts() {
                 <label className="block text-gray-900 font-semibold leading-8 text-sm">Day Number on Automation</label>
                 <input
                   type="number"
-                  name=""
+                  name="automationDay"
+                  onChange={handleAutomationDayChange}
                   className="w-full p-2 border border-gray-700 rounded focus:outline-none"
                   defaultValue={0}
                 />
@@ -172,12 +157,27 @@ export default function ImportContacts() {
 
         {selectedValue !== "" ? (
           <section>
-            {selectedValue === "google" && <Google id={accountSelectedId} />}
             {selectedValue === "manually" && (
-              <Manually selectedValue={selectedBroadcastList} contacts={contacts} isButtonEnabled={isButtonEnabled} />
+              <Manually
+                selectedValue={selectedBroadcastList}
+                selectedAutomationDay={automationDay}
+                contacts={contacts}
+                isButtonEnabled={isButtonEnabled}
+              />
             )}
-            {selectedValue === "whatsapp" && accountSelectedId && <Whatsapp id={accountSelectedId} />}
-            {selectedValue === "csv" && <CSV />}
+            {selectedValue === "google" && (
+              <Google selectedAutomationDay={automationDay} selectedList={selectedBroadcastList} />
+            )}
+            {selectedValue === "whatsapp" && (
+              <Whatsapp
+                selectedAutomationDay={automationDay}
+                selectedList={selectedBroadcastList}
+                accountId={accountSelectedId}
+              />
+            )}
+            {selectedValue === "csv" && (
+              <CSV selectedAutomationDay={automationDay} selectedList={selectedBroadcastList} />
+            )}
           </section>
         ) : (
           <section className="my-20">

@@ -93,7 +93,7 @@ export interface FileUpload {
 
 export interface FileUploadProps {
   uploads: FileUpload[];
-  onFileSelect: (files: FileList) => void;
+  onFileSelect: (files: File[]) => void;
   onRetry: (file: FileUpload) => void;
 }
 

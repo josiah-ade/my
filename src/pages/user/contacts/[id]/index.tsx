@@ -1,7 +1,7 @@
 import UserLayout from "@/layout/user";
 import HasBack from "@/components/common/hasback/hasback";
 import AccountForm from "@/components/contacts/accountcontact/accountcontact";
-import { useGetSingleUsersAcount, useGetUsersContactAcount } from "@/providers/hooks/query/getaccount";
+import { useGetSingleUsersAcount, useGetAccountContacts } from "@/providers/hooks/query/getaccount";
 import { useParams } from "next/navigation";
 import EmptyState from "@/components/common/empty/empty";
 
@@ -10,7 +10,7 @@ export default function ContactPage() {
   const { data: accountDetails, loading: accountLoader } = useGetSingleUsersAcount(id as string, {
     loadingConfig: { displayLoader: false },
   });
-  const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
+  const { data: contactAcount, loading: contactLoader } = useGetAccountContacts(id as string);
 
   return (
     <UserLayout>
@@ -23,7 +23,7 @@ export default function ContactPage() {
             text={`View all account from this contact`}
             title={accountDetails?.phoneNumber ?? ""}
             isGroup={false}
-            contactAcount={contactAcount ?? []}
+            contactAccount={contactAcount ?? []}
           />
         ) : (
           <>{contactLoader || accountLoader ? <></> : <EmptyState />}</>

@@ -20,6 +20,7 @@ export default function (props: IProps) {
 function getStatusColor(status: string) {
   const statusMap = new Map([
     ["delivered", "bg-success-50 text-success-700"],
+    ["sent", "bg-success-50 text-success-700"],
     ["connected", "bg-success-50 text-success-700"],
     ["paused", "bg-warning-50 text-warning-700"],
     ["failed", "bg-error-50 text-error-700"],

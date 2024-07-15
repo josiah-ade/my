@@ -1,60 +1,56 @@
-import React, { useState, useEffect } from "react";
-import Button from "../button/button";
-import Table from "../table/index";
-import { WhatsappContact } from "@/core/types/data.interface";
-import { TableHeader } from "@/typings/interface/component/table";
-import { useGetUsersContactAcount, useGetUsersAcount } from "@/providers/hooks/query/getaccount";
-import { useParams } from "next/navigation";
+import { useGetAccountContacts } from "@/providers/hooks/query/getaccount";
 import AccountForm from "../contacts/accountcontact/accountcontact";
+import { IBroadcastLists } from "@/typings/interface/broadcasts";
+import EmptyState from "../common/empty/empty";
+import HeaderSection from "./headerSection";
 
-interface whatsappNumber {
-  id: string;
+interface IProps {
+  accountId: string;
+  selectedList?: IBroadcastLists;
+  selectedAutomationDay?: number;
 }
-export default function Whatsapp(props: whatsappNumber) {
-  const { id } = props;
-  // const { id } = useParams() ?? {};
-  const [search] = useState(true);
-  const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
-  // const { data: accounts } = useGetUsersAcount({ loadingConfig: { displayLoader: true } });
-  // const filterConnectedAccount = accounts?.filter((item) => {
-  //   return item.phoneNumber === id;
-  // });
 
-  // useEffect(() => {
-  //   const { data: contactAcount, loading: contactLoader } = useGetUsersContactAcount(id as string);
-  // }, [id]);
+const title = "Import WhatsApp Phone Contacts";
+const text = "import contact details from your whatsapp account";
 
-  console.log(contactAcount);
+export default function Whatsapp({ accountId, selectedList, selectedAutomationDay }: IProps) {
+  const { data: contactAccount, error } = useGetAccountContacts(accountId, { enabled: !!accountId });
+
+  const emptyTitle = error
+    ? "Failed to load whatsapp contacts"
+    : !accountId
+    ? "No Account Selected"
+    : "No Whatsapp Contacts";
+
+  const emptyText = error
+    ? (error as Error).message
+    : !accountId
+    ? "Select a source account you are importing your contacts from to begin"
+    : "You don't have any contact tos display";
 
   return (
     <section className="mt-20">
-      {/* <section className="flex justify-between items-center">
-        <div>
-          <h2 className="text-lg font-bold">Import WhatsApp Phone Contacts </h2>
-          <p className="text-gray-600 text-sm">import contact details from your whatsapp account</p>
-        </div>
-        <div>
-          <Button primary>Import 35 contacts</Button>
-        </div>
-      </section> */}
-
-      <section>
-        {/* <Table
-          //   setIsOpen={setIsOpen}
-          //   isOpen={isOpen}
-          headers={headers}
-          data={contactAcount ?? []}
-          search={search}
-          //   actions={actions}
-        /> */}
-        <AccountForm
-          text={`Import WhatsApp Phone Contacts`}
-          title={`import contact details from your whatsapp account`}
-          contactAcount={contactAcount ?? []}
-          addContact={false}
-          btnText={`Import contacts`}
-        />
-      </section>
+      {!contactAccount ? (
+        <>
+          <HeaderSection title={title} text={text} />
+          <section>
+            <EmptyState title={emptyTitle} text={emptyText} />
+          </section>
+        </>
+      ) : (
+        <section>
+          <AccountForm
+            title={title}
+            text={text}
+            titleClass="text-xl"
+            selectedAutomationDay={selectedAutomationDay}
+            contactAccount={contactAccount ?? []}
+            addContact={false}
+            selectedList={selectedList}
+            btnText={`Import Contacts`}
+          />
+        </section>
+      )}
     </section>
   );
 }

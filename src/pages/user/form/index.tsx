@@ -5,7 +5,6 @@ import { ConfirmationProp } from "@/typings/interface/component/modal/confirmati
 import Image from "next/image";
 import { Copy, Plus, Bin, Pencil } from "@/core/const/icons/icons";
 import { useGetUserBroadcast } from "@/providers/hooks/query/getbroadcast";
-import { IBroadcastList } from "@/typings/interface/broadcasts";
 import { TableHeader } from "@/typings/interface/component/table";
 import Link from "next/link";
 import AccountTableActionComponent from "@/components/form/tableAction";

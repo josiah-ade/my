@@ -10,7 +10,7 @@ export interface ICreateBroadcastMessage {
   accountId: string;
   text: string;
   type: "group" | "list" | "";
-  files?: FileList;
+  files?: File[];
   testNumber?: string;
   sendToIndividual?: boolean;
   joinedFrom?: string;
@@ -19,6 +19,7 @@ export interface ICreateBroadcastMessage {
   tagCondition?: string;
   excludeList?: string[];
   isTest?: boolean;
+  individual?:string;
 }
 
 export interface IMessageResponse {

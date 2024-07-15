@@ -22,7 +22,7 @@ export default function WhatsappList() {
               text={`View all contacts from this group`}
               title={group?.name}
               isGroup={true}
-              contactAcount={contacts}
+              contactAccount={contacts}
             />
           ) : (
             <></>

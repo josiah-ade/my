@@ -3,21 +3,28 @@ import { ICreateBroadcastMessage, IMessageResponse, IMessageListResponse } from 
 import { handleError } from "@/components/common/exception/serviceexception";
 import { IGenericStatusResponse } from "@/typings/interface/api";
 import { removeNullValue } from "@/core/services";
+import { IAPIFilter } from "@/typings/query";
 
-// Function to create a new broadcast message
+export interface IMessageFilter extends IAPIFilter {
+  // type: string| 'list' | 'group' | 'automation' | 'BOT' | "" ;
+  type: string;
+}
+
 export async function createBroadcastMessage(data: ICreateBroadcastMessage): Promise<IGenericStatusResponse> {
   const formData = new FormData();
-  const { list, tags, excludeList, isTest, files, ...cleanData } = removeNullValue(data, true);
+  const { list, tags, excludeList, sendToIndividual, isTest, files, ...cleanData } = removeNullValue(data, true);
 
   Object.entries(cleanData).forEach(([field, value]) => {
     formData.append(field, value ?? "");
   });
 
   formData.append("isTest", `${isTest}`);
+  formData.append("sendToIndividual", `${sendToIndividual}`);
   [
     { name: "broadcastIds", value: list },
     { name: "tags", value: tags },
     { name: "excludeList", value: excludeList },
+    { name: "sendToIndividual", value: excludeList },
   ].forEach((list) => {
     if (list.value && list.value.length) {
       list.value.forEach((item) => formData.append(list.name, item));
@@ -25,10 +32,7 @@ export async function createBroadcastMessage(data: ICreateBroadcastMessage): Pro
     }
   });
 
-  files &&
-    Array.from(files).forEach((value) => {
-      formData.append("files", value, value.name);
-    });
+  files && files.forEach((value) => formData.append("files", value, value.name));
 
   return axios
     .post<IGenericStatusResponse>("/message", formData)
@@ -37,9 +41,9 @@ export async function createBroadcastMessage(data: ICreateBroadcastMessage): Pro
 }
 
 // Function to fetch all broadcast messages
-export async function getBroadcastMessages(): Promise<IMessageResponse[]> {
+export async function getBroadcastMessages(params: IMessageFilter): Promise<IMessageResponse[]> {
   return axios
-    .get<IMessageResponse[]>("/message")
+    .get<IMessageResponse[]>("/message", { params })
     .then((response) => {
       return response.data;
     })

@@ -9,9 +9,11 @@ export interface Contact {
 export interface IContactList {
   contacts: Contact[];
   broadcastListId: string;
+  automatedDay: number;
 }
 
 export interface CreateContactFromNewListDTO {
   contacts: Contact[];
   broadcast: ICreateBroadcastList;
+  automatedDay: number;
 }

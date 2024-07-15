@@ -1,19 +1,20 @@
 import { create } from "zustand";
 
-interface AuthInterFace {
-  idToken: string;
-  accessToken: string;
+interface IGoogleAuth {
+  idToken?: string;
+  accessToken?: string;
+  email?: string;
 }
 
 interface GoogleAuthState {
-  Google: AuthInterFace[];
-  setGoogle: (data: AuthInterFace[]) => void;
+  authData: IGoogleAuth;
+  setAuthData: (data: IGoogleAuth) => void;
 }
 
 const useGoogleAuthState = create<GoogleAuthState>((set) => ({
-  Google: [],
-  setGoogle: (data) => {
-    set(() => ({ Google: data }));
+  authData: {},
+  setAuthData: (data) => {
+    set(() => ({ authData: data }));
   },
 }));
 

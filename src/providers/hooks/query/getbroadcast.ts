@@ -19,7 +19,7 @@ export function useGetUserBroadcast(options: IQueryOptions = {}) {
 
 export function useGetBroadcastDetail(id: string, options: IQueryOptions = {}) {
   const users: IQueryArgs<void, IBroadcastLists> = {
-    key: ["broadcast_detail"],
+    key: ["broadcast_detail", { id }],
     callback: () => getBroadcastDetail(id),
   };
   return useGetResourcesQuery(users, options);

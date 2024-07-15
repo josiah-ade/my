@@ -3,7 +3,7 @@ import { NotificationType } from "@/core/enum/notification";
 import { useCreateContactList } from "@/providers/hooks/mutate/createcontact";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { ContactAccount } from "@/typings/interface/account";
-import {  IBroadcastLists,  ICreateBroadcastList } from "@/typings/interface/broadcasts";
+import { IBroadcastLists, ICreateBroadcastList } from "@/typings/interface/broadcasts";
 import { Contact } from "@/typings/interface/contacts";
 import { FormEvent, useState } from "react";
 
@@ -40,7 +40,7 @@ export default function AddExistingList(props: IProps) {
   const [createBroadcastListData, setCreateBroadcastListData] = useState<ICreateBroadcastList>({
     ...defaultCreateBroadcastFormValue,
   });
-  
+
   const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!broadcastList?.length) return;
     const index = e.currentTarget.value;
@@ -60,8 +60,11 @@ export default function AddExistingList(props: IProps) {
       contactPhoneNumber: item?.phoneNumber ?? "NA",
     }));
 
+    const { automationDay } = createBroadcastListData;
+
     selectedBroadcastList &&
       createFromExistingList({
+        automatedDay: automationDay ?? 0,
         contacts,
         broadcastListId: selectedBroadcastList.id,
       });
@@ -75,7 +78,7 @@ export default function AddExistingList(props: IProps) {
           <p className="text-[1rem] text-wrap pr-4 ">
             {selectedContacts.length} contacts you have selected would be added to an existing broadcast list{" "}
           </p>
-        </div> 
+        </div>
         <div className={`mt-5 relative `}>
           <label className="font-bold">Select List</label>
           <br></br>
@@ -102,7 +105,7 @@ export default function AddExistingList(props: IProps) {
           <div className="mt-2">
             <input
               name="automationDay"
-              autoComplete="off"
+              type="number"
               placeholder="Day Number on Automation"
               onChange={handleChange}
               value={createBroadcastListData.automationDay}

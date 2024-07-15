@@ -3,7 +3,7 @@ import { NotificationType } from "@/core/enum/notification";
 import { useCreateContactFromNewList } from "@/providers/hooks/mutate/createcontact";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { ContactAccount } from "@/typings/interface/account";
-import {  ICreateBroadcastList } from "@/typings/interface/broadcasts";
+import { ICreateBroadcastList } from "@/typings/interface/broadcasts";
 import { Contact } from "@/typings/interface/contacts";
 import { FormEvent, useState } from "react";
 
@@ -56,8 +56,9 @@ export default function AddNewList(props: IProps) {
       contactEmail: "",
       contactPhoneNumber: item.phoneNumber ?? "",
     }));
+    const { automationDay, ...broadcastData } = createBroadcastListData;
 
-    createFromNewList({ contacts, broadcast: createBroadcastListData });
+    createFromNewList({ automatedDay: automationDay ?? 0, contacts, broadcast: broadcastData });
   };
 
   return (
@@ -105,8 +106,8 @@ export default function AddNewList(props: IProps) {
           <br></br>
           <div className="mt-2">
             <input
-              name="dayNumber"
-              autoComplete="off"
+              name="automationDay"
+              type="number"
               placeholder="Enter Number on Automation"
               onChange={handleChange}
               value={createBroadcastListData.automationDay}

@@ -5,7 +5,6 @@ import { Fragment, useState } from "react";
 
 import { Bin, Userg, Pencil, Usercancel } from "@/core/const/icons/icons";
 import { TableHeaderActionProp } from "@/typings/interface/component/table";
-import { CreateBroadcastModal } from "./addModal";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
 import { useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";

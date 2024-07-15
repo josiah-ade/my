@@ -12,16 +12,15 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 60 * 1000,
+      retry: 0,
+      // retry: 1,
     },
   },
 });
 
-
-
 type Page = NextPage & { Layout?: React.FC };
 
 export default function App({ Component, pageProps }: AppProps) {
-  let clientID: string;
   const PageComponent = Component as Page;
   const Layout = PageComponent.Layout ? PageComponent.Layout : React.Fragment;
 
@@ -29,13 +28,13 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Loader />
       <NotificationComponent />
-        <QueryClientProvider client={queryClient}>
-          <Context>
-            <Layout>
-              <PageComponent {...pageProps} />
-            </Layout>
-          </Context>
-      </GoogleOAuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <Context>
+          <Layout>
+            <PageComponent {...pageProps} />
+          </Layout>
+        </Context>
+      </QueryClientProvider>
     </>
   );
 }

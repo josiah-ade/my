@@ -8,7 +8,10 @@ import axios, { AxiosResponse } from "axios";
 
 export async function createContact(data: IContactList): Promise<ContactList> {
   return axios
-    .post<ContactList>(`/broadcast/${data.broadcastListId}/contact`, { contacts: data.contacts })
+    .post<ContactList>(`/broadcast/${data.broadcastListId}/contact`, {
+      contacts: data.contacts,
+      automatedDay: data.automatedDay,
+    })
     .then((response: AxiosResponse<ContactList>) => {
       return response.data;
     })

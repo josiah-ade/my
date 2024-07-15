@@ -38,8 +38,8 @@ function ViewButton(props: TableHeaderActionProp<IMessageResponse>) {
 
 
 export default function ListBroadcasts() {
-  const { data, loading } = useGetBroadcastMessages();
-  // const broadcastDetails = data?.map((detail) => detail?.broadcastDetail?.listName);
+  const params = { type: 'list' }; 
+  const { data, loading } = useGetBroadcastMessages(params);
 
   const headers: TableHeader<IMessageResponse>[] = [
     { title: "Message", field: "text" },

@@ -352,7 +352,7 @@ export default function CreateAutomationPage() {
           </div>
         </div>
       </div>
-      <FileUpload uploads={uploads} onFileSelect={handleFileSelect} onRetry={handleRetry} />
+      {/* <FileUpload uploads={uploads} onFileSelect={handleFileSelect} onRetry={handleRetry} /> */}
           </div>
 
         </section>

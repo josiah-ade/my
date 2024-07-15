@@ -1,6 +1,7 @@
 import { useBroadcastStore } from "@/providers/stores/broadcastStore";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+import EmptyState from "../common/empty/empty";
 
 type ISelectableList = IBroadcastLists & { selected?: boolean };
 
@@ -45,6 +46,7 @@ function ListSelector({ setValue, clearFlag, updateClearFlag }: IProps) {
     setState((list) => list.map((item) => ({ ...item, selected: item.contacts ? (clear ? false : !val) : false })));
     isAllSelected.current = !isAllSelected.current;
   };
+  const emptyAccount = !lists ? "No account available. " :'';
 
   return (
     <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-md">
@@ -54,6 +56,7 @@ function ListSelector({ setValue, clearFlag, updateClearFlag }: IProps) {
           Select All Lists
         </button>
       </div>
+      {lists.length ? 
       <div className="p-2">
         {state.map((list, index) => (
           <div key={index} className="flex justify-between items-center py-2 border-b last:border-b-0">
@@ -76,7 +79,7 @@ function ListSelector({ setValue, clearFlag, updateClearFlag }: IProps) {
             </button>
           </div>
         ))}
-      </div>
+      </div>: <EmptyState  title={emptyAccount}  padding="py-2" />}
     </div>
   );
 }
