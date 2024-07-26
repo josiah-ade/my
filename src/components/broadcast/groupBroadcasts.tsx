@@ -1,11 +1,6 @@
 // components/GroupBroadcasts.tsx
 import React, { useState } from "react";
-import BroadCastMessageTable from "./broadcastTable";
 import Default from "../default/default";
-import {
-  HeaderBroadcast,
-  TableRowBroadcast,
-} from "@/core/types/data.interface";
 import Table from "../table";
 import { useGetBroadcastMessages } from "@/providers/hooks/query/getmessage";
 import { TableHeader } from "@/typings/interface/component/table";
@@ -13,16 +8,14 @@ import ListPopover from "../common/dropdown/tabledropdown";
 import { IMessageResponse } from "@/typings/interface/message";
 import { dateFormatter } from "@/core/formatters/dateFormatter";
 import { DisplayDataTimeFormatOptions } from "@/core/const/formatOptions";
+import EmptyState from "../common/empty/empty";
+import Button from "../button/button";
+import { useRouter } from "next/router";
+import { UserRoutes } from "@/core/const/routes.const";
 
 function Img() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
@@ -33,40 +26,54 @@ function Img() {
   );
 }
 
-
 function GroupBroadcasts() {
-  const params ={ type: 'group' }; 
+  const params = { type: "group" };
   const { data, loading } = useGetBroadcastMessages(params);
+  const router = useRouter();
+  const handleRouter = () => {
+    router.push(UserRoutes.BROADCAST_MESSAGE_SEND);
+  };
 
   const headers: TableHeader<IMessageResponse>[] = [
-    { title: "Groups In Broadcast", field: "lists",  action:{component:(props)=> <ListPopover  {...props}/> }},
+    { title: "Groups In Broadcast", field: "lists", action: { component: (props) => <ListPopover {...props} /> } },
     { title: "Message", field: "text" },
-    { title: "Time Sent To Queue", field: "queuedTime", formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions), },
-    { title: "Time Delivered", field: "completedTime", formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions), },
+    {
+      title: "Time Sent To Queue",
+      field: "queuedTime",
+      formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions),
+    },
+    {
+      title: "Time Delivered",
+      field: "completedTime",
+      formatter: (val) => dateFormatter(val, DisplayDataTimeFormatOptions),
+    },
     { title: "Status", field: "status" },
   ];
 
   const MAX_MESSAGE_LENGTH = 15;
-  const truncatedData = data?.map((item) => ({ ...item, text: item.text.slice(0, MAX_MESSAGE_LENGTH) + (item.text.length > MAX_MESSAGE_LENGTH ? '....' : '') }))
+  const truncatedData = data?.map((item) => ({
+    ...item,
+    text: item.text.slice(0, MAX_MESSAGE_LENGTH) + (item.text.length > MAX_MESSAGE_LENGTH ? "...." : ""),
+  }));
 
   return (
     <div className="mt-8">
       {!loading && truncatedData?.length ? (
-        <Table
-          data={truncatedData}
-          headers={headers} />
+        <Table data={truncatedData} headers={headers} />
       ) : (
-        <Default
-          src="/phone.jpg"
-          btn={true}
-          imgE={<Img />}
-          btnText="Send Broadcast"
-          primary={true}
-          alt="list"
-          height={100}
-          width={100}
-          mainText="No Broadcast sent"
-          subText="send a broadcast message to view them here"
+        <EmptyState
+          imgSrc="/phone.jpg"
+          action={() => (
+            <Button
+              className="bg-primary text-white px-4 py-2 rounded-lg"
+              icon={<Img />}
+              onClick={() => handleRouter()}
+            >
+              Send Broadcast
+            </Button>
+          )}
+          title="No Broadcast sent"
+          text="send a broadcast message to view them here"
         />
       )}
     </div>

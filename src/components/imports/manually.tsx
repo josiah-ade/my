@@ -1,30 +1,33 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, FormEvent, useMemo } from "react";
 import ContactsList from "../contactlist/contactlist";
 import Default from "../default/default";
 import Button from "../button/button";
 import { NotificationType } from "@/core/enum/notification";
 import useNotificationStore from "@/providers/stores/notificationStore";
-import { Contact } from "@/typings/interface/contacts";
+import { ICreateContact } from "@/typings/interface/contacts";
 import { useCreateContactList } from "@/providers/hooks/mutate/createcontact";
 import { IBroadcastContact, IBroadcastLists } from "@/typings/interface/broadcasts";
+import TextInput from "../input/textInput";
+import { ContactSchema } from "@/providers/schema/broadcast/contact.schema";
+import { formatZodErrors } from "@/core/formatters/zodError.formatter";
+import PhoneInput from "../input/phoneInput";
 
 interface IProps {
   selectedValue?: IBroadcastLists;
   selectedAutomationDay?: number;
   contacts?: IBroadcastContact[];
-  isButtonEnabled: boolean;
 }
 
-const defaultValue: Contact = { contactName: "", contactEmail: "", contactPhoneNumber: "" };
+const defaultValue: ICreateContact = { contactName: "", contactEmail: "", contactPhoneNumber: "", countryCode: "" };
 
 export default function Manually(props: IProps) {
-  const { selectedValue, isButtonEnabled, selectedAutomationDay } = props;
-  const [contactListData, setContactListData] = useState<Contact>({ ...defaultValue });
+  const { selectedValue, selectedAutomationDay } = props;
+  const [contactListData, setContactListData] = useState<ICreateContact>({ ...defaultValue });
+  const [formError, setFormError] = useState<Record<string, string>>({});
 
   const setNotification = useNotificationStore((state) => state.setDisplay);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+  const handleChange = (name: keyof ICreateContact, value: string) => {
     setContactListData({ ...contactListData, [name]: value });
   };
 
@@ -43,14 +46,28 @@ export default function Manually(props: IProps) {
 
   const handleOnSubmit = (event: FormEvent) => {
     event.preventDefault();
+    setFormError({});
+
+    const result = ContactSchema.safeParse(contactListData);
+    if (!result.success) {
+      setFormError(formatZodErrors(result.error));
+      return;
+    }
+
+    const { contactPhoneNumber, countryCode, ...data } = contactListData;
 
     selectedValue &&
       createFromExistingList({
         automatedDay: selectedAutomationDay ?? 0,
-        contacts: [contactListData],
+        contacts: [{ ...data, contactPhoneNumber: `${countryCode}${contactPhoneNumber}` }],
         broadcastListId: selectedValue.id,
       });
   };
+
+  // const isValid = useMemo(() => {
+  //   const result = ContactSchema.safeParse(contactListData);
+  //   return result.success;
+  // }, [contactListData]);
 
   return (
     <section className="mt-20 overflow-x-hidden">
@@ -59,48 +76,39 @@ export default function Manually(props: IProps) {
           <h2 className="text-xl font-bold">Import Contacts manually</h2>
           <p className="text-gray-600 text-base">Manually type contact details to be imported</p>
           <form className="space-y-4 mt-8" onSubmit={handleOnSubmit}>
-            <div>
-              <label className="block text-gray-900 font-semibold leading-8 text-sm">
-                Contact Name*
-                <input
-                  onChange={handleChange}
-                  name="contactName"
-                  className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-                  placeholder="input name"
-                />
-              </label>
-            </div>
-            <div>
-              <label className="block text-gray-900 font-semibold leading-8 text-sm">
-                Phone Number*
-                <input
-                  onChange={handleChange}
-                  value={contactListData.contactPhoneNumber}
-                  type="text"
-                  name="contactPhoneNumber"
-                  className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-                  placeholder="input phone"
-                />
-              </label>
-            </div>
-            <div>
-              <label className="block text-gray-900 font-semibold leading-8 text-sm">
-                Contact email
-                <input
-                  onChange={handleChange}
-                  value={contactListData.contactEmail}
-                  type="email"
-                  name="contactEmail"
-                  className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm"
-                  placeholder="input email"
-                />
-              </label>
-            </div>
+            <TextInput
+              name="contactName"
+              label="Contact Name*"
+              placeholder="Input Name"
+              value={contactListData.contactName}
+              errorText={formError.contactName}
+              onChange={(val) => handleChange("contactName", val)}
+            />
+            
+            <PhoneInput
+              name="phoneNumber"
+              label="Phone Number*"
+              placeholder="Input Phone Number"
+              value={contactListData.contactPhoneNumber}
+              codeValue={contactListData.countryCode}
+              errorText={formError.contactPhoneNumber}
+              onChange={(val) => handleChange("contactPhoneNumber", val)}
+              onCodeChange={(val) => handleChange("countryCode", val)}
+            />
+
+            <TextInput
+              name="contactEmail"
+              label="Contact Email*"
+              value={contactListData.contactEmail}
+              errorText={formError.contactEmail}
+              placeholder="Input Email"
+              onChange={(val) => handleChange("contactEmail", val)}
+            />
             <div className="mt-2">
               <Button
-                // disabled={Object.values(contactListData).length < 1}
-                disabled={!isButtonEnabled}
                 type="submit"
+                primary
+                disabled={!selectedValue}
                 className="w-full flex justify-center  border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-400 hover:bg-gray-500"
               >
                 Import

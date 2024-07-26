@@ -21,7 +21,7 @@ export default function AppDrawer({ display, onToggle }: Props) {
   return (
     <>
       <div
-        className={`w-[18rem] pt-3 fixed lg:flex z-20 lg:mt-[5.3rem] lg:z-auto overflow-auto h-screen bg-gray-50 flex flex-col gap-1 
+        className={`w-[18rem] pt-3 fixed lg:flex z-20 lg:mt-[5rem] lg:z-auto overflow-auto h-screen bg-gray-50 flex flex-col gap-1 
         ${display ? "flex h-screen" : "hidden"}
         ${display ? "top-0 h-screen" : ""} `}
       >
@@ -31,20 +31,17 @@ export default function AppDrawer({ display, onToggle }: Props) {
             <FaTimes />
           </div>
         </div>
-        {UserMenus.map((item) => {
+        {UserMenus.filter((item) => !item.disabled).map((item) => {
           const isActive = currentMenuItem && currentMenuItem.path != "" && item.path == currentMenuItem.path;
           return (
             <Link href={item.disabled ? "#" : item.path} key={item.path}>
               <div
-                className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF] 
-                  ${item.disabled ? "cursor-not-allowed" : "cursor-pointer"}
-                  ${isActive ? "bg-primary-3 text-primary-4 font-bold" : "text-primary-4"} 
-                  ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold" : ""}`}
+                className={`flex py-3 w-auto rounded-md px-4 justify-start items-center gap-1 
+                  ${item.disabled ? "cursor-not-allowed" : "cursor-pointer"} 
+                  ${isActive ? "bg-primary-50 text-gray-900 font-medium" : "text-gray-700 hover:bg-[#E7E9EF]"}`}
               >
-                <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
-                  {item.icon ? (
-                    <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
-                  ) : null}
+                <span>
+                  {item.icon ? <item.icon size={18} className={`${isActive ? " text-primary " : ""}`} /> : null}
                 </span>
                 <span className="pl-2">{item.title}</span>
               </div>
@@ -55,22 +52,19 @@ export default function AppDrawer({ display, onToggle }: Props) {
           <hr />
         </div>
         <div>
-          <p className="text-primary-7 px-4">Broadcast</p>
-          {BroadcastMenus.map((item) => {
+          <p className="text-gray-400 text-sm py-3  px-4">Broadcast</p>
+          {BroadcastMenus.filter((item) => !item.disabled).map((item) => {
             const isActive =
               currentBroadcastItem && currentBroadcastItem.path != "" && item.path == currentBroadcastItem.path;
             return (
               <Link href={item.disabled ? "#" : item.path} key={item.path}>
                 <div
-                  className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF]
+                  className={`flex py-3 w-auto rounded-md px-4 justify-start items-center gap-1
                     ${item.disabled ? "cursor-not-allowed" : "cursor-pointer"}
-                    ${isActive ? "bg-primary-3 text-primary-4 font-bold" : "text-primary-4"}  
-                    ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold" : ""}`}
+                    ${isActive ? "bg-primary-50 text-gray-900 font-medium" : "text-gray-700 hover:bg-[#E7E9EF]"}`}
                 >
-                  <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
-                    {item.icon ? (
-                      <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
-                    ) : null}
+                  <span>
+                    {item.icon ? <item.icon size={18} className={`${isActive ? " text-primary " : ""}`} /> : null}
                   </span>
                   <span className="pl-2">{item.title}</span>
                 </div>
@@ -82,22 +76,19 @@ export default function AppDrawer({ display, onToggle }: Props) {
           <hr />
         </div>
         <div>
-          <p className="text-primary-7 px-4">Automation</p>
-          {AutomationMenus.map((item) => {
+          <p className="text-gray-400 text-sm py-3  px-4">Automation</p>
+          {AutomationMenus.filter((item) => !item.disabled).map((item) => {
             const isActive =
               currentAutomationItem && currentAutomationItem.path != "" && item.path == currentAutomationItem.path;
             return (
               <Link href={item.disabled ? "#" : item.path} key={item.path}>
                 <div
-                  className={`flex h-[40px] w-auto rounded-md px-4 justify-start items-center gap-1 hover:bg-[#E7E9EF]
-                  ${item.disabled ? "cursor-not-allowed" : "cursor-pointer"}
-                  ${isActive ? "bg-primary-3 text-primary-4 font-bold" : "text-primary-4"}
-                  ${isActive ? " hover:bg-primary-3 text-primary-4 font-bold" : ""}`}
+                  className={`flex py-3 w-auto rounded-md px-4 justify-start items-center gap-1 
+                    ${item.disabled ? "cursor-not-allowed" : "cursor-pointer"} 
+                    ${isActive ? "bg-primary-50 text-gray-900 font-medium" : "text-gray-700 hover:bg-[#E7E9EF]"}`}
                 >
-                  <span className={`${isActive ? " text-primary " : "text-primary-4"} `}>
-                    {item.icon ? (
-                      <item.icon size={18} className={`${isActive ? " text-primary " : "text-primary-4"}`} />
-                    ) : null}
+                  <span>
+                    {item.icon ? <item.icon size={18} className={`${isActive ? " text-primary " : ""}`} /> : null}
                   </span>
                   <span className="pl-2">{item.title}</span>
                 </div>

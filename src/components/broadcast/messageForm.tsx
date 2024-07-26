@@ -1,19 +1,14 @@
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, {  useRef } from "react";
 import { QuesCircle } from "@/core/const/icons/icons";
-import { useUploadStore } from "@/providers/stores/useUploadStore";
-import UploadBox from "../common/file/uploadBox";
 
 interface MessageFormProps {
-  onFileUpload: (data: File[]) => void;
   onChange: (data: { name: string; value: string }) => void;
   formValue: string;
   broadcastType: string;
-  updateClearFlag?: Dispatch<SetStateAction<boolean>>;
-  clearFlag?: boolean;
 }
 
 export default function MessageForm(props: MessageFormProps) {
-  const { broadcastType, onChange, onFileUpload, clearFlag, updateClearFlag, formValue } = props;
+  const { broadcastType, onChange, formValue } = props;
 
   const textInputRef = useRef<HTMLTextAreaElement>(null);
   const placeholders = [
@@ -78,14 +73,6 @@ export default function MessageForm(props: MessageFormProps) {
         </div>
       )}
 
-      <UploadBox
-        multiple
-        title="Click to upload your videos or images"
-        description="SVG, PNG, JPG or GIF (max 10 files)"
-        onFilesSelect={onFileUpload}
-        clearFlag={clearFlag}
-        updateClearFlag={updateClearFlag}
-      />
     </>
   );
 }

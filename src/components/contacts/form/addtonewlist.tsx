@@ -32,7 +32,7 @@ export default function AddNewList(props: IProps) {
         type: NotificationType.success,
         content: {
           title: "Contact List Updated successfully",
-          text: `you added ${selectedContacts.length} contacts to ${createBroadcastListData.listName} list`,
+          text: `you added ${selectedContacts.length} contacts to ${createBroadcastListData.listName} list.  Duplicate contacts are automatically removed`,
         },
       });
       handleClose();

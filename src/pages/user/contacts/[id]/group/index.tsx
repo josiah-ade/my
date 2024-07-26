@@ -5,6 +5,7 @@ import TabLists from "@/components/contacts/tab/tabdetail";
 import { useGetGroupAccount, useGetSingleUsersAcount } from "@/providers/hooks/query/getaccount";
 import { useParams } from "next/navigation";
 import { IGroupAccount } from "@/typings/interface/account";
+import { MdGroups } from "react-icons/md";
 import EmptyState from "@/components/common/empty/empty";
 
 export default function WhatsappList() {
@@ -31,7 +32,7 @@ export default function WhatsappList() {
                 className="border p-5 rounded-[0.6rem] w-full"
               >
                 <TabLists
-                  // icon={item.icon}
+                  icon={MdGroups}
                   displayTotal={false}
                   phoneNumber={item.name}
                   description={`${item.totalContacts} contacts`}

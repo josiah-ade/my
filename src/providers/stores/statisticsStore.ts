@@ -1,4 +1,3 @@
-import { IAutomation, IAutomationContact } from "@/typings/interface/automation";
 import { ILimitData, Limit } from "@/typings/interface/component/layout/menu";
 import { create } from "zustand";
 

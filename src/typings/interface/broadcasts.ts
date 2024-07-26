@@ -1,3 +1,5 @@
+import { IAPIFilter } from "../query";
+
 export interface ICreateBroadcastList {
   listName: string;
   description: string;
@@ -24,3 +26,8 @@ export interface IEditBroadcastContact {
   contactEmail: string;
   automationDay: number;
 }
+export interface IMessageFilter extends IAPIFilter {
+  // type: string| 'list' | 'group' | 'automation' | 'BOT' | "" ;
+  type: string ;
+}
+

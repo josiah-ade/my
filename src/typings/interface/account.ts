@@ -9,6 +9,7 @@ export interface IAccountInfo {
 export interface ICreateAccount {
   phoneNumber: string;
   description: string;
+  countryCode?: string;
 }
 
 export interface IAccount extends ICreateAccount {
@@ -70,6 +71,6 @@ export interface IGroupAccount {
   id: string;
   totalContacts: number;
 }
-export interface IPairing{
-  code:string
+export interface IPairing {
+  code: string;
 }

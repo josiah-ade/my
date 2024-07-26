@@ -153,7 +153,7 @@ export default function Context({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <usersContext.Provider value={value}>{children}</usersContext.Provider>
+      { loaded ? <usersContext.Provider value={value}>{children}</usersContext.Provider> : <> </>}
     </>
   );
 }

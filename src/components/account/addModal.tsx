@@ -5,16 +5,22 @@ import { useEffect, useRef, useState } from "react";
 import { useCreateAccount } from "@/providers/hooks/mutate/account";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { NotificationType } from "@/core/enum/notification";
+import PhoneInput from "../input/phoneInput";
+import TextInput from "../input/textInput";
+import { CreateAccountSchema } from "@/providers/schema/account/account.schema";
+import { formatZodErrors } from "@/core/formatters/zodError.formatter";
 
 interface IProps extends ModalProps {}
 
 const defaultValue: ICreateAccount = {
   phoneNumber: "",
   description: "",
+  countryCode: "",
 };
 
 export default function AddAccountModal({ isOpen, onClose }: IProps) {
   const setNotification = useNotificationStore((state) => state.setDisplay);
+  const [formError, setFormError] = useState<Record<string, string>>({});
   const formRef = useRef<HTMLFormElement>(null);
 
   const { mutate: createAccount } = useCreateAccount({
@@ -33,18 +39,26 @@ export default function AddAccountModal({ isOpen, onClose }: IProps) {
 
   const [user, setUser] = useState<ICreateAccount>({ ...defaultValue });
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { value, name } = event.target;
+  const handleChange = (name: keyof ICreateAccount, value: string) => {
     setUser({ ...user, [name]: value });
-  }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    createAccount(user);
+    setFormError({});
+
+    const result = CreateAccountSchema.safeParse(user);
+    if (!result.success) {
+      setFormError(formatZodErrors(result.error));
+      return;
+    }
+    const { phoneNumber, countryCode, ...data } = user;
+    createAccount({ ...data, phoneNumber: `${countryCode}${phoneNumber}` });
   };
 
   useEffect(() => {
     return () => {
-        setUser({ ...defaultValue });
+      setUser({ ...defaultValue });
       formRef?.current?.reset();
     };
   }, [isOpen]);
@@ -54,39 +68,29 @@ export default function AddAccountModal({ isOpen, onClose }: IProps) {
       <div className="bg-white">
         <h2 className="text-2xl font-semibold mb-4">Add New WhatsApp Number</h2>
         <p className="text-gray-600 mb-6">Connect your WhatApp account </p>
-        <form onSubmit={handleSubmit} ref={formRef}>
-          <div className="mb-4">
-            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-900">
-              Phone Number
-            </label>
-            <input
-              name="phoneNumber"
-              id="phoneNumber"
-              type="text"
-              placeholder="Placeholder"
-              value={user.phoneNumber}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-medium text-gray-900">
-              Description
-            </label>
-            <input
-              name="description"
-              id="description"
-              type="text"
-              placeholder="Placeholder"
-              value={user.description}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-            />
-            <p className="mt-2 text-sm text-gray-500">What is this list for?</p>
-          </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4" ref={formRef}>
+          <PhoneInput
+            name="phoneNumber"
+            label="Phone Number*"
+            placeholder="Input Phone Number"
+            value={user.phoneNumber}
+            codeValue={user.countryCode}
+            errorText={formError.phoneNumber}
+            onChange={(val) => handleChange("phoneNumber", val)}
+            onCodeChange={(val) => handleChange("countryCode", val)}
+          />
+
+          <TextInput
+            name="description"
+            label="Description*"
+            value={user.description}
+            errorText={formError.description}
+            placeholder="Description"
+            onChange={(val) => handleChange("description", val)}
+          />
           <button
             type="submit"
-            className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="w-full bg-primary-500 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           >
             Add Number
           </button>

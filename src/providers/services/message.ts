@@ -3,12 +3,9 @@ import { ICreateBroadcastMessage, IMessageResponse, IMessageListResponse } from 
 import { handleError } from "@/components/common/exception/serviceexception";
 import { IGenericStatusResponse } from "@/typings/interface/api";
 import { removeNullValue } from "@/core/services";
-import { IAPIFilter } from "@/typings/query";
+import { IMessageFilter } from "@/typings/interface/broadcasts";
 
-export interface IMessageFilter extends IAPIFilter {
-  // type: string| 'list' | 'group' | 'automation' | 'BOT' | "" ;
-  type: string;
-}
+
 
 export async function createBroadcastMessage(data: ICreateBroadcastMessage): Promise<IGenericStatusResponse> {
   const formData = new FormData();

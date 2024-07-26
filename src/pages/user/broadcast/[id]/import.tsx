@@ -1,9 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
-import Button from "@/components/button/button";
 import Default from "@/components/default/default";
 import UserLayout from "@/layout/user";
-import Image from "next/image";
 import Manually from "@/components/imports/manually";
 import Google from "@/components/imports/google";
 import Whatsapp from "@/components/imports/whatsapp";
@@ -15,12 +13,20 @@ import { useBroadcastStore } from "@/providers/stores/broadcastStore";
 import { useAccountStore } from "@/providers/stores/accountStore";
 import { useParams } from "next/navigation";
 import GoogleSignInButton from "@/components/contacts/googleSignInButton";
+import Select from "@/components/input/selectInput";
+import TextInput from "@/components/input/textInput";
+
+const ImportSource = [
+  { label: "Import Manually", value: "manually" },
+  { label: "Whatsapp Phone Contacts", value: "whatsapp" },
+  { label: "Google Contacts", value: "google" },
+  { label: "Import CSV", value: "csv" },
+];
 
 export default function ImportContacts() {
   const { id } = useParams() ?? {};
   const accounts = useAccountStore((state) => state.accounts);
-  const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists>();
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const [selectedBroadcastList, setSelectedBroadcastList] = useState<IBroadcastLists | undefined>();
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [automationDay, setAutomationDay] = useState(0);
 
@@ -31,39 +37,14 @@ export default function ImportContacts() {
     enabled: !!selectedBroadcastList?.id && selectedValue == "manually",
   });
 
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(event.target.value);
+  const updateSource = (value: string) => {
+    setSelectedValue(value);
     accountSelectedId && setAccountSelectedId("");
   };
 
-  const handleAutomationDayChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value);
-    if (value || value == 0) setAutomationDay(value);
-  };
-
-  const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectedAccount = accounts[parseInt(event.target.value)];
-    setAccountSelectedId(selectedAccount ? selectedAccount.id : "");
-  };
-  const listIndex = broadcastList.findIndex((val) => val.id == id);
-
-  const updateSelectedBroadcastList = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const index = e.currentTarget.value;
-    if (index === "default" || !broadcastList?.length) {
-      setSelectedBroadcastList(broadcastList[parseInt(index)]);
-      setIsButtonEnabled(false);
-      return;
-    }
-    const selectedList = broadcastList[parseInt(index, 10)];
-    setSelectedBroadcastList(selectedList);
-    setIsButtonEnabled(true);
-  };
   useEffect(() => {
-    if (listIndex !== undefined && broadcastList?.[listIndex]) {
-      setSelectedBroadcastList(broadcastList[listIndex]);
-      setIsButtonEnabled(true);
-    }
-  }, [listIndex, broadcastList]);
+    if (id) setSelectedBroadcastList(broadcastList.find((item) => item.id == id));
+  }, [id]);
 
   return (
     <UserLayout>
@@ -80,77 +61,51 @@ export default function ImportContacts() {
                 <GoogleSignInButton />
               </div>
             </div>
-            <div
-              className={`grid ${
-                selectedValue === "whatsapp" ? "md:grid-cols-4" : "md:grid-cols-3"
-              } grid-cols-1  gap-4 mt-12`}
-            >
-              <div className="col-span-1">
-                <label className="block text-gray-900 font-semibold leading-8 text-sm">Select Source</label>
-                <select
-                  className="w-full p-2 px-2 border border-gray-700 rounded focus:outline-none"
-                  onChange={handleChange}
-                >
-                  <option value="" className="px-2">
-                    Select source
-                  </option>
-                  <option value="manually">Import Manually</option>
-                  <option value="whatsapp">Whatsapp Phone Contacts</option>
-                  <option value="google">Google Contacts</option>
-                  <option value="csv">Import CSV</option>
-                </select>
-                <p className="text-sm text-gray-500 mt-1">where are you importing from?</p>
-              </div>
+            <div className=" grid sm:grid-cols-[repeat(auto-fit,minmax(15.88rem,1fr))] mt-12 gap-[1.88rem] ">
+              <Select
+                name="Source"
+                label="Select Source"
+                inputClass="py-2.5 px-1"
+                hintText="where are you importing from?"
+                hintClass="text-sm text-gray-500 mt-2"
+                onChange={updateSource}
+                options={ImportSource}
+                controlField={"value"}
+                displayField={"label"}
+              />
 
               {selectedValue === "whatsapp" && (
-                <div className="col-span-1">
-                  <label className="block text-gray-900 font-semibold leading-8 text-sm">Account</label>
-                  <select
-                    className="w-full p-2 px-2 border border-gray-700 rounded focus:outline-none"
-                    onChange={handleAccountChange}
-                  >
-                    <option value="" className="hidden">
-                      Select account
-                    </option>
-                    {accounts
-                      ?.filter((item) => item.status == "connected")
-                      .map((item, idx) => (
-                        <option value={idx} key={item.id} className="px-2">
-                          {item?.phoneNumber}
-                        </option>
-                      ))}
-                  </select>
-                </div>
+                <Select
+                  name="Account"
+                  label="Account"
+                  inputClass="py-2.5 px-1"
+                  onChange={setAccountSelectedId}
+                  options={accounts.filter((item) => item.status == "connected")}
+                  controlField={"id"}
+                  displayField={"phoneNumber"}
+                />
               )}
 
-              <div className="col-span-1">
-                <label className="block text-gray-900 font-semibold leading-8 text-sm">Select Broadcast List</label>
-                <select
-                  onChange={updateSelectedBroadcastList}
-                  defaultValue={listIndex}
-                  className="w-full p-2 border border-gray-700 rounded focus:outline-none"
-                >
-                  <option value="default" className="hidden">
-                    Select List
-                  </option>
-                  {broadcastList?.map((item, index) => (
-                    <option value={index} key={item.id}>
-                      {item.listName}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-sm text-gray-500 mt-1">The list you are importing into?</p>
-              </div>
-              <div className="col-span-1">
-                <label className="block text-gray-900 font-semibold leading-8 text-sm">Day Number on Automation</label>
-                <input
-                  type="number"
-                  name="automationDay"
-                  onChange={handleAutomationDayChange}
-                  className="w-full p-2 border border-gray-700 rounded focus:outline-none"
-                  defaultValue={0}
-                />
-              </div>
+              <Select
+                name="Broadcast List"
+                label="Select Broadcast List"
+                inputClass="py-2.5 px-1"
+                onSelect={setSelectedBroadcastList}
+                value={selectedBroadcastList?.id}
+                options={broadcastList}
+                controlField={"id"}
+                hintText="The list you are importing into?"
+                displayField={"listName"}
+              />
+
+              <TextInput
+                name="automationDay"
+                inputClass="py-2 px-1"
+                label="Day Number on Automation"
+                type="number"
+                value={`${automationDay}`}
+                onChange={(val) => setAutomationDay(parseInt(val))}
+              />
             </div>
           </div>
         </div>
@@ -162,7 +117,7 @@ export default function ImportContacts() {
                 selectedValue={selectedBroadcastList}
                 selectedAutomationDay={automationDay}
                 contacts={contacts}
-                isButtonEnabled={isButtonEnabled}
+                // isButtonEnabled={isButtonEnabled}
               />
             )}
             {selectedValue === "google" && (

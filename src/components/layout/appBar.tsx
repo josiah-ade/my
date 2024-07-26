@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import DropdownMenu from "../common/dropdown/dropdown";
 import { useAuthContext } from "@/providers/context/auth";
+import { FaRegUserCircle } from "react-icons/fa";
 
 interface Props {
   onToggle: () => void;
@@ -27,7 +28,7 @@ export default function AppBar(props: Props) {
 
   return (
     <>
-      <div className="flex w-full fixed bg-white justify-between  items-center px-10 py-5 border-b ">
+      <div className="flex w-full fixed bg-white justify-between  items-center px-5 py-5 border-b ">
         <div className="flex h-full items-center gap-3 ">
           <div className="py-2 lg:hidden" onClick={props.onToggle}>
             <svg className="h-6 w-6 text-blue-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,14 +38,15 @@ export default function AppBar(props: Props) {
           <div className="hidden  md:flex lg:flex cursor-pointer gap-8 ">
             <Image src={logo} alt="Logo" height={200} width={100} />
             <div className="mt-2">
-              <button className="bg-primary-5 text-white rounded-2xl px-3 py-1 text-center text-sm">Free plan</button>
-              <span className="text-primary-5 text-sm pl-2">Upgrade</span>
+              <button className=" bg-secondary text-white rounded-2xl px-3 py-1 text-center text-sm">Free plan</button>
+              <span className="text-secondary font-semibold text-sm pl-2">Upgrade</span>
             </div>
             {/* <h2 className="text-xlg lg:text-2xl font-semibold"> {currentMenuItem?.title || "Dashboard"} </h2> */}
           </div>
         </div>
         <div className=" hidden md:flex items-center gap-2 cursor-pointer" onClick={toggleDropdown}>
-          <Image src={profile} alt="profile" />
+          {/* <Image src={profile} alt="profile" /> */}
+          <FaRegUserCircle size={24} />
           <div className="text-xs">
             <h4 className="font-bold">{auth?.fullname}</h4>
             <p>{auth?.email}</p>

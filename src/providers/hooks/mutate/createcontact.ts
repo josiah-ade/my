@@ -9,7 +9,7 @@ import { IGenericStatusResponse } from "@/typings/interface/api";
 
 export function useCreateContactList({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<IContactList, ContactList> = {
-    key: ["broadcast"],
+    key: ["broadcast", "broadcastContact"],
     callback: (data: IContactList) => createContact(data),
     onSuccess: onSuccess,
     onError: onError,

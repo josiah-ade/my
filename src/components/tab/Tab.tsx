@@ -12,17 +12,18 @@ type TabProps = {
 interface TabComponentProps {
   tabs: TabProps[];
   searchPlaceholder?: string;
+  defaultTab?: number;
   onTabChange?: (index: number) => void;
 }
 
-export default function Tabs({ tabs, searchPlaceholder, onTabChange }: TabComponentProps) {
-  const [activeTab, setActiveTab] = useState(0);
+export default function Tabs({ tabs, searchPlaceholder, onTabChange, defaultTab = 0 }: TabComponentProps) {
+  const [activeTab, setActiveTab] = useState(defaultTab);
 
   useEffect(() => {
     onTabChange && onTabChange(activeTab);
   }, [activeTab]);
 
-
+  console.log({ activeTab });
 
   return (
     <div className="w-full ">
@@ -44,17 +45,11 @@ export default function Tabs({ tabs, searchPlaceholder, onTabChange }: TabCompon
       </div>
       {searchPlaceholder ? (
         <div>
-          <input
-            type="text"
-            placeholder={""}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          />
+          <input type="text" placeholder={""} className="mt-1 block w-full p-2 border border-gray-300 rounded-md" />
         </div>
       ) : null}
       <div className="relative">
-        <div className={`transition-opacity duration-300 ease-in-out  left-0 w-full `}>
-          {tabs[activeTab].content}
-        </div>
+        <div className={`transition-opacity duration-300 ease-in-out  left-0 w-full `}>{tabs[activeTab].content}</div>
       </div>
     </div>
   );

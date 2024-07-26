@@ -5,6 +5,7 @@ import ListSelector from "@/components/broadcast/listSelector";
 import MessageConfigModal from "@/components/broadcast/messageConfigModal";
 import MessageForm from "@/components/broadcast/messageForm";
 import Button from "@/components/button/button";
+import UploadBox from "@/components/common/file/uploadBox";
 import UserLayout from "@/layout/user";
 import { useCreateBroadcastMessage } from "@/providers/hooks/mutate/message";
 import { useAccountStore } from "@/providers/stores/accountStore";
@@ -25,7 +26,7 @@ const defaultValue: ICreateBroadcastMessage = {
 export default function SendBroadast() {
   const [selectedBroadcastTarget, setSelectedBroadcastTarget] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const accounts = useAccountStore((state) => state.accounts);
+  const accounts = useAccountStore((state) => state.connectedAccounts);
   const [selectedId, setSelectedId] = useState<string[]>([]);
   const [clearListFlag, setClearListFlag] = useState<boolean>(false);
   const [clearFileFlag, setClearFileFlag] = useState<boolean>(false);
@@ -61,10 +62,12 @@ export default function SendBroadast() {
       setSelectedBroadcastTarget(value);
     }
     value != undefined && updateFormState({ name, value });
+    console.log(formData)
   }
 
   const updateFormState = ({ name, value }: { name: string; value: string }) => {
     setFormData({ ...formData, [name]: value });
+    console.log(formData)
   };
 
   const handleFileUpload = (files: File[]) => {
@@ -107,7 +110,7 @@ export default function SendBroadast() {
               value={formData.accountId}
             >
               <option value="" className="px-2">
-                {accounts.length ? "Select Account" : "No account available"}
+                {accounts.length ? "Select Account" : "No connected account available"}
               </option>
               {accounts.map((account) => (
                 <option key={account.id} value={account.id}>
@@ -149,9 +152,15 @@ export default function SendBroadast() {
               onChange={updateFormState}
               broadcastType={formData.type}
               formValue={formData.text}
+            />
+
+            <UploadBox
+              multiple
+              title="Click to upload your videos or images"
+              description="SVG, PNG, JPG or GIF (max 10 files)"
+              onFilesSelect={handleFileUpload}
               clearFlag={clearFileFlag}
               updateClearFlag={setClearFileFlag}
-              onFileUpload={handleFileUpload}
             />
             <div className="">
               <Button disabled={!isValid} onClick={handleIsOpen} primary className="px-4 py-2 rounded w-full">

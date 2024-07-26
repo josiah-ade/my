@@ -3,7 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import {  IconType } from "react-icons";
 import { TableHeaderActionProp } from "@/typings/interface/component/table";
-import {  IAutomationContact } from "@/typings/interface/automation";
+import {  IAutomationContact, IListAutomation } from "@/typings/interface/automation";
 
 
 interface IDPRops {
@@ -25,7 +25,7 @@ const automationLoop:IDPRops[]=[
         icon:GrView,
         action: "status",
 }]
-export default function AutomationTableActionComponent({ item, clickHandler }: TableHeaderActionProp<IAutomationContact>){
+export default function AutomationTableActionComponent<T>({ item, clickHandler }: TableHeaderActionProp<T>){
     return(
         <div className="flex flex-row gap-4">
             {automationLoop.map((action)=>(

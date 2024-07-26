@@ -4,3 +4,7 @@ export interface ConfirmationProp {
     title?: string;
     message?: string;
   }
+  export interface ModalItems {
+    confirmation: boolean;
+    edit: boolean;
+  }

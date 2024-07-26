@@ -1,7 +1,8 @@
-import { getBroadcastMessageDetail, getBroadcastMessageList, getBroadcastMessages, IMessageFilter } from "@/providers/services/message";
+import { getBroadcastMessageDetail, getBroadcastMessageList, getBroadcastMessages, } from "@/providers/services/message";
 import { IMessageListResponse, IMessageResponse } from "@/typings/interface/message";
 import { IQueryArgs } from "@/typings/query";
 import { useGetResourcesQuery } from "../helper/query";
+import { IMessageFilter } from "@/typings/interface/broadcasts";
 
 export function useGetBroadcastMessages(  params: IMessageFilter,){
   const queryOptions: IQueryArgs<void, IMessageResponse[]> = {

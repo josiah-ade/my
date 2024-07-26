@@ -1,7 +1,7 @@
 import { IAccount } from "@/typings/interface/account";
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useRef, useState } from "react";
 import PairQrcode from "@/components/tab/tabpairingcode";
 import { Qr, Home } from "@/core/const/icons/icons";
 import { TableHeaderActionProp } from "@/typings/interface/component/table";
@@ -22,13 +22,14 @@ interface ModalItems {
   link: boolean;
   add: boolean;
   confirmation: boolean;
-  pair:boolean;
+  pair: boolean;
 }
 
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 
 export default function AccountTableActionComponent({ item }: TableHeaderActionProp<IAccount>) {
   const [currentAccount, setCurrentAccount] = useState<IAccount>();
+  const defaultLinkTab = useRef(0);
   const setNotification = useNotificationStore((state) => state.displayNotification);
   const router = useRouter();
 
@@ -36,11 +37,12 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     link: false,
     add: false,
     confirmation: false,
-    pair:false
+    pair: false,
   });
 
   const actionLookup = {
-    [AccountTableAction.link]: () => handleOpenModal("link"),
+    [AccountTableAction.link]: () => handlePairAction("pair"),
+    [AccountTableAction.qrCode]: () => handlePairAction("qr"),
     [AccountTableAction.delete]: (item: IAccount) => handleDelete(item),
     [AccountTableAction.unsubscribeKeyword]: () => {},
     [AccountTableAction.disconnect]: (item: IAccount) => handleDisconnect(item),
@@ -53,7 +55,6 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
     options: { errorConfig: { title: "Failed to delete account" } },
   });
- 
 
   const { mutate: disconnectAccount } = useDisconnectAccount({
     onSuccess: () => handleSuccess("Account disconnected successfully", "Your account was disconnected successfully"),
@@ -98,6 +99,13 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     setModal((val) => ({ ...val, [key]: false }));
   };
 
+  const handlePairAction = (type: "qr" | "pair") => {
+    defaultLinkTab.current = type == "qr" ? 1 : 0;
+  console.log({defaultLinkTab})
+
+    handleOpenModal("link");
+  };
+
   const handleAction = (action: string, item: IAccount) => {
     setCurrentAccount(item);
     actionLookup[action as keyof typeof AccountTableAction](item);
@@ -106,7 +114,9 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
     {
       label: "Link with Pairing Code",
       icon: <Home />,
-      content: currentAccount?.id ? ( <PairQrcode currentAccount={currentAccount} onClose={()=>handleCloseModal("link")}/> ) : (
+      content: currentAccount?.id ? (
+        <PairQrcode currentAccount={currentAccount} onClose={() => handleCloseModal("link")} />
+      ) : (
         <></>
       ),
     },
@@ -167,7 +177,7 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
       ) : null}
 
       <Modal isOpen={modal.link} onClose={() => handleCloseModal("link")}>
-        <Tabs tabs={tabs} />
+        <Tabs defaultTab={defaultLinkTab.current} tabs={tabs} />
       </Modal>
     </>
   );

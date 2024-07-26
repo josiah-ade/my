@@ -39,7 +39,7 @@ export const accountTableMenus: TableActionProp[] = [
     action: AccountTableAction.link,
     status: "active",
   },
-  { text: "Link with QR code", icon: <Qr className="h-4 w-4" />, action: "link", status: "active" },
+  { text: "Link with QR code", icon: <Qr className="h-4 w-4" />, action: AccountTableAction.qrCode, status: "active" },
   {
     text: "Disconnect",
     icon: <Circle className="h-4 w-4" />,

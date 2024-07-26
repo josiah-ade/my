@@ -30,7 +30,7 @@ export default function AddExistingList(props: IProps) {
         type: NotificationType.success,
         content: {
           title: "Contact List Updated successfully",
-          text: `you added ${selectedContacts.length} contacts to ${selectedBroadcastList?.listName} list`,
+          text: `you added ${selectedContacts.length} contacts to ${selectedBroadcastList?.listName} list. Duplicate contacts are automatically removed`,
         },
       });
       handleClose();
@@ -108,7 +108,7 @@ export default function AddExistingList(props: IProps) {
               type="number"
               placeholder="Day Number on Automation"
               onChange={handleChange}
-              value={createBroadcastListData.automationDay}
+              value={createBroadcastListData.automationDay ||0}
               className="pl-[10px]  rounded-[6px] px-3 py-5 w-[100%] bg-white outline-gray-400 border focus:outline-none focus:border-primary"
             />
           </div>

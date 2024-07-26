@@ -10,6 +10,9 @@ import { dateFormatter } from "@/core/formatters/dateFormatter";
 import { DisplayDataTimeFormatOptions } from "@/core/const/formatOptions";
 import { UserRoutes } from "@/core/const/routes.const";
 import ListPopover from "../common/dropdown/tabledropdown";
+import { useRouter } from "next/router";
+import EmptyState from "../common/empty/empty";
+import Button from "../button/button";
 
 function Img() {
   return (
@@ -36,14 +39,17 @@ function ViewButton(props: TableHeaderActionProp<IMessageResponse>) {
   );
 }
 
-
 export default function ListBroadcasts() {
-  const params = { type: 'list' }; 
+  const params = { type: "list" };
   const { data, loading } = useGetBroadcastMessages(params);
+  const router = useRouter();
+  const handleRouter = () => {
+    router.push(UserRoutes.BROADCAST_MESSAGE_SEND);
+  };
 
   const headers: TableHeader<IMessageResponse>[] = [
     { title: "Message", field: "text" },
-    { title: "Lists", field: "lists", action:{component:(props)=> <ListPopover  {...props}/>} },
+    { title: "Lists", field: "lists", action: { component: (props) => <ListPopover {...props} /> } },
     { title: "In Queue", field: "inQueue", component: (props) => <StatusDisplay {...props} field="pending" /> },
     { title: "Delivered", field: "delivered", component: (props) => <StatusDisplay {...props} field="sent" /> },
     { title: "Failed", field: "failed", component: (props) => <StatusDisplay {...props} field="failed" /> },
@@ -65,28 +71,30 @@ export default function ListBroadcasts() {
     },
   ];
 
-  
   const MAX_MESSAGE_LENGTH = 15;
-  const truncatedData = data?.map((item) => ({ ...item, text: item.text.slice(0, MAX_MESSAGE_LENGTH) + (item.text.length > MAX_MESSAGE_LENGTH ? '....' : '') }))
+  const truncatedData = data?.map((item) => ({
+    ...item,
+    text: item.text.slice(0, MAX_MESSAGE_LENGTH) + (item.text.length > MAX_MESSAGE_LENGTH ? "...." : ""),
+  }));
 
   return (
     <div className="mt-8">
       {!loading && truncatedData?.length ? (
-        <Table
-          data={truncatedData}
-          headers={headers} />
+        <Table data={truncatedData} headers={headers} />
       ) : (
-        <Default
-          src="/phone.jpg"
-          btn={true}
-          imgE={<Img />}
-          btnText="Send Broadcast"
-          primary={true}
-          alt="list"
-          height={100}
-          width={100}
-          mainText="No Broadcast sent"
-          subText="send a broadcast message to view them here"
+        <EmptyState
+          imgSrc="/phone.jpg"
+          action={() => (
+            <Button
+              className="bg-primary text-white px-4 py-2 rounded-lg"
+              icon={<Img />}
+              onClick={() => handleRouter()}
+            >
+              Send Broadcast
+            </Button>
+          )}
+          title="No Broadcast sent"
+          text="send a broadcast message to view them here"
         />
       )}
     </div>

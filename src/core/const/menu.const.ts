@@ -7,24 +7,33 @@ import { MdOutlineFormatAlignJustify } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaHashtag } from "react-icons/fa";
 import { UserRoutes } from "./routes.const";
+import { BsHouseDash } from "react-icons/bs";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { GrContactInfo } from "react-icons/gr";
+import { MdOutlineSubscriptions } from "react-icons/md";
+import { FaWpforms } from "react-icons/fa6";
+import { TbMessageChatbot } from "react-icons/tb";
+import { LiaHashtagSolid } from "react-icons/lia";
+
+
 
 export const UserMenus: Menu[] = [
   {
     title: "Dashboard",
     id: "1",
-    icon: FaHashtag,
+    icon: BsHouseDash,
     path: `${UserRoutes.DASHBOARD}`,
   },
   {
     title: "Account",
     id: "2",
-    icon: LuUsers2,
+    icon: MdOutlineAccountCircle,
     path: `${UserRoutes.ACCOUNT}`,
   },
   {
     title: "Contacts",
     id: "3",
-    icon: RiContactsLine,
+    icon: GrContactInfo,
     path: `${UserRoutes.CONTACTS}`,
   },
   {
@@ -37,29 +46,30 @@ export const UserMenus: Menu[] = [
   {
     title: "Subscriptions",
     id: "2",
-    icon: FaHashtag,
+    icon: MdOutlineSubscriptions,
     disabled: true,
     path: `${UserRoutes.SUBSCRIPTION}`,
   },
   {
     title: "Forms",
     id: "6",
-    icon: MdOutlineFormatAlignJustify,
+    icon: FaWpforms,
     disabled: false,
     path: `${UserRoutes.FORM}`,
   },
   {
     title: "Chatbot",
     id: "7",
-    icon: MdOutlineFormatAlignJustify,
+    icon: TbMessageChatbot,
     disabled: true,
     path: `${UserRoutes.CHAT_BOT}`,
   },
   {
-    title: "Login",
-    id: "8",
-    icon: MdOutlineFormatAlignJustify,
-    path: "/",
+    title: "Tags",
+    id: "7",
+    icon: LiaHashtagSolid,
+    disabled: true,
+    path: `${UserRoutes.CHAT_BOT}`,
   },
 ];
 

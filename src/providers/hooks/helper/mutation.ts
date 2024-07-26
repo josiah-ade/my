@@ -31,6 +31,9 @@ export function useCreateResources<IArg, IReturn, TError>({
     },
 
     onSuccess: (data: IReturn) => {
+      key.forEach((part) => {
+        queryClient.invalidateQueries([part]);
+      });
       queryClient.invalidateQueries(key);
       if (displaySuccess) {
         setNotification(true, {

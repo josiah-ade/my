@@ -68,7 +68,7 @@ export default function ContactsList(props: IProps) {
           <h2 className="text-base font-semibold text-gray-900 mt-2">
             {selectedValue ? selectedValue.listName : "N/A"}
           </h2>
-          <p className="text-gray-600 text-sm">{`Recently imported contacts fron ${
+          <p className="text-gray-600 text-sm">{`Recently imported contacts from ${
             selectedValue ? selectedValue.listName : "N/A"
           } list`}</p>
           <hr className="mt-6 border-1 border-gray-700" />
@@ -80,7 +80,7 @@ export default function ContactsList(props: IProps) {
                 <div>
                   <p className="font-semibold text-base text-gray-900">{contact.name}</p>
                   <p className="text-sm text-gray-600">
-                    {contact.phoneNumber} • {contact.email}
+                    {contact.phoneNumber} {contact.email ? "•" : ""} {contact.email}
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">

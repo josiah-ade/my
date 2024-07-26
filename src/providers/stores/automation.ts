@@ -1,10 +1,10 @@
-import { IAutomation, IAutomationContact } from "@/typings/interface/automation";
+import {  IAutomationContact, IListAutomation } from "@/typings/interface/automation";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
 import { create } from "zustand";
 
 interface AutomationStore {
-  automation: IAutomation[];
-  setAutomation: (data: IAutomationContact[]) => void;
+  automation: IListAutomation[];
+  setAutomation: (data: IListAutomation[]) => void;
 }
 export const useAutomationStore = create<AutomationStore>((set) => ({
   automation: [],

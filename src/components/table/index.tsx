@@ -1,12 +1,13 @@
 import React, { useState, Fragment, useEffect, useMemo } from "react";
 
-import Button from "../button/button";
 import { useRouter } from "next/navigation";
 import { SearchIcon } from "@/core/const/icons/icons";
 import Pagination from "../pagination/pagination";
 import { TableHeader, TablePagination } from "@/typings/interface/component/table";
 import TableLoading from "../common/loading/tableloading";
 import Chip from "../chip";
+import { ISelectableData } from "@/typings/interface/component/table/select";
+import useDebounce from "@/providers/hooks/helper/debounce";
 
 interface TableProps<T = unknown> {
   headers: TableHeader<T>[];
@@ -20,52 +21,50 @@ interface TableProps<T = unknown> {
   pagination?: TablePagination;
 }
 
+type Selectable<T> = T & ISelectableData;
+
 export default function Table<T>(props: TableProps<T>) {
   const { headers, data, action, isOpen, setIsOpen, loading, search, checkboxAction, pagination } = props;
-  const [selectedRows, setSelectedRows] = useState<boolean[]>(Array(data?.length).fill(false));
   const [selectAll, setSelectAll] = useState(false);
+  const [selectableData, setSelectableData] = useState<Selectable<T>[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(pagination?.currentPage ?? 1);
+
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
   const itemsPerPage = pagination?.pageSize ?? 10;
 
   const enableCheckbox = !!checkboxAction;
 
-  const handleOpen = (currentData: T) => {
-    setIsOpen && setIsOpen(currentData);
-  };
-
   const handleCheckboxCallback = () => {
-    if (checkboxAction) {
-      const selected = selectedRows.reduce<T[]>((acc, val, index) => {
-        val && acc.push(data[index]);
-        return acc;
-      }, []);
-      checkboxAction(selected);
-    }
+    checkboxAction && checkboxAction(selectableData.filter((item) => item.selected));
   };
 
   useEffect(() => {
     handleCheckboxCallback();
-  }, [selectedRows]);
+  }, [selectAll]);
+
+  useEffect(() => {
+    data && setSelectableData(data.map((item, index) => ({ ...item, selected: false, originalIndex: index })));
+  }, [data]);
+
+  useEffect(() => {
+    if (currentPage != 1) setCurrentPage(1);
+  }, [debouncedSearchQuery]);
 
   const handleSelectAllChange = () => {
-    const newSelectAll = !selectAll;
-    setSelectAll(newSelectAll);
-    setSelectedRows(Array(data.length).fill(newSelectAll));
+    setSelectAll(!selectAll);
+    setSelectableData(data.map((item) => ({ ...item, selected: !selectAll })));
   };
 
-  const handleRowCheckboxChange = (index: number) => {
-    const newSelectedRows = [...selectedRows];
-    newSelectedRows[index] = !newSelectedRows[index];
-    setSelectedRows(newSelectedRows);
-  };
-
-  const route = useRouter();
-
-  const handleRoute = (value: any) => {
-    route.push(`${value}`);
+  const handleRowCheckboxChange = (row: Selectable<T>) => {
+    const selected = selectableData[row.originalIndex ?? -1];
+    if (!selected) return;
+    selected.selected = !selected.selected;
+    setSelectableData([...selectableData]);
+    handleCheckboxCallback();
   };
 
   // Handle Sorting
@@ -80,16 +79,15 @@ export default function Table<T>(props: TableProps<T>) {
     setSearchQuery(e.target.value);
   };
 
-  function filterData(data: T[], searchQuery: string): T[] {
-    if (currentPage != 1) setCurrentPage(1);
+  function filterData(data: Selectable<T>[], searchQuery: string): Selectable<T>[] {
     return data?.filter((item) =>
       Object.values(item as Record<keyof T, T>).some((val) =>
-        String(val).toLowerCase().includes(searchQuery.toLowerCase())
+        String(val).toLowerCase().includes(debouncedSearchQuery.toLowerCase())
       )
     );
   }
 
-  function sortData(data: T[], sortColumn: string) {
+  function sortData(data: Selectable<T>[], sortColumn: string): Selectable<T>[] {
     return data?.sort((a, b) => {
       if (!sortColumn) return 0;
       const aValue = a[sortColumn as keyof T];
@@ -100,7 +98,7 @@ export default function Table<T>(props: TableProps<T>) {
     });
   }
 
-  const filteredData = useMemo(() => filterData(data, searchQuery), [data, searchQuery]);
+  const filteredData = useMemo(() => filterData(selectableData, searchQuery), [selectableData, debouncedSearchQuery]);
   const sortedData = useMemo(() => sortData(filteredData, sortColumn ?? ""), [filteredData, sortColumn, sortOrder]);
 
   // Pagination Logic
@@ -180,8 +178,10 @@ export default function Table<T>(props: TableProps<T>) {
                             <input
                               type="checkbox"
                               className="mr-3"
-                              checked={selectedRows[indexOfFirstItem + rowIndex]}
-                              onChange={() => handleRowCheckboxChange(indexOfFirstItem + rowIndex)}
+                              // checked={selectedRows[indexOfFirstItem + rowIndex]}
+                              checked={row.selected}
+                              // onChange={() => handleRowCheckboxChange(indexOfFirstItem + rowIndex)}
+                              onChange={() => handleRowCheckboxChange(row)}
                             />
                           ) : null}
                           {header.action?.component ? (

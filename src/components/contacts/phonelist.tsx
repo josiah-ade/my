@@ -3,6 +3,7 @@ import TabLists from "./tab/tabdetail";
 import { useGetUsersAcount } from "@/providers/hooks/query/getaccount";
 import EmptyState from "../common/empty/empty";
 import { UserRoutes } from "@/core/const/routes.const";
+import { MdGroups } from "react-icons/md";
 
 interface IProps {
   isGroup?: boolean;
@@ -26,7 +27,7 @@ export default function PhoneList(props: IProps) {
               className="border p-5 rounded-[0.6rem] w-full"
             >
               <TabLists
-                // icon={item.icon}
+                icon={MdGroups}
                 total={props.isGroup ? item.groups : item.contacts}
                 totalKey={props.isGroup ? "groups" : ""}
                 phoneNumber={item.phoneNumber}

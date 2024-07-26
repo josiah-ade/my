@@ -6,6 +6,13 @@ export interface Contact {
   contactPhoneNumber: string;
 }
 
+export interface ICreateContact {
+  contactName: string;
+  contactEmail: string;
+  contactPhoneNumber: string;
+  countryCode?: string;
+}
+
 export interface IContactList {
   contacts: Contact[];
   broadcastListId: string;

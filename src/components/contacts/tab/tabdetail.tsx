@@ -14,12 +14,14 @@ interface IProps extends IContact {
 export default function TabLists(props: IProps) {
   const displayTotal = props.displayTotal ?? true;
   const totalKey = props.totalKey || "Contacts";
+
   return (
     <>
-      <Image src={profile} alt="contact" className="w-10 h-10" />
+      {props.icon ? <props.icon size={32} /> : <Image src={profile} alt="contact" className="w-10 h-10" />}
+
       <div className="flex flex-row gap-2 mt-4 justify-between items-end">
         <div>
-          <div className="font-bold text-xl">{props.phoneNumber}</div>
+          <div className="font-semibold text-gray-900 text-xl">{props.phoneNumber}</div>
           <div className="text-gray-500 mt-1.5 text-xs ">{props.description}</div>
         </div>
         <MdOutlineKeyboardArrowRight size="1.25rem" className="text-primary text-xl" />

@@ -1,12 +1,11 @@
-import { useGetQrcodeUsersAcount, useGetUsersAcount } from "@/providers/hooks/query/getaccount";
+import { useGetQrcodeUsersAcount } from "@/providers/hooks/query/getaccount";
 import Image from "next/image";
 import Button from "../button/button";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { IAccount } from "@/typings/interface/account";
-import Loader from "../loader/loader";
-import AuthLoading from "../common/loading/authloading";
 import { LoadingIndicator } from "../common/loading/modalloading";
+import { MdRefresh } from "react-icons/md";
 
 let timeoutId: number | undefined;
 let intervalId: number | undefined;
@@ -59,7 +58,7 @@ export default function TabContent(props: { currentAccount: IAccount; onClose: (
 
   const handleRetry = () => {
     queryClient.invalidateQueries("qr_code");
-  }
+  };
 
   return (
     <div className="max-w-md whitespace-break-spaces mx-auto bg-white p-6 rounded-lg">
@@ -77,22 +76,17 @@ export default function TabContent(props: { currentAccount: IAccount; onClose: (
             <div className=" px-4 py-2 rounded-md text-xl font-mono">
               {loading || isFetching ? (
                 <LoadingIndicator />
-              ) : error || !qrData?.base64 ? (
+              ) : error || !qrData?.base64? (
                 <>
-                  <button onClick={handleRetry} className="bg-primary-5 text-white rounded-2xl px-3 py-1 text-center text-sm">Retry</button>
+                  <MdRefresh onClick={handleRetry} size={56} className="text-primary-500 cursor-pointer" />
                 </>
               ) : (
                 <div className="flex items-center justify-center mb-4">
                   <div className="px-4 py-2 rounded-md text-xl font-mono">
-                    {qrData?.base64 ? (
-                      <Image src={qrData.base64} alt="QR Code" width={200} height={300} />
-                    ) : (
-                      <></>
-                    )}
+                    {qrData?.base64 ? <Image src={qrData.base64} alt="QR Code" width={200} height={300} /> : <></>}
                   </div>
                 </div>
               )}
-              {/* {qrData?.base64 ? <Image src={qrData.base64} alt="qr" width={200} height={300} /> : <></>} */}
             </div>
           </div>
         </>
