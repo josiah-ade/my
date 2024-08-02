@@ -1,5 +1,5 @@
 import UserLayout from "@/layout/user";
-import PageHeading from "@/components/common/subheadings";
+import PageHeading from "@/components/common/text/pageHeading";
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
 import GroupAutomationConfigForm from "@/components/automation/group/configForm";
 import { ICreateGroupAutomation } from "@/typings/interface/automation/group";
@@ -12,6 +12,8 @@ import GroupSelector from "@/components/broadcast/groupSelector";
 import GroupAutomationMessageForm from "@/components/automation/group/messageForm";
 import { useCreateGroupAutomation, useEditGroupAutomation } from "@/providers/hooks/mutate/automation/group";
 import { IQueryOptions } from "@/typings/query";
+import { useRouter } from "next/router";
+import { UserRoutes } from "@/core/const/routes.const";
 
 interface IProps {
   defaultData?: ICreateGroupAutomation;
@@ -31,11 +33,13 @@ export default function CreateGroupAutomation(props: IProps) {
   const [selectedGroups, setSelectedGroup] = useState<string[]>([]);
   const [clearFlag, setClearFlag] = useState(false);
   const isEditing = !!formData.id;
+  const router=useRouter()
 
   const { mutate: createGroupAutomation } = useCreateGroupAutomation({
     onSuccess: () => {
       setFormData({ ...DefaultCreateGroupAutomationData, messages: [{ ...DefaultCreateGroupAutomationMessage }] });
       setClearFlag(true);
+      router.push(UserRoutes.GROUP_AUTOMATION)
     },
     options: getMutationOption(),
   });

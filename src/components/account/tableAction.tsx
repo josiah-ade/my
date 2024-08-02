@@ -17,6 +17,7 @@ import { NotificationType } from "@/core/enum/notification";
 import { useRouter } from "next/router";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
 import { UserRoutes } from "@/core/const/routes.const";
+import { useQueryClient } from "react-query";
 
 interface ModalItems {
   link: boolean;
@@ -28,6 +29,7 @@ interface ModalItems {
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 
 export default function AccountTableActionComponent({ item }: TableHeaderActionProp<IAccount>) {
+  const queryClient = useQueryClient();
   const [currentAccount, setCurrentAccount] = useState<IAccount>();
   const defaultLinkTab = useRef(0);
   const setNotification = useNotificationStore((state) => state.displayNotification);
@@ -97,6 +99,9 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
   };
   const handleCloseModal = (key: keyof ModalItems) => {
     setModal((val) => ({ ...val, [key]: false }));
+    if(key === "link"){
+      queryClient.invalidateQueries("account")
+    }
   };
 
   const handlePairAction = (type: "qr" | "pair") => {

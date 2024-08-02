@@ -1,5 +1,5 @@
+import { useGetSingleAutomationList } from "@/providers/hooks/query/automation/automation";
 import CreateAutomationPage from "../create";
-import { useGetSingleAutomationList } from "@/providers/hooks/query/automation";
 import { useParams } from "next/navigation";
 
 export default function EditAutomationPage(){

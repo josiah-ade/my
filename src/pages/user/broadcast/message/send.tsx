@@ -1,5 +1,4 @@
 import Breadcrumb from "@/components/breadcrumb/breadcrumb";
-import BroadCastConfigModal from "@/components/broadcast/broadcastConfigModal";
 import GroupSelector from "@/components/broadcast/groupSelector";
 import ListSelector from "@/components/broadcast/listSelector";
 import MessageConfigModal from "@/components/broadcast/messageConfigModal";
@@ -7,9 +6,9 @@ import MessageForm from "@/components/broadcast/messageForm";
 import Button from "@/components/button/button";
 import UploadBox from "@/components/common/file/uploadBox";
 import UserLayout from "@/layout/user";
-import { useCreateBroadcastMessage } from "@/providers/hooks/mutate/message";
+import { useCreateBroadcastMessage, useSendTestBroadcastMessage } from "@/providers/hooks/mutate/message";
 import { useAccountStore } from "@/providers/stores/accountStore";
-import { ICreateBroadcastMessage } from "@/typings/interface/message";
+import { ICreateBroadcastMessage, ISendTestBroadcastMessage } from "@/typings/interface/message";
 import React, { useState, useEffect, useMemo } from "react";
 
 const defaultValue: ICreateBroadcastMessage = {
@@ -48,6 +47,17 @@ export default function SendBroadast() {
     },
   });
 
+  const sendTestMessageMutation = useSendTestBroadcastMessage({
+    onSuccess: () => {},
+    options: {
+      successConfig: {
+        title: "Message Sent Created",
+        text: "The test message has been successfully created.",
+      },
+      errorConfig: { title: "Failed to Send Test Broadcast Message" },
+    },
+  });
+
   const handleIsClose = () => {
     setIsOpen(false);
   };
@@ -62,12 +72,10 @@ export default function SendBroadast() {
       setSelectedBroadcastTarget(value);
     }
     value != undefined && updateFormState({ name, value });
-    console.log(formData)
   }
 
   const updateFormState = ({ name, value }: { name: string; value: string }) => {
     setFormData({ ...formData, [name]: value });
-    console.log(formData)
   };
 
   const handleFileUpload = (files: File[]) => {
@@ -82,7 +90,18 @@ export default function SendBroadast() {
       sendToIndividual: Boolean(formData.sendToIndividual),
       isTest,
     };
-    createMessageMutation.mutate(payload);
+    // console.log({payload})
+    //  return 
+    if (!isTest) createMessageMutation.mutate(payload);
+    if (isTest) {
+      const payload: ISendTestBroadcastMessage = {
+        accountId: formData.accountId,
+        testPhoneNumber: formData.testNumber,
+        text: formData.text,
+        files: formData.files,
+      };
+      sendTestMessageMutation.mutate(payload);
+    }
   };
 
   //to use form validation
@@ -148,11 +167,7 @@ export default function SendBroadast() {
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-8">
           <div>
-            <MessageForm
-              onChange={updateFormState}
-              broadcastType={formData.type}
-              formValue={formData.text}
-            />
+            <MessageForm onChange={updateFormState} broadcastType={formData.type} formValue={formData.text} />
 
             <UploadBox
               multiple

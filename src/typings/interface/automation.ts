@@ -24,6 +24,7 @@ export interface IAutomationContact {
     timeZone: string;
     status: string;
     tagCondition: string;
+    text?:string;
   }
   
 export interface ICreateAutomationList {
@@ -50,6 +51,7 @@ export interface IDayOption {
 export interface IChanges {
   formData: ICreateAutomationList,
   setFormData: Dispatch<SetStateAction<ICreateAutomationList>>,
+  // errors:ICreateAutomationList | undefined
 }
 
  export interface PageProps {

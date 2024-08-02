@@ -1,6 +1,10 @@
 import { handleError } from "@/components/common/exception/serviceexception";
 import { IGenericStatusResponse } from "@/typings/interface/api";
-import { ICreateGroupAutomation, IGroupAutomation } from "@/typings/interface/automation/group";
+import {
+  ICreateGroupAutomation,
+  IGroupAutomation,
+  IGroupAutomationMessageHistory,
+} from "@/typings/interface/automation/group";
 import axios from "axios";
 
 export async function createGroupAutomation(data: ICreateGroupAutomation): Promise<IGroupAutomation> {
@@ -15,23 +19,29 @@ export async function createGroupAutomation(data: ICreateGroupAutomation): Promi
     .catch(handleError);
 }
 
-// export async function editGroupAutomation(data: ICreateGroupAutomation): Promise<IGroupAutomation> {
-export async function editGroupAutomation(data: ICreateGroupAutomation): Promise<boolean> {
+export async function editGroupAutomation(data: ICreateGroupAutomation): Promise<IGroupAutomation> {
   const messages = data.messages.map((message, index) => ({ ...message, type: data.type, sortOrder: index }));
   data.messages = messages;
-  return true;
-
-  // return axios
-  //   .post<IGroupAutomation>("/automation/group", data)
-  //   .then((response) => {
-  //     return response.data;
-  //   })
-  //   .catch(handleError);
+  return axios
+    .post<IGroupAutomation>("/automation/group", data)
+    .then((response) => {
+      return response.data;
+    })
+    .catch(handleError);
 }
 
 export async function getGroupAutomation(): Promise<IGroupAutomation[]> {
   return axios
     .get<IGroupAutomation[]>("/automation/group")
+    .then((response) => {
+      return response.data;
+    })
+    .catch(handleError);
+}
+
+export async function getGroupAutomationMessageHistory(id: string): Promise<IGroupAutomationMessageHistory[]> {
+  return axios
+    .get<IGroupAutomationMessageHistory[]>(`/automation/group/${id}/history`)
     .then((response) => {
       return response.data;
     })

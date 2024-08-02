@@ -19,7 +19,14 @@ export interface ICreateBroadcastMessage {
   tagCondition?: string;
   excludeList?: string[];
   isTest?: boolean;
-  individual?:string;
+  individual?: string;
+}
+
+export interface ISendTestBroadcastMessage {
+  accountId: string;
+  text: string;
+  files?: File[];
+  testPhoneNumber?: string;
 }
 
 export interface IMessageResponse {

@@ -21,10 +21,11 @@ const automationLoop:IDPRops[]=[
         icon:MdDelete,
         action: "delete",
 },
-    {
-        icon:GrView,
-        action: "status",
-}]
+//     {
+//         icon:GrView,
+//         action: "status",
+// }
+]
 export default function AutomationTableActionComponent<T>({ item, clickHandler }: TableHeaderActionProp<T>){
     return(
         <div className="flex flex-row gap-4">

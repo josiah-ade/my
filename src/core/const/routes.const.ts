@@ -11,7 +11,7 @@ export const UserRoutes = {
   GROUP_AUTOMATION: "/user/automation/group",
   GROUP_TEMPLATE: "/user/automation/template",
   FORM: "/user/form",
-  SUBSCRIPTION: "/user/subscription",
+  SUBSCRIPTION: "/user/subscriptions",
   CHAT_BOT: "/user/chatbot",
   TEAMS: "/user/teams",
   SIGNUP: "/signup",

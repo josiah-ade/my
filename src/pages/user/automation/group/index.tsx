@@ -1,4 +1,4 @@
-import PageHeading from "@/components/common/subheadings";
+import PageHeading from "@/components/common/text/pageHeading";
 import { ICreateBroadcastMessage } from "@/typings/interface/message";
 import { useEffect, useState } from "react";
 import { useAccountStore } from "@/providers/stores/accountStore";
@@ -23,6 +23,10 @@ import { useParams } from "next/navigation";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { NotificationType } from "@/core/enum/notification";
 import ConfirmationModal from "@/components/account/deleteConfirmationModal";
+import EmptyState from "@/components/common/empty/empty";
+import GroupAutomationTypeDisplay from "@/core/const/automation/group/automationtypeoption";
+import Modal from "@/components/modal/modal";
+import GroupAutomationHistoryComponent from "@/components/automation/group/groupAutomationationHistory";
 
 const defaultValue: ICreateBroadcastMessage = {
   list: [],
@@ -41,7 +45,7 @@ const options = [
   { value: "", label: "Immediately joined", icon: <CiHome /> },
 ];
 export default function GroupAutomation() {
-  const {id}=useParams() || {}
+  const { id } = useParams() || {};
   const setNotification = useNotificationStore((state) => state.displayNotification);
   const [showTable, setShowTable] = useState(true);
   const [formData, setFormData] = useState<ICreateBroadcastMessage>({ ...defaultValue });
@@ -51,15 +55,15 @@ export default function GroupAutomation() {
   const [selectedList, setSelectedList] = useState<(IBroadcastLists & { selected?: boolean })[]>([...broadcastList]);
   const router = useRouter();
   const [currentAutomation, setCurrentAutomation] = useState<IGroupAutomation>();
-  const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
+  const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false, history: false });
   const handleRedirect = () => {
     router.push("/user/automation/group/create");
   };
   const { data } = useGetGroupAutomation();
-  const{mutate: deleteGroupAutomation}=useDeleteGroupAutomation({
+  const { mutate: deleteGroupAutomation } = useDeleteGroupAutomation({
     onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
     options: { errorConfig: { title: "Failed to delete automation list" } },
-  })
+  });
   const handleSuccess = (title: string, text: string) => {
     setNotification({
       type: NotificationType.success,
@@ -107,27 +111,39 @@ export default function GroupAutomation() {
       "Delete Automation List",
       "Are you certain you want to delete the automation list? This will permanently erase all related contacts and information associated with this list",
       "Delete Automation",
-      () => { handleCloseModal("confirmation"),
-        deleteGroupAutomation(item.id)}
+      () => {
+        handleCloseModal("confirmation"), deleteGroupAutomation(item.id);
+      }
     );
   };
 
   const actionLookup = {
     // [BroadcastTableAction.delete]: (item: IGroupAutomation) => handleDelete(item),
     ["edit"]: (item: IGroupAutomation) => handleEdit(item),
+    ["history"]: (item: IGroupAutomation) => handleOpenModal("history"),
     ["delete"]: (item: IGroupAutomation) => handleDelete(item),
   };
 
   const handleAction = (action: string, item: IGroupAutomation) => {
-    // setCurrentAutomation({ ...item });
-    actionLookup[action as keyof typeof BroadcastTableAction](item);
+    setCurrentAutomation({ ...item });
+    actionLookup[action as keyof typeof actionLookup](item)
   };
 
   const headers: TableHeader<IGroupAutomation>[] = [
-    { field: "list", title: "Groups in Automation", icon: "/chevron.jpg",action:{component:(props)=> <AutomationTableAction  {...props}/> } },
-    { field: "account", title: "Account", component: (props)=><p>{props.item?.account.phoneNumber}</p> },
-    { field: "type", title: "Type" },
+    {
+      field: "list",
+      title: "Groups in Automation",
+      icon: "/chevron.jpg",
+      action: { component: (props) => <AutomationTableAction {...props} /> },
+    },
+    { field: "account", title: "Account", component: (props) => <p>{props.item?.account.phoneNumber}</p> },
+    { field: "type", title: "Automation Type", component: (props) => <GroupAutomationTypeDisplay {...props} /> },
     { field: "status", title: "Status", type: "chip" },
+    {
+      field: "history",
+      title: "Delivery Status",
+      component: (props) => <span onClick={() => props.item && handleAction("history", props.item)}> View </span>,
+    },
     {
       field: "action",
       title: "",
@@ -149,12 +165,12 @@ export default function GroupAutomation() {
         </div>
         <section
           // className="grid grid-cols-1 md:grid-cols-5 gap-4"
-          className="flex flex-row gap-4 justify-between"
+          className="flex flex-col md:flex-row gap-12 justify-between flex-1"
         >
-          <div className="flex flex-row gap-4 ">
+          <div className=" flex  flex-col md:flex-row gap-4 flex-grow ">
             <div className="flex-span-1">
               <select
-                className="w-full p-2 px-2 border border-gray-700 rounded focus:outline-none"
+                className="w-full p-2 px-2 border bg-white border-gray-300 rounded focus:outline-none "
                 name="accountId"
                 onChange={handleChange}
                 value={formData.accountId}
@@ -175,7 +191,7 @@ export default function GroupAutomation() {
                 }}
                 value={formData.type}
                 name="type"
-                className="w-full p-2 border border-gray-700 rounded focus:outline-none"
+                className="w-full p-2 border border-gray-300 bg-white rounded focus:outline-none"
               >
                 <option>Filter by List</option>
                 <option value="list">List</option>
@@ -185,7 +201,7 @@ export default function GroupAutomation() {
             <div className="flex-span-1">
               <select
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-700 rounded focus:outline-none text-"
+                className="w-full p-2 border border-gray-300 bg-white rounded focus:outline-none text-"
               >
                 {options.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -199,7 +215,7 @@ export default function GroupAutomation() {
             </div>
 
             <div className="flex-span-1">
-              <select onChange={handleChange} className="w-full p-2 border border-gray-700 rounded focus:outline-none">
+              <select onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none">
                 <option value="">Filter by Status</option>
               </select>
             </div>
@@ -217,22 +233,26 @@ export default function GroupAutomation() {
             />
           </div>
         </section>
-        <div className="mt-2">{data ? <Table headers={headers} data={data} />: (
-            <Default
-              src="/list.png"
-              alt="list"
-              height={100}
-              width={100}
-              mainText="No List Created"
-              subText="Click “create list” button to get started in creating your first broadcast list"
+        <div className="mt-2">
+          {data && data.length > 0 ? (
+            <Table headers={headers} data={data} />
+          ) : (
+            <EmptyState
+              title="No Automation added"
+              text="Click “add Group Automation” button to get started in adding your first automation"
             />
-          )}</div>
-          <ConfirmationModal
-        isOpen={modal.confirmation}
-        onClose={() => handleCloseModal("confirmation")}
-        {...confirmationProp}
-      />
+          )}
+        </div>
+        <ConfirmationModal
+          isOpen={modal.confirmation}
+          onClose={() => handleCloseModal("confirmation")}
+          {...confirmationProp}
+        />
       </div>
+
+      <Modal displayClose isOpen={modal.history} title="Delivery Status" onClose={() => handleCloseModal("history")}>
+        {currentAutomation && <GroupAutomationHistoryComponent automation={currentAutomation} />}
+      </Modal>
     </UserLayout>
   );
 }

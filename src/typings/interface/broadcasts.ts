@@ -16,6 +16,7 @@ export interface IBroadcastContact {
   phoneNumber: string;
   email: string;
   automationDay: number;
+  automationValue?: number;
   dateJoined: string;
   id: string;
   broadcastListId: string;

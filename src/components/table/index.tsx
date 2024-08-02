@@ -201,12 +201,14 @@ export default function Table<T>(props: TableProps<T>) {
               </tbody>
             )}
           </table>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            pageSize={itemsPerPage}
-            onPageChange={handlePageChange}
-          />
+          {currentPage > totalPages && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              pageSize={itemsPerPage}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </div>
     </section>

@@ -11,6 +11,7 @@ import TextInput from "../input/textInput";
 import { ContactSchema } from "@/providers/schema/broadcast/contact.schema";
 import { formatZodErrors } from "@/core/formatters/zodError.formatter";
 import PhoneInput from "../input/phoneInput";
+import { FaSackDollar } from "react-icons/fa6";
 
 interface IProps {
   selectedValue?: IBroadcastLists;

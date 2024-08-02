@@ -21,9 +21,9 @@ export default function AppDrawer({ display, onToggle }: Props) {
   return (
     <>
       <div
-        className={`w-[18rem] pt-3 fixed lg:flex z-20 lg:mt-[5rem] lg:z-auto overflow-auto h-screen bg-gray-50 flex flex-col gap-1 
-        ${display ? "flex h-screen" : "hidden"}
-        ${display ? "top-0 h-screen" : ""} `}
+        className={`w-[18rem] py-3 fixed lg:flex z-20 lg:mt-[5rem] lg:z-auto  h-screen lg:h-[calc(100vh-5rem)] bg-gray-50 flex flex-col gap-1 overflow-y-auto
+        ${display ? "flex" : "hidden"}
+        ${display ? "top-0 " : ""} `}
       >
         <div className="flex mb-8 lg:hidden justify-between">
           <h2 className="text-2xl lg:text-2xl font-semibold">{currentMenuItem?.title || "Dashboard"}</h2>

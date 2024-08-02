@@ -9,7 +9,7 @@ import { IGenericStatusResponse } from "@/typings/interface/api";
 
 export function useCreateContactList({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<IContactList, ContactList> = {
-    key: ["broadcast", "broadcastContact"],
+    key: [ "broadcastContact"],
     callback: (data: IContactList) => createContact(data),
     onSuccess: onSuccess,
     onError: onError,
@@ -20,7 +20,7 @@ export function useCreateContactList({ onSuccess, onError, options }: IMutationH
 
 export function useCreateContactFromNewList({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<CreateContactFromNewListDTO, ContactList> = {
-    key: ["broadcast"],
+    key: ["broadcastContact"],
     callback: ({ contacts, broadcast, automatedDay }: CreateContactFromNewListDTO) =>
       createBroadcast(broadcast).then((resp) => createContact({ contacts, broadcastListId: resp.id, automatedDay })),
     onSuccess: onSuccess,
@@ -43,7 +43,7 @@ export function useEditBroadcastContact({ onSuccess, onError, options }: IMutati
 
 export function useDeleteBroadcastContact({ onSuccess, onError, options }: IMutationHook) {
   const mutation: IMutationArgs<IBroadcastContact, IGenericStatusResponse> = {
-    key: ["broadcastContact"],
+    key: ["broadcastContact", "broadcast"],
     callback: (data) => deleteContact(data),
     onSuccess: onSuccess,
     onError: onError,

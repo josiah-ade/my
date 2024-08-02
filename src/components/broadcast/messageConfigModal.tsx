@@ -27,7 +27,7 @@ export default function MessageConfigModal({ isOpen, onClose, formData, ...props
 
         {formData.type == "list" && (
           <>
-            <div>
+            {/* <div>
               <label className="block font-medium text-gray-900">Select Tags</label>
               <select
                 // onChange={handleChange}
@@ -80,12 +80,14 @@ export default function MessageConfigModal({ isOpen, onClose, formData, ...props
                 Send to Contacts who joined on a particular date
               </label>
               <input type="date" className="w-full p-2 mt-2 border rounded" />
-            </div>
+            </div> */}
 
             <div>
               <label className="block font-medium text-gray-900">Send Test Broadcast</label>
               <input
                 type="text"
+                onChange={handleChange}
+                name="testNumber"
                 placeholder="Enter your number to receive test broadcast"
                 className="w-full p-2 mt-2 border rounded"
               />

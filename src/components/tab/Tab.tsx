@@ -4,9 +4,10 @@ import React, { useState, ReactNode, ReactElement, useEffect } from "react";
 // import React, { useState, ReactNode } from "react";
 
 type TabProps = {
-  label?: string;
+  label?: ReactNode;
   icon?: ReactNode;
   content?: ReactNode;
+
 };
 
 interface TabComponentProps {
@@ -14,9 +15,10 @@ interface TabComponentProps {
   searchPlaceholder?: string;
   defaultTab?: number;
   onTabChange?: (index: number) => void;
+  justify?:string
 }
 
-export default function Tabs({ tabs, searchPlaceholder, onTabChange, defaultTab = 0 }: TabComponentProps) {
+export default function Tabs({ tabs, searchPlaceholder, onTabChange, defaultTab = 0, justify="justify-center" }: TabComponentProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function Tabs({ tabs, searchPlaceholder, onTabChange, defaultTab 
 
   return (
     <div className="w-full ">
-      <div className="flex  w-full items-center justify-center">
+      <div className={`flex  w-full items-center ${justify}`}>
         {tabs?.map((tab, index) => (
           <button
             key={index}

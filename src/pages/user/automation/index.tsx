@@ -1,4 +1,4 @@
-import PageHeading from "@/components/common/subheadings";
+import PageHeading from "@/components/common/text/pageHeading";
 import { useEffect, useState } from "react";
 import { useAccountStore } from "@/providers/stores/accountStore";
 import { IBroadcastLists } from "@/typings/interface/broadcasts";
@@ -12,25 +12,28 @@ import { useRouter } from "next/router";
 import AutomationTableActionComponent from "@/components/automation/tableaction";
 import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
 import ConfirmationModal from "@/components/account/deleteConfirmationModal";
-import { useGetUserAutomation } from "@/providers/hooks/query/automation";
 import { useAutomationStore } from "@/providers/stores/automation";
 import { useDeleteAutomation } from "@/providers/hooks/mutate/automation/list";
 import useNotificationStore from "@/providers/stores/notificationStore";
 import { NotificationType } from "@/core/enum/notification";
 import { BroadcastTableAction } from "@/core/enum/broadcast";
-import Default from "@/components/default/default";
 import defaultValue from "@/core/const/automation/defaultvalue";
 import RunDayDisplay from "@/components/automation/typeday";
 import TimeTypeDisplay from "@/components/automation/timedisplay";
+import EmptyState from "@/components/common/empty/empty";
+import { useGetUserAutomation } from "@/providers/hooks/query/automation/automation";
+import ListAutomationHistoryComponent from "@/components/automation/list/listAutomationationHistory";
+import Modal from "@/components/modal/modal";
 
 interface ModalItems {
   confirmation: boolean;
   edit: boolean;
+  history: boolean;
 }
 let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
 export default function UserAutomation() {
   const setNotification = useNotificationStore((state) => state.displayNotification);
-  const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
+  const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false, history: false });
   const [currentAutomation, setCurrentAutomation] = useState<IListAutomation>();
   const [showTable, setShowTable] = useState(true);
   const [formData, setFormData] = useState<ICreateAutomationList>({ ...defaultValue });
@@ -41,9 +44,9 @@ export default function UserAutomation() {
   const [selectedList, setSelectedList] = useState<(IBroadcastLists & { selected?: boolean })[]>([...broadcastList]);
   const router = useRouter();
   const { data: getautomationLists } = useGetUserAutomation();
-  console.log(getautomationLists);
+
   const { mutate: deleteAutomation } = useDeleteAutomation({
-    onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
+    onSuccess: () => handleSuccess("Account deleted", "Your account has been successfully deleted. "),
     options: { errorConfig: { title: "Failed to delete automation list" } },
   });
 
@@ -87,7 +90,7 @@ export default function UserAutomation() {
   const handleDelete = (item: IListAutomation) => {
     openConfirmationModal(
       "Delete Automation List",
-      "Are you certain you want to delete the automation list? This will permanently erase all related contacts and information associated with this list",
+      " Are you certain you want to delete this automation?",
       "Delete Automation",
       () => {
         handleCloseModal("confirmation"), deleteAutomation(item.id);
@@ -96,7 +99,7 @@ export default function UserAutomation() {
   };
   const handleEdit = (item: IListAutomation) => {
     setCurrentAutomation(item);
-    router.push(`/user/automation/edit/${item.id}`);
+    router.push(`/user/automation/list/edit/${item.id}`);
   };
 
   const openConfirmationModal = (title: string, message: string, confirmText: string, onConfirm: () => void) => {
@@ -107,11 +110,12 @@ export default function UserAutomation() {
   const actionLookup = {
     [BroadcastTableAction.delete]: (item: IListAutomation) => handleDelete(item),
     ["edit"]: (item: IListAutomation) => handleEdit(item),
+    ["history"]: (item: IListAutomation) => handleOpenModal("history"),
   };
 
   const handleAction = (action: string, item: IListAutomation) => {
     setCurrentAutomation({ ...item });
-    actionLookup[action as keyof typeof BroadcastTableAction](item);
+    actionLookup[action as keyof typeof actionLookup](item);
   };
 
   const headers: TableHeader<IListAutomation>[] = [
@@ -137,6 +141,11 @@ export default function UserAutomation() {
     { field: "daytorun", title: "Day to Run", component: (props) => <RunDayDisplay field={"daytorun"} {...props} /> },
     { field: "status", title: "Status", type: "chip" },
     {
+      field: "history",
+      title: "Delivery Status",
+      component: (props) => <span className="text-primary" onClick={() => props.item && handleAction("history", props.item)}> View </span>,
+    },
+    {
       field: "timedelivery",
       title: "Time Delivery",
       action: { component: AutomationTableActionComponent, props: { clickHandler: handleAction } },
@@ -155,10 +164,10 @@ export default function UserAutomation() {
           />
         </div>
         <section className="flex flex-col md:flex-row gap-12 justify-between flex-1">
-          <div className="flex  flex-col md:flex-row gap-4 flex-grow">
+          <div className="flex flex-col md:flex-row gap-4 flex-grow">
             <div className="flex-1">
               <select
-                className="w-full p-1 px-1 border border-gray-700 rounded focus:outline-none"
+                className="w-full p-1 px-1 border border-gray-300 bg-white rounded focus:outline-none"
                 name="accountId"
                 onChange={handleChange}
                 value={formData.accountId}
@@ -179,7 +188,7 @@ export default function UserAutomation() {
                 }}
                 value={formData.broadCastListId}
                 name="broadCastListId"
-                className="w-full  p-1 px-1 border border-gray-700 rounded focus:outline-none"
+                className="w-full  p-1 px-1 border border-gray-300 bg-white rounded focus:outline-none"
               >
                 <option className="px-2">{automationType.length ? "Filter by List" : "No List available"}</option>
                 {automationType.map((automationType) => (
@@ -194,7 +203,7 @@ export default function UserAutomation() {
                 value={formData.type}
                 onChange={handleChange}
                 name="type"
-                className="w-full  p-1 px-1 border border-gray-700 rounded focus:outline-none text-"
+                className="w-full  p-1 px-1 border border-gray-300 bg-white rounded focus:outline-none text-"
               >
                 <option className="px-2">
                   {automationType.length ? "Filter by Automation Type" : "No Type available"}
@@ -211,7 +220,7 @@ export default function UserAutomation() {
               <select
                 onChange={handleChange}
                 name="status"
-                className="w-full p-1 px-1 border border-gray-700 rounded focus:outline-none"
+                className="w-full p-1 px-1 border border-gray-300 bg-white rounded focus:outline-none"
                 value={formData.status}
               >
                 <option className="px-2">{automationType.length ? "Filter by List" : "No List available"}</option>
@@ -237,16 +246,12 @@ export default function UserAutomation() {
           </div>
         </section>
         <div className="mt-2">
-          {getautomationLists ? (
+          {getautomationLists && getautomationLists.length > 0 ? (
             <Table headers={headers} data={getautomationLists} />
           ) : (
-            <Default
-              src="/list.png"
-              alt="list"
-              height={100}
-              width={100}
-              mainText="No List Created"
-              subText="Click “create list” button to get started in creating your first broadcast list"
+            <EmptyState
+              title="No Automation added"
+              text="Click “add List Automation” button to get started in adding your first automation"
             />
           )}
         </div>
@@ -256,6 +261,10 @@ export default function UserAutomation() {
         onClose={() => handleCloseModal("confirmation")}
         {...confirmationProp}
       />
+
+      <Modal displayClose isOpen={modal.history} title="Delivery Status" onClose={() => handleCloseModal("history")}>
+        {currentAutomation && <ListAutomationHistoryComponent automation={currentAutomation} />}
+      </Modal>
     </UserLayout>
   );
 }

@@ -45,7 +45,7 @@ export default function GroupAutomationMessageForm(props: IProps) {
                 name="sendDate"
                 type="date"
                 label="Start Date"
-                value={message.endDate}
+                value={message.startDate}
                 onChange={(value) => handleChange(index, "startDate", value)}
               />
               <TextInput

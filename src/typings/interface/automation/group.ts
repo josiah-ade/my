@@ -42,3 +42,12 @@ export interface IGroupAutomation {
   matchType?: AutomationMatchType;
   status: OperationStatus;
 }
+
+export interface IGroupAutomationMessageHistory {
+  receiverName: string;
+  text: string;
+  comment: string;
+  sentTime: string;
+  status: string;
+  group: IGroupAccount;
+}

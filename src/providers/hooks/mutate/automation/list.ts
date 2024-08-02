@@ -4,33 +4,33 @@ import { ICreateAutomationList, IListAutomation } from "@/typings/interface/auto
 import { createAutomationList, deleteAutomation, editAutomationId } from "@/providers/services/automation/list";
 
 export function useCreateAutomationList({ onSuccess, onError, options }: IMutationHook) {
-    const mutation: IMutationArgs<ICreateAutomationList, IListAutomation> = {
-      key: ["listAutomation"],
-      callback: (data) => createAutomationList(data),
-      onSuccess: onSuccess,
-      onError: onError,
-      options,
-    };
-    return useCreateResources(mutation);
-  }
-  
-  export function useDeleteAutomation({ onSuccess, onError, options }: IMutationHook) {
-    const mutationData: IMutationArgs<string, string> = {
-      key: ["listAutomation"],
-      callback: (id: string) => deleteAutomation(id),
-      onSuccess: onSuccess,
-      onError: onError,
-      options,
-    };
-    return useCreateResources(mutationData);
-  }
-  export function useEditAutomation(id:string,{ onSuccess, onError, options }: IMutationHook) {
-    const mutation: IMutationArgs<ICreateAutomationList, ICreateAutomationList> = {
-      key: ["listAutomation",'singleListAutomation'],
-      callback: ( data:ICreateAutomationList) => editAutomationId(id,data),
-      onSuccess: onSuccess,
-      onError: onError,
-      options,
-    };
-    return useCreateResources(mutation);
-  }
+  const mutation: IMutationArgs<ICreateAutomationList, IListAutomation> = {
+    key: ["listAutomation"],
+    callback: (data) => createAutomationList(data),
+    onSuccess: onSuccess,
+    onError: onError,
+    options,
+  };
+  return useCreateResources(mutation);
+}
+
+export function useDeleteAutomation({ onSuccess, onError, options }: IMutationHook) {
+  const mutationData: IMutationArgs<string, string> = {
+    key: ["listAutomation",],
+    callback: (id: string) => deleteAutomation(id),
+    onSuccess: onSuccess,
+    onError: onError,
+    options,
+  };
+  return useCreateResources(mutationData);
+}
+export function useEditAutomation(id: string, { onSuccess, onError, options }: IMutationHook) {
+  const mutation: IMutationArgs<ICreateAutomationList, ICreateAutomationList> = {
+    key: ['listAutomation',],
+    callback: (data: ICreateAutomationList) => editAutomationId(id, data),
+    onSuccess: onSuccess,
+    onError: onError,
+    options,
+  };
+  return useCreateResources(mutation);
+}

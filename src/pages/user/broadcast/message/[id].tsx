@@ -26,7 +26,7 @@ export default function ViewBroadcast() {
     { title: "Status", field: "status", type: "chip" },
     {
       title: "Delivered Time",
-      field: "readTime",
+      field: "deliveredTime",
       formatter: (val) => dateFormatter(val ?? "--", DisplayDataTimeFormatOptions),
     },
     { title: "Comment", field: "comment" },

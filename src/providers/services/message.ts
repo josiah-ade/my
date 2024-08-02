@@ -1,11 +1,14 @@
 import axios from "axios";
-import { ICreateBroadcastMessage, IMessageResponse, IMessageListResponse } from "@/typings/interface/message";
+import {
+  ICreateBroadcastMessage,
+  IMessageResponse,
+  IMessageListResponse,
+  ISendTestBroadcastMessage,
+} from "@/typings/interface/message";
 import { handleError } from "@/components/common/exception/serviceexception";
 import { IGenericStatusResponse } from "@/typings/interface/api";
 import { removeNullValue } from "@/core/services";
 import { IMessageFilter } from "@/typings/interface/broadcasts";
-
-
 
 export async function createBroadcastMessage(data: ICreateBroadcastMessage): Promise<IGenericStatusResponse> {
   const formData = new FormData();
@@ -34,6 +37,21 @@ export async function createBroadcastMessage(data: ICreateBroadcastMessage): Pro
   return axios
     .post<IGenericStatusResponse>("/message", formData)
     .then((response) => response.data)
+    .catch(handleError);
+}
+
+export async function sendTestBroadcastMessage(data: ISendTestBroadcastMessage): Promise<IGenericStatusResponse> {
+  const formData = new FormData();
+  const { files, ...cleanData } = removeNullValue(data, true);
+
+  Object.entries(cleanData).forEach(([field, value]) => {
+    formData.append(field, value ?? "");
+  });
+  files && files.forEach((value) => formData.append("files", value, value.name));
+
+  return axios
+    .post("/message/test", formData)
+    .then(() => ({ status: true }))
     .catch(handleError);
 }
 

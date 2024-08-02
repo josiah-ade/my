@@ -20,9 +20,8 @@ export function useCreateGroupAutomation({ onSuccess, onError, options }: IMutat
 }
 
 export function useEditGroupAutomation({ onSuccess, onError, options }: IMutationHook) {
-  // const mutation: IMutationArgs<ICreateGroupAutomation, IGroupAutomation> = {
-  const mutation: IMutationArgs<ICreateGroupAutomation, boolean> = {
-    key: ["groupAutomation", "groupAutomationDetail"],
+  const mutation: IMutationArgs<ICreateGroupAutomation, IGroupAutomation> = {
+    key: ["groupAutomation"],
     callback: (data) => editGroupAutomation(data),
     onSuccess: onSuccess,
     onError: onError,

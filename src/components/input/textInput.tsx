@@ -1,4 +1,5 @@
-import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
+import { ChangeEvent, HTMLInputTypeAttribute, ReactNode, useState } from "react";
+import { IconType } from "react-icons";
 
 interface IProps {
   name: string;
@@ -13,6 +14,8 @@ interface IProps {
   hintClass?: string;
   errorClass?: string;
   placeholder?: string;
+  prefixIcon?: ReactNode;
+  suffixIcon?: ReactNode;
 }
 
 export default function TextInput(props: IProps) {
@@ -31,16 +34,24 @@ export default function TextInput(props: IProps) {
           {props.label}
         </label>
       )}
-      <input
-        type={props.type}
-        className={`w-full  mt-2 border border-gray-300 rounded focus:outline-none ${
+      <div
+        className={`relative border mt-2 rounded flex gap-2 bg-white items-center border-gray-300 ${
           props.inputClass ?? "py-3.5 px-4"
         }`}
-        name={props.name}
-        placeholder={props.placeholder}
-        onChange={handleChange}
-        value={props.value ?? value}
-      />
+      >
+        {props.prefixIcon && props.prefixIcon}
+
+        <input
+          type={props.type}
+          className={`w-full border-none outline-none focus:outline-none`}
+          name={props.name}
+          placeholder={props.placeholder}
+          onChange={handleChange}
+          value={props.value ?? value}
+        />
+
+        {props.suffixIcon && props.suffixIcon}
+      </div>
       {props.hintText && <label className={props.hintClass ?? "text-sm text-gray-500"}>{props.hintText}</label>}
       {props.errorText && <label className={props.errorClass ?? "text-sm text-error-500"}>{props.errorText}</label>}
     </div>

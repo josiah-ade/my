@@ -25,7 +25,7 @@ export default function NewCustomer({}) {
     { field: "phoneNumber", title: "Phone Number" },
     { field: "name", title: "Name" },
     { field: "dateJoined", title: "Date Joined", formatter: dateFormatter },
-    { field: "automationDay", title: "Automation Day" },
+    { field: "automationValue", title: "Automation Day" },
     {
       field: "action",
       title: "Actions",

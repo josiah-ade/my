@@ -4,12 +4,11 @@ import { IChanges } from "@/typings/interface/automation";
 import { DayOptions } from "@/core/const/automation/days.const";
 import { TimeZones } from "@/core/const/automation/timezone";
 
-export default function ListAutomationForm(props: IChanges) {
+export default function   ListAutomationForm(props: IChanges) {
   const accounts = useAccountStore((state) => state.accounts);
   const broadcastList = useBroadcastStore((state) => state.broadcasts);
-  const { setFormData, formData } = props
+  const { setFormData, formData,  } = props
   console.log("Form Data Type:", formData);
-
 
   function handleSelectType(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { value } = event.target;
@@ -22,7 +21,6 @@ export default function ListAutomationForm(props: IChanges) {
     const { value, name } = event.target;
     setFormData((val) => ({ ...val, [name]: value }))
   }
-
   return (
     <div>
       <section
@@ -33,8 +31,9 @@ export default function ListAutomationForm(props: IChanges) {
             Account
           </div>
           <select
-            className="w-full py-2 px-2 border border-gray-700 rounded focus:outline-none"
+            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
             name="accountId"
+            required
             onChange={handleChange}
             value={formData.accountId}>
             <option className="px-2">{accounts.length ? "Select Account" : "No account available"}</option>
@@ -44,6 +43,7 @@ export default function ListAutomationForm(props: IChanges) {
               </option>
             ))}
           </select>
+          {/* {errors?.accountId && <p className="text-error-500">{errors.accountId}</p>} */}
         </div>
         <div className="col-span-1">
           <div className="text-xs">
@@ -56,7 +56,7 @@ export default function ListAutomationForm(props: IChanges) {
             value={formData.broadCastListId}
             defaultValue={formData.broadCastListId ?? ""}
             name="broadCastListId"
-            className="w-full py-2 px-2 border border-gray-700 rounded focus:outline-none"
+            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
           >
             <option>Filter by List</option>
             {broadcastList.map((broadcastId) => (
@@ -65,6 +65,7 @@ export default function ListAutomationForm(props: IChanges) {
               </option>
             ))}
           </select>
+          {/* {errors?.broadCastListId && <p className="text-error-500">{errors.broadCastListId}</p>} */}
         </div>
         <div className="col-span-1">
           <div className="text-xs">
@@ -74,7 +75,7 @@ export default function ListAutomationForm(props: IChanges) {
             name="type"
             value={formData.type}
             onChange={handleSelectType}
-            className="w-full py-2 px-2 border border-gray-700 rounded focus:outline-none text-">
+            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none text-">
             <option value={""} >Filter by Type</option>
             {DayOptions.map((item, index) => (
               <option key={item.text} value={item.value}>
@@ -82,18 +83,20 @@ export default function ListAutomationForm(props: IChanges) {
               </option>
             ))}
           </select>
+          {/* {errors?.type && <p className="text-error-500">{errors.type}</p>} */}
         </div>
         {formData.type === "immediately" ? (
           <></>
         ) : formData.type === "sameday" ? (
           <div className="col-span-1">
             <div className="text-xs">Minutes to Send After Last</div>
+            <div>
             <input type="text"
               value={formData.minutesAfter}
               name="minutesAfter"
               onChange={handleChange}
-              className="w-full py-2
-         px-2 border border-gray-700 rounded focus:outline-none" />
+              className="w-fullpy-4 px-4 border border-gray-300 rounded focus:outline-none" />
+            </div>
           </div>
         ) : (
           <>
@@ -103,7 +106,7 @@ export default function ListAutomationForm(props: IChanges) {
                 value={formData.sendDate}
                 type="date"
                 name="sendDate"
-                className="form-control w-full py-2 px-2 border border-gray-700 rounded focus:outline-none"
+                className="form-control w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
                 onChange={handleChange}
 
               />
@@ -114,10 +117,8 @@ export default function ListAutomationForm(props: IChanges) {
                 value={formData.time}
                 type="time"
                 name="time"
-                className="form-control sendtime w-full py-2 px-2 border border-gray-700 rounded focus:outline-none"
+                className="form-control sendtime w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
                 onChange={handleChange}
-
-
               />
             </div>
             <div className="col-span-1">
@@ -126,7 +127,7 @@ export default function ListAutomationForm(props: IChanges) {
                 value={formData.timeZone}
                 name="timeZone"
                 onChange={handleChange}
-                className="w-full py-2 px-2 border border-gray-700 rounded focus:outline-none"
+                className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
               >
                 <option value="">Filter by Time Zone</option>
                 {TimeZones.map((zone, index) => (
@@ -135,6 +136,7 @@ export default function ListAutomationForm(props: IChanges) {
                   </option>
                 ))}
               </select>
+
             </div>
           </>
         )}
@@ -145,8 +147,7 @@ export default function ListAutomationForm(props: IChanges) {
           <select onChange={handleChange}
             value={formData.status}
             name="status"
-            className="w-full py-2 px-2 border border-gray-700 rounded focus:outline-none">
-            <option value="">Filter by Status</option>
+            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none">
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>

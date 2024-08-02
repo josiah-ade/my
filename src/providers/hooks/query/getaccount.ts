@@ -40,7 +40,7 @@ export function useGetUsersAcount(options: IQueryOptions = {}) {
 
 export function useGetSingleUsersAcount(id: string, options: IQueryOptions = {}) {
   const singleuser: IQueryArgs<string, IAccount> = {
-    key: ["singleuser", { id }],
+    key: ["singleuserAccount", { id }],
     callback: () => getSingleAccount(id),
   };
   return useGetResourcesQuery(singleuser, options);
@@ -71,7 +71,7 @@ export function useGetPairingcodeUsersAcount(id: string) {
 
 export function useGetUsersStatusAcount(id: string) {
   const qrcode: IQueryArgs<string, UserStatus> = {
-    key: ["qr_code", { id }],
+    key: ["accountStatus", { id }],
     callback: () => getUserStatusAccount(id),
   };
   return useGetResourcesQuery(qrcode);
@@ -86,7 +86,7 @@ export function useGetAccountContacts(id: string, options: IQueryOptions = {}) {
 }
 export function useGetGroupAccount(id: string, options: IQueryOptions = {}) {
   const GroupAcount: IQueryArgs<string, IGroupAccount[]> = {
-    key: ["qr_code", { id }],
+    key: ["groupAccount", { id }],
     callback: () => getGroupAccount(id),
   };
   return useGetResourcesQuery(GroupAcount, options);
@@ -94,7 +94,7 @@ export function useGetGroupAccount(id: string, options: IQueryOptions = {}) {
 
 export function useGetSingleGroup(id: string, groupId: string) {
   const singleGroupContact: IQueryArgs<string, IGroupAccount> = {
-    key: ["singleGroupContact", { id }],
+    key: ["singleGroup_Contact", { id }],
     callback: () => getGroupDetails(id, groupId),
   };
   return useGetResourcesQuery(singleGroupContact);
@@ -102,7 +102,7 @@ export function useGetSingleGroup(id: string, groupId: string) {
 
 export function useGetGroupContacts(id: string, groupId: string) {
   const singleGroupContact: IQueryArgs<string, ContactAccount[]> = {
-    key: ["singleGroupContact", { groupId }],
+    key: ["GroupContact_Id", { groupId }],
     callback: () => getGroupContacts(id, groupId),
   };
   return useGetResourcesQuery(singleGroupContact);
