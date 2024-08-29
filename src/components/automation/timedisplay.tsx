@@ -13,7 +13,6 @@ export default function RunDayDisplay(props: TableHeaderActionProp<IListAutomati
     function daySelectOption() {
         if (!currentItem) return ''
         if ((itemType?.typeValue ?? 0) >= 1 || props.item?.type === "default") {
-            console.log({dat:moment(currentItem.sendDate), time:(moment(`1970-01-01T${currentItem.time}`))})
             return moment(`1970-01-01T${currentItem.time}`).tz(currentItem.timeZone).format('HH:mm [GMT]Z') ?? '';
         }
         let displayText = '';

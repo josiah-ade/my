@@ -43,6 +43,11 @@ export default function NotificationComponent() {
       bg: "bg-secondary-100",
       border: "border-secondary-500",
     },
+    [NotificationType.warning]: {
+      text: "text-waring-500",
+      bg: "bg-waring-100",
+      border: "border-waring-500",
+    },
   };
 
   if (!display) return null;
@@ -62,12 +67,7 @@ export default function NotificationComponent() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
           </div>

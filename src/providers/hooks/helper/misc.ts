@@ -18,9 +18,7 @@ export const useManageLoadingState = (isLoading: boolean, loadingConfig: Loading
 
   useEffect(() => {
     if (isLoading != stateLoader && loadingConfig.displayLoader) {
-      //   console.log("displaying loader");
       setLoading(isLoading, loadingConfig);
-      //   console.log("loader state  = ", isLoading);
     }
   }, [prevLoading]);
 };

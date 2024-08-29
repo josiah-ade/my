@@ -13,7 +13,6 @@ import { useLimitsStore } from "@/providers/stores/statisticsStore";
 export default function AccountPage() {
   const [modal, setModal] = useState(false);
   const stats = useLimitsStore((state) => state.limit);
-
   const { data: accounts } = useGetUsersAcount({ loadingConfig: { displayLoader: true } });
 
   return (

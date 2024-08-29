@@ -1,228 +1,152 @@
-import { Bin, Copy } from "@/core/const/icons/icons";
-import Image from "next/image";
-import React, { useState } from "react";
+import {Copy } from "@/core/const/icons/icons";
+import React, { useState, useRef, useEffect, ChangeEvent, Dispatch, SetStateAction } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { RiImageAddLine } from "react-icons/ri";
 import { IoVideocamOutline } from "react-icons/io5";
+import { ICreateForm, ICreateFormField, IFormList } from "@/typings/interface/form";
+import { useBroadcastStore } from "@/providers/stores/broadcastStore";
+import useNotificationStore from "@/providers/stores/notificationStore";
+import { NotificationType } from "@/core/enum/notification";
+import FormField from "./formField";
+import { DEFAULT_FORM_VALUE } from "@/core/const/form";
 
-interface Question {
-  id: number;
-  text: string;
-  type: string;
-  required: boolean;
-  options?: string[];
+interface IProps {
+  data?: IFormList[];
+  setQuestions: Dispatch<SetStateAction<ICreateForm>>;
+  questions: ICreateForm;
 }
 
-export default function FormDetails() {
-  const [formName, setFormName] = useState("");
-  const [selectList, setSelectList] = useState("");
-  const [formLink, setFormLink] = useState("");
-  const [formDescription, setFormDescription] = useState("");
-  const [selected, setSelected] = useState<boolean>(false);
-
-  const [questions, setQuestions] = useState<Question[]>([{ id: 1, text: "", type: "text", required: false }]);
+export default function FormDetails(props: IProps) {
+  const { questions, setQuestions } = props;
+  const setNotification = useNotificationStore((state) => state.setDisplay);
+  const { broadcasts } = useBroadcastStore((state) => state);
+  const [activeQuestion, setActiveQuestion] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { id: questions.length + 1, text: "", type: "text", required: false }]);
+    const newQuestion: ICreateFormField = {
+      ...DEFAULT_FORM_VALUE.fields[0],
+      type: "text",
+      title: "",
+      is_required: false,
+      source: "text",
+      isDefault: false,
+      sort_order: questions.fields.length,
+    };
+    questions.fields.push(newQuestion);
+    setActiveQuestion(questions.fields.length - 1);
+    setQuestions({ ...questions });
   };
 
-  const handleTypeChange = (id: number, type: string) => {
-    const updatedQuestions = questions.map((q) => (q.id === id ? { ...q, type } : q));
-    setQuestions(updatedQuestions);
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, []);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setQuestions({ ...questions, [name]: value });
   };
 
-  const handleRequiredToggle = (id: number) => {
-    const updatedQuestions = questions.map((q) => (q.id === id ? { ...q, required: !q.required } : q));
-    setQuestions(updatedQuestions);
-  };
-
-  const handleTextChange = (id: number, text: string) => {
-    const updatedQuestions = questions.map((q) => (q.id === id ? { ...q, text } : q));
-    setQuestions(updatedQuestions);
+  const handeToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}/form/${questions.link}`);
+      setNotification(true, {
+        type: NotificationType.success,
+        content: {
+          title: "Success",
+          text: ` "Copied ${window.location.origin}/form/${questions.link} to clipboard`,
+        },
+      });
+    } catch (error) {
+      setNotification(true, {
+        type: NotificationType.error,
+        content: {
+          title: "Oops",
+          text: `Failed to copy!`,
+        },
+      });
+    }
   };
 
   return (
     <section>
-      <div className="container mx-auto p-2 bg-gray-50 rounded">
+      <div className=" p-5 md:p-10 bg-gray-75 rounded">
         <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-[repeat(auto-fit,minmax(20.75rem,1fr))] gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-800">Form Name</label>
               <input
                 type="text"
-                className="mt-1 block w-full p-4 rounded-md border border-gray-300 shadow-sm"
-                placeholder="Placeholder"
+                className="block w-full p-4 rounded-md border border-gray-300 shadow-sm"
+                placeholder="Sales Campaign Form"
+                value={questions.name}
+                name="name"
+                onChange={handleChange}
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-800">Select List</label>
-              {/* <input
-                type="text"
-                className="mt-1 block w-full p-4 rounded-md border-gray-300 shadow-sm"
-                placeholder="Placeholder"
-              /> */}
-              <select name="" id="" className="p-4 w-full text-gray-400 border border-gray-300">
-                <option value="" className="text-gray-200">
-                  Placeholder
-                </option>
+              <select
+                name="list"
+                id=""
+                className="p-4 w-full text-gray-600 border border-gray-300"
+                value={questions.list}
+                onChange={handleChange}
+              >
+                <option value=""> ---Select List--- </option>
+                {broadcasts.map((item) => (
+                  <option key={item.id} value={item.id} className="text-gray-600">
+                    {item.listName}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-800">Form Link</label>
-              <div className="relative">
-                <div className="absolute flex items-center justify-between px-4 mt-4 w-full">
-                  <span className="text-gray-400 text-sm">wamation.com/</span>
-                  <p className="text-gray-400 text-sm flex items-center space-x-1">
-                    <span>wed-ty-tue</span>
-                    <span>
-                      <Copy />
-                    </span>
-                  </p>
-                </div>
+
+              <div className="flex gap-x-1 border has-[:focus]:border-2 has-[:focus]:border-black rounded-md  p-4 items-center bg-white">
+                <p className="text-sm text-gray-400 w-full cursor-default "> {window.location.origin}/form/ </p>
                 <input
+                  value={questions.link}
                   type="text"
-                  className=" block w-full p-4 rounded-none rounded-r-md border border-gray-300"
-                  placeholder=""
+                   name="link"
+                  onChange={handleChange}
+                  className="text-right focus:outline-none outline-none w-full"
                 />
+                <Copy onClick={handeToClipboard} className="w-12 h-8 cursor-pointer" />
               </div>
+            
             </div>
           </div>
-
           <div>
-            <label className="block text-sm font-medium text-gragray-800">Form Description</label>
+            <label className="block text-sm font-medium text-gray-800">Form Description</label>
             <textarea
               className="mt-1 block w-full p-2 rounded-md border border-gray-300 shadow-sm"
-              placeholder="wamation.com/"
+              placeholder="Description"
+              value={questions.description}
+              name="description"
+              onChange={handleChange}
             ></textarea>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto space-y-6 mt-4">
-        {/* Form Header */}
-        {/* <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Form Name</label>
-              <input
-                type="text"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                placeholder="Placeholder"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Select List</label>
-              <input
-                type="text"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                placeholder="Placeholder"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Form Link</label>
-              <div className="flex items-center mt-1">
-                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-                  wamation.com/
-                </span>
-                <input
-                  type="text"
-                  className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300"
-                  placeholder="wed-ty-tue"
-                />
-              </div>
-            </div>
-          </div>
-
-         
-        </div> */}
-
-        {/* Question Section */}
-        <div className="bg-gray-50 p-6 rounded-md  space-y-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-full lg:w-[70%]">
-              <label className="block text-sm font-medium text-gray-800">Question 1</label>
-              <input
-                type="text"
-                className="mt-1 block w-full p-4 rounded-md border border-gray-300 shadow-sm"
-                placeholder="Placeholder"
-              />
-            </div>
-            <div className="w-full lg:w-[30%]">
-              <label className="block text-sm font-medium text-gray-800">Type</label>
-              <select className="mt-1 block w-full p-4 rounded-md border border-gray-300 shadow-sm">
-                <option>Drop Down</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="relative grid lg:grid-cols-2 gap-4">
-            {/* <div className="absolute flex items-center justify-between px-4 mt-4 w-full">
-              <span className="text-gray-400 text-sm"></span>
-              <p className="text-gray-400 text-sm flex items-center space-x-1">
-                <span>wed-ty-tue</span>
-                <span>
-                  <Copy />
-                </span>
-              </p>
-            </div>
-            <input
-              type="text"
-              className=" block w-full p-4 rounded-none rounded-r-md border border-gray-300"
-              placeholder=""
-            /> */}
-            <section className="relative">
-              <div className="absolute mt-6">
-                <span className="text-gray-800">Option 1</span>
-              </div>
-              <input
-                type="text"
-                className=" block w-full p-4 px-20 rounded-none focus:outline-none rounded-r-md border-b bg-gray-50 border-gray-300"
-                placeholder=""
-              />
-              <div className="absolute right-4 bottom-2">
-                <span>
-                  <Image src="/multiply.png" alt="cancel" width={20} height={20} />
-                </span>
-              </div>
-            </section>
-
-            <section>
-              <div className="absolute mt-6">
-                <span className="text-gray-800">Add Option |</span>
-              </div>
-              <input
-                type="text"
-                className="block w-full p-4 rounded-none focus:outline-none rounded-r-md bg-gray-50 border-b border-gray-300"
-                placeholder=""
-              />
-            </section>
-          </div>
-          <section className="flex justify-end w-full space-x-4">
-            <div className="flex items-center gap-2">
-              <Bin />
-              <Copy />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-800 font-bold text-sm">Required</span>
-              <button
-                className={`relative inline-flex items-center h-6 rounded-full w-11 ${
-                  selected ? "bg-orange-500" : "bg-gray-200"
-                }`}
-                onClick={() => setSelected(!selected)}
-              >
-                <span
-                  className={`${
-                    selected ? "translate-x-6" : "translate-x-1"
-                  } inline-block w-4 h-4 transform bg-white rounded-full`}
-                />
-              </button>
-            </div>
-          </section>
-        </div>
-
-        <div className="flex items-center mx-auto  justify-center space-x-4 mt-15">
-          <section className="w-full lg:w-[40%] flex items-center justify-between space-x-2 p-2 py-4 lg:py-2 shadow-lg rounded-lg border border-gray-300">
-            <div className="flex items-center gap-1 cursor-pointer">
+      <div className="space-y-6 mt-4" ref={containerRef}>
+        {questions.fields?.map((question: ICreateFormField, index: number) => (
+          <FormField
+            key={`form_sort_${question.sort_order}`}
+            question={question}
+            index={index}
+            activeIndex={activeQuestion}
+            setActiveIndex={setActiveQuestion}
+            setQuestions={setQuestions}
+          />
+        ))}
+        <div className="flex justify-center  mt-15">
+          <section className=" flex max-md:flex-wrap items-center justify-between gap-7 space-x-2 p-2 py-4 lg:py-2 shadow-lg rounded-lg border border-gray-300">
+            <div className="flex items-center gap-1 cursor-pointer" onClick={handleAddQuestion}>
               <span className="text-gray-600 text-sm font-semibold">
                 <AiOutlinePlusCircle size={20} />
               </span>

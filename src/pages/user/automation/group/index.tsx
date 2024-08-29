@@ -61,7 +61,7 @@ export default function GroupAutomation() {
   };
   const { data } = useGetGroupAutomation();
   const { mutate: deleteGroupAutomation } = useDeleteGroupAutomation({
-    onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
+    onSuccess: () => handleSuccess("Group Automation Deleted", "The automation was successfully removed from your group list."),
     options: { errorConfig: { title: "Failed to delete automation list" } },
   });
   const handleSuccess = (title: string, text: string) => {
@@ -126,7 +126,7 @@ export default function GroupAutomation() {
 
   const handleAction = (action: string, item: IGroupAutomation) => {
     setCurrentAutomation({ ...item });
-    actionLookup[action as keyof typeof actionLookup](item)
+    actionLookup[action as keyof typeof actionLookup](item);
   };
 
   const headers: TableHeader<IGroupAutomation>[] = [

@@ -26,6 +26,8 @@ function getStatusColor(status: string) {
     ["failed", "bg-error-50 text-error-700"],
     ["read", "bg-secondary-50 text-secondary-700"],
     ["active", "bg-secondary-50 text-secondary-700"],
+    ["cancelled", "bg-red-50 text-error-700"],
+    ["expired", "bg-gray-50 text-gray-700"],
   ]);
 
   return statusMap.get(status.toLowerCase()) || "bg-gray-200";

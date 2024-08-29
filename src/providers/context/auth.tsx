@@ -6,8 +6,9 @@ import React from "react";
 import { ReactElement, ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { useGetUsersAcount } from "../hooks/query/getaccount";
 import { useGetUserBroadcast } from "../hooks/query/getbroadcast";
-import { useQueryClient } from "react-query";
 import { useUsersStats } from "../hooks/query/statistics";
+import useNotificationStore from "../stores/notificationStore";
+import { NotificationType } from "@/core/enum/notification";
 
 interface Session {
   accessToken: string;
@@ -21,6 +22,7 @@ interface AuthContextType {
   logout: (callback?: Function) => void;
   islLoggedIn: boolean;
   loaded: boolean;
+  
 }
 
 const usersContext = createContext<AuthContextType>({
@@ -37,6 +39,8 @@ export default function Context({ children }: { children: ReactNode }) {
   const [islLoggedIn, setILoggedIn] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [auth, setAuth] = useState<AuthResponse>();
+  const setNotification = useNotificationStore((state) => state.displayNotification);
+  // const { displaySuccess = true, ...successContent } = successConfig;
   // const { data: stats } = useUsersStats()
 
   const {} = useGetUsersAcount({ loadingConfig: { displayLoader: false }, enabled: islLoggedIn });
@@ -91,6 +95,14 @@ export default function Context({ children }: { children: ReactNode }) {
         setToken(res.data?.token);
         setAuth({ ...res.data });
         setILoggedIn(true);
+        setNotification({
+          type: NotificationType.success,
+          content: {
+            title:"Login Successful",
+            text:"Login Successful: Welcome back!",
+          },
+        });
+        // alert("Login Successful: Welcome back!");
         router.push("/user");
         // if(data.role == "user"){
         //   router.push("/usermanagement");

@@ -99,14 +99,13 @@ export default function AccountTableActionComponent({ item }: TableHeaderActionP
   };
   const handleCloseModal = (key: keyof ModalItems) => {
     setModal((val) => ({ ...val, [key]: false }));
-    if(key === "link"){
-      queryClient.invalidateQueries("account")
+    if (key === "link") {
+      queryClient.invalidateQueries("account");
     }
   };
 
   const handlePairAction = (type: "qr" | "pair") => {
     defaultLinkTab.current = type == "qr" ? 1 : 0;
-  console.log({defaultLinkTab})
 
     handleOpenModal("link");
   };

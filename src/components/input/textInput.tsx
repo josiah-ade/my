@@ -14,6 +14,7 @@ interface IProps {
   hintClass?: string;
   errorClass?: string;
   placeholder?: string;
+  className?: string;
   prefixIcon?: ReactNode;
   suffixIcon?: ReactNode;
 }
@@ -28,7 +29,7 @@ export default function TextInput(props: IProps) {
   }
 
   return (
-    <div>
+    <div className={props.className ?? ""}>
       {props.label && (
         <label className={props.labelClass ?? "text-sm font-medium"} htmlFor={props.name}>
           {props.label}

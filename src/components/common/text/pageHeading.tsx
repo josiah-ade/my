@@ -15,7 +15,7 @@ export default function PageHeading(props: IProps) {
     onClick && onClick();
   };
   return (
-    <div className="flex justify-between items-center  py-8">
+    <div className="flex justify-between items-center ">
       <section>
         <h2 className={`font-bold ${props.titleClass ?? "text-xl"}`}>{props.title}</h2>
         <p className="text-gray-600 mt-2">{props.description}</p>

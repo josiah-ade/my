@@ -24,7 +24,6 @@ export const BroadcastMenus: Menu[] = [
     id: "3",
     icon: SiReacthookform,
     path: `${UserRoutes.BROADCAST_TEMPLATE}`,
-    disabled: true,
   },
 ];
 

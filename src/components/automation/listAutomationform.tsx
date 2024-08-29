@@ -8,13 +8,12 @@ export default function   ListAutomationForm(props: IChanges) {
   const accounts = useAccountStore((state) => state.accounts);
   const broadcastList = useBroadcastStore((state) => state.broadcasts);
   const { setFormData, formData,  } = props
-  console.log("Form Data Type:", formData);
 
   function handleSelectType(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { value } = event.target;
-    const selectedItem = DayOptions.find(item => item.value === value);
+    const selectedItem = DayOptions.find((item) => item.value === value);
     const typeValue = selectedItem?.typeValue ?? 0;
-    setFormData((val) => ({ ...val, type: value, typeValue }))
+    setFormData((val) => ({ ...val, type: value, typeValue }));
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -23,19 +22,16 @@ export default function   ListAutomationForm(props: IChanges) {
   }
   return (
     <div>
-      <section
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 py-5 px-5"
-      >
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 py-5 px-5">
         <div className="col-span-1">
-          <div className="text-xs">
-            Account
-          </div>
+          <div className="text-xs">Account</div>
           <select
             className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
             name="accountId"
             required
             onChange={handleChange}
-            value={formData.accountId}>
+            value={formData.accountId}
+          >
             <option className="px-2">{accounts.length ? "Select Account" : "No account available"}</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
@@ -46,12 +42,10 @@ export default function   ListAutomationForm(props: IChanges) {
           {/* {errors?.accountId && <p className="text-error-500">{errors.accountId}</p>} */}
         </div>
         <div className="col-span-1">
-          <div className="text-xs">
-            Broadcast list
-          </div>
+          <div className="text-xs">Broadcast list</div>
           <select
             onChange={(e) => {
-              handleChange(e)
+              handleChange(e);
             }}
             value={formData.broadCastListId}
             defaultValue={formData.broadCastListId ?? ""}
@@ -68,15 +62,14 @@ export default function   ListAutomationForm(props: IChanges) {
           {/* {errors?.broadCastListId && <p className="text-error-500">{errors.broadCastListId}</p>} */}
         </div>
         <div className="col-span-1">
-          <div className="text-xs">
-            Type
-          </div>
+          <div className="text-xs">Type</div>
           <select
             name="type"
             value={formData.type}
             onChange={handleSelectType}
-            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none text-">
-            <option value={""} >Filter by Type</option>
+            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none text-"
+          >
+            <option value={""}>Filter by Type</option>
             {DayOptions.map((item, index) => (
               <option key={item.text} value={item.value}>
                 {item.text}
@@ -91,26 +84,29 @@ export default function   ListAutomationForm(props: IChanges) {
           <div className="col-span-1">
             <div className="text-xs">Minutes to Send After Last</div>
             <div>
-            <input type="text"
-              value={formData.minutesAfter}
-              name="minutesAfter"
-              onChange={handleChange}
-              className="w-fullpy-4 px-4 border border-gray-300 rounded focus:outline-none" />
+              <input
+                type="text"
+                value={formData.minutesAfter}
+                name="minutesAfter"
+                onChange={handleChange}
+                className="w-fullpy-4 px-4 border border-gray-300 rounded focus:outline-none"
+              />
             </div>
           </div>
         ) : (
           <>
-            {formData.type === "default" && <div className="col-span-1">
-              <div className="text-xs">Date</div>
-              <input
-                value={formData.sendDate}
-                type="date"
-                name="sendDate"
-                className="form-control w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
-                onChange={handleChange}
-
-              />
-            </div>}
+            {formData.type === "default" && (
+              <div className="col-span-1">
+                <div className="text-xs">Date</div>
+                <input
+                  value={formData.sendDate}
+                  type="date"
+                  name="sendDate"
+                  className="form-control w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
+                  onChange={handleChange}
+                />
+              </div>
+            )}
             <div className="col-span-1">
               <div className="text-xs">Time</div>
               <input
@@ -136,23 +132,22 @@ export default function   ListAutomationForm(props: IChanges) {
                   </option>
                 ))}
               </select>
-
             </div>
           </>
         )}
         <div className="col-span-1">
-          <div className="text-xs">
-            Status
-          </div>
-          <select onChange={handleChange}
+          <div className="text-xs">Status</div>
+          <select
+            onChange={handleChange}
             value={formData.status}
             name="status"
-            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none">
+            className="w-full py-4 px-4 border border-gray-300 rounded focus:outline-none"
+          >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
         </div>
       </section>
     </div>
-  )
+  );
 }

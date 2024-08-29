@@ -7,6 +7,7 @@ import { useState } from "react";
 import DropdownMenu from "../common/dropdown/dropdown";
 import { useAuthContext } from "@/providers/context/auth";
 import { FaRegUserCircle } from "react-icons/fa";
+import PlanOption from "./appcomponent/paidoption";
 
 interface Props {
   onToggle: () => void;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function AppBar(props: Props) {
+
   const currentMenuItem = useActiveMenu();
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -28,7 +30,7 @@ export default function AppBar(props: Props) {
 
   return (
     <>
-      <div className="flex w-full fixed bg-white justify-between  items-center px-5 py-5 border-b ">
+      <div className="flex w-full fixed bg-white justify-between  items-center px-5 py-5 border-b z-[1] ">
         <div className="flex h-full items-center gap-3 ">
           <div className="py-2 lg:hidden" onClick={props.onToggle}>
             <svg className="h-6 w-6 text-blue-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,10 +39,7 @@ export default function AppBar(props: Props) {
           </div>
           <div className="hidden  md:flex lg:flex cursor-pointer gap-8 ">
             <Image src={logo} alt="Logo" height={200} width={100} />
-            <div className="mt-2">
-              <button className=" bg-secondary text-white rounded-2xl px-3 py-1 text-center text-sm">Free plan</button>
-              <span className="text-secondary font-semibold text-sm pl-2">Upgrade</span>
-            </div>
+            <PlanOption />
             {/* <h2 className="text-xlg lg:text-2xl font-semibold"> {currentMenuItem?.title || "Dashboard"} </h2> */}
           </div>
         </div>

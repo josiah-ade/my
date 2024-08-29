@@ -21,10 +21,10 @@ export default function EditGroupAutomation() {
       status: details.status,
       messages: details.messages
         .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-        .map(item => ({
+        .map((item) => ({
           ...item,
-          startDate: item.startDate ? moment(item.startDate ?? '').format('YYYY-MM-DD') : "",
-          endDate: item.endDate ? moment(item.endDate ?? '').format('YYYY-MM-DD') : ""
+          startDate: item.startDate ? moment(item.startDate ?? "").format("YYYY-MM-DD") : "",
+          endDate: item.endDate ? moment(item.endDate ?? "").format("YYYY-MM-DD") : "",
         })),
       groups: details.groups.map((group) => group.id),
       triggerWord: details.triggerWord,

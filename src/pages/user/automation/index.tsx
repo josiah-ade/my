@@ -35,7 +35,6 @@ export default function UserAutomation() {
   const setNotification = useNotificationStore((state) => state.displayNotification);
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false, history: false });
   const [currentAutomation, setCurrentAutomation] = useState<IListAutomation>();
-  const [showTable, setShowTable] = useState(true);
   const [formData, setFormData] = useState<ICreateAutomationList>({ ...defaultValue });
   const accounts = useAccountStore((state) => state.accounts);
   const automationType = useAutomationStore((state) => state.automation);
@@ -46,7 +45,7 @@ export default function UserAutomation() {
   const { data: getautomationLists } = useGetUserAutomation();
 
   const { mutate: deleteAutomation } = useDeleteAutomation({
-    onSuccess: () => handleSuccess("Account deleted", "Your account has been successfully deleted. "),
+    onSuccess: () => handleSuccess("Automation List Deleted", "The automation was successfully removed from your list."),
     options: { errorConfig: { title: "Failed to delete automation list" } },
   });
 
@@ -143,7 +142,12 @@ export default function UserAutomation() {
     {
       field: "history",
       title: "Delivery Status",
-      component: (props) => <span className="text-primary" onClick={() => props.item && handleAction("history", props.item)}> View </span>,
+      component: (props) => (
+        <span className="text-primary" onClick={() => props.item && handleAction("history", props.item)}>
+          {" "}
+          View{" "}
+        </span>
+      ),
     },
     {
       field: "timedelivery",

@@ -26,7 +26,7 @@ export default function AppDrawer({ display, onToggle }: Props) {
         ${display ? "top-0 " : ""} `}
       >
         <div className="flex mb-8 lg:hidden justify-between">
-          <h2 className="text-2xl lg:text-2xl font-semibold">{currentMenuItem?.title || "Dashboard"}</h2>
+          <h2 className="text-2xl lg:text-2xl font-semibold p-5">{currentMenuItem?.title || "Dashboard"}</h2>
           <div className="flex justify-end cursor-pointer" onClick={onToggle}>
             <FaTimes />
           </div>

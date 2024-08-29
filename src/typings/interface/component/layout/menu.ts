@@ -26,4 +26,6 @@ export interface ILimitData {
   total_chatbots: number;
   accounts: number;
   total_accounts: number;
+  isPaid?:boolean,
+  packageName?:string
 }

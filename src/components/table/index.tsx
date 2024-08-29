@@ -201,7 +201,8 @@ export default function Table<T>(props: TableProps<T>) {
               </tbody>
             )}
           </table>
-          {currentPage > totalPages && (
+        </div>
+          {totalPages > 1 && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -209,7 +210,6 @@ export default function Table<T>(props: TableProps<T>) {
               onPageChange={handlePageChange}
             />
           )}
-        </div>
       </div>
     </section>
   );

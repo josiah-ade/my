@@ -7,6 +7,7 @@ import Button from "@/components/button/button";
 import UploadBox from "@/components/common/file/uploadBox";
 import UserLayout from "@/layout/user";
 import { useCreateBroadcastMessage, useSendTestBroadcastMessage } from "@/providers/hooks/mutate/message";
+import { useGetTemplate } from "@/providers/hooks/query/template";
 import { useAccountStore } from "@/providers/stores/accountStore";
 import { ICreateBroadcastMessage, ISendTestBroadcastMessage } from "@/typings/interface/message";
 import React, { useState, useEffect, useMemo } from "react";
@@ -23,6 +24,7 @@ const defaultValue: ICreateBroadcastMessage = {
 };
 
 export default function SendBroadast() {
+  const [selectedTemplate, setSelectedTemplate] = useState("");
   const [selectedBroadcastTarget, setSelectedBroadcastTarget] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const accounts = useAccountStore((state) => state.connectedAccounts);
@@ -30,6 +32,7 @@ export default function SendBroadast() {
   const [clearListFlag, setClearListFlag] = useState<boolean>(false);
   const [clearFileFlag, setClearFileFlag] = useState<boolean>(false);
   const [formData, setFormData] = useState<ICreateBroadcastMessage>({ ...defaultValue });
+  const { data: templateList } = useGetTemplate({ loadingConfig: { displayLoader: false } });
 
   const createMessageMutation = useCreateBroadcastMessage({
     onSuccess: () => {
@@ -37,6 +40,7 @@ export default function SendBroadast() {
       setClearListFlag(true);
       setClearFileFlag(true);
       handleIsClose();
+      setSelectedTemplate("");
     },
     options: {
       successConfig: {
@@ -91,7 +95,7 @@ export default function SendBroadast() {
       isTest,
     };
     // console.log({payload})
-    //  return 
+    //  return
     if (!isTest) createMessageMutation.mutate(payload);
     if (isTest) {
       const payload: ISendTestBroadcastMessage = {
@@ -109,6 +113,19 @@ export default function SendBroadast() {
     () => !!(selectedId.length && formData.text && formData.accountId && formData.type),
     [formData, selectedId]
   );
+
+  const templateC = (event: { target: { value: string } }) => {
+    const selectedId = event.target.value;
+    const selected = templateList?.find((template) => template.id === selectedId);
+
+    if (selected) {
+      setSelectedTemplate(selected.text);
+      setFormData((prevData) => ({
+        ...prevData,
+        text: selected.text,
+      }));
+    }
+  };
 
   return (
     <UserLayout>
@@ -158,8 +175,13 @@ export default function SendBroadast() {
           </div>
           <div className="col-span-1">
             <label className="block text-gray-900 font-semibold leading-8 text-sm">Template</label>
-            <select onChange={handleChange} className="w-full p-2 border border-gray-700 rounded focus:outline-none">
-              <option value="">No Template</option>
+            <select onChange={templateC} className="w-full p-2 border border-gray-700 rounded focus:outline-none">
+              <option value="">{templateList?.length ? "Select Template" : "No Template"}</option>
+              {templateList?.map((template) => (
+                <option key={template.id} value={template.id}>
+                  {template.name}
+                </option>
+              ))}
             </select>
             <p className="text-sm text-gray-500 mt-1">are you using a template?</p>
           </div>

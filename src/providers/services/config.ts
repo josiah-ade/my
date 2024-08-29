@@ -4,11 +4,11 @@ import axios from "axios";
 const BASE_URL = "https://expertnaire-be.onrender.com/api/v1"
 
 export const axiosPublic = axios.create({
-    baseURL: "http://localhost:3333/api",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  baseURL: "http://localhost:3333/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 axios.defaults.baseURL = BASE_URL;
 

@@ -12,4 +12,8 @@ export enum GroupAutomationType {
     ACTIVE = "active",
     INACTIVE = "inActive",
   }
+  export enum AutomationTemplateMatchType{
+    Word="wordTriggered",
+    TIME="timeTriggered",
+  }
   

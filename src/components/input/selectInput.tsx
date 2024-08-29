@@ -13,6 +13,7 @@ interface IProps<T> {
   inputClass?: string;
   labelClass?: string;
   hintClass?: string;
+  className?: string;
 }
 
 export default function Select<T>(props: IProps<T>) {
@@ -31,7 +32,7 @@ export default function Select<T>(props: IProps<T>) {
   const isSelected = !!(props.value ?? value);
 
   return (
-    <div>
+    <div className={props.className ?? ""}>
       {props.label && (
         <label className={`text-gray-900 text-sm font-medium ${props.labelClass}`} htmlFor={props.name}>
           {props.label}

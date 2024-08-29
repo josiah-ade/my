@@ -47,7 +47,7 @@ export const UserMenus: Menu[] = [
     title: "Subscriptions",
     id: "2",
     icon: MdOutlineSubscriptions,
-    disabled: true,
+    // disabled: false,
     path: `${UserRoutes.SUBSCRIPTION}`,
   },
   {
@@ -61,7 +61,6 @@ export const UserMenus: Menu[] = [
     title: "Chatbot",
     id: "7",
     icon: TbMessageChatbot,
-    disabled: true,
     path: `${UserRoutes.CHAT_BOT}`,
   },
   {

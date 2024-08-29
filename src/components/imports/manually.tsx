@@ -85,7 +85,7 @@ export default function Manually(props: IProps) {
               errorText={formError.contactName}
               onChange={(val) => handleChange("contactName", val)}
             />
-            
+
             <PhoneInput
               name="phoneNumber"
               label="Phone Number*"
@@ -126,7 +126,7 @@ export default function Manually(props: IProps) {
             <section>
               <Default
                 src="/book.png"
-                alt="No Source Selelcted"
+                alt="No Source Selected"
                 height={100}
                 width={100}
                 mainText="Select a Broadcast List"

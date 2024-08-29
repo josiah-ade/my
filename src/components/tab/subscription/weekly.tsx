@@ -1,32 +1,37 @@
-import Button from "@/components/button/button";
-import { SubscriptionMenus } from "@/core/const/subscription/weekly";
+import EmptyState from "@/components/common/empty/empty";
+import CardPlan from "./carddisplay/card.display";
+import { useGetSubscription } from "@/providers/hooks/query/subscription";
+import { ISubscriptionPackage } from "@/typings/interface/subscription";
+import { useMemo } from "react";
 
-export default function WeeklyPlan(){
-    return(
+export default function WeeklyPlan() {
+  const { data: subscriptions } = useGetSubscription({ loadingConfig: { displayLoader: true } });
+
+  const hasSubscription: boolean = useMemo(() => {
+    if (!subscriptions) return false;
+    return subscriptions.some((item) => !!item.subscriptionCount);
+  }, [subscriptions]);
+
+  const sortedSubscriptions = useMemo(() => {
+    return subscriptions?.slice().sort((a, b) => a.amount - b.amount);
+  }, [subscriptions]);
+
+  return (
+    <div className="flex flex-col md:flex-row justify-around gap-5 mt-11">
+      {sortedSubscriptions && sortedSubscriptions.length > 0 ? (
         <>
-        <div className="flex flex-col md:flex-row  gap-3 mt-10 ">
-            {SubscriptionMenus.map((item, index)=>(
-                <div key={index} className={`flex flex-col gap-2 border  border: ${index == 1 ? "border-primary": "border-gray-200" } p-5`}>
-                    <div className="flex flex-row justify-between">
-                    <h3 className="text-xl text-gray-700">{item.title}</h3>
-                    {index == 1 ? (
-                    <div>
-                    <button className=" bg-primary text-white rounded-2xl px-3 py-1 text-center text-sm">Recommended</button>
-                    </div>
-                    ) : <></>}
-                    </div>
-                    <h2 className="text-2xl text-primary">{item.amount}</h2>
-                    <p className="text-[0.85rem] leading-7">
-                    {item.description}
-                    </p>
-                    <div className="">
-                    <Button className=" bg-primary text-white  text-center text-sm w-full ">Select Plan</Button>
-                    </div>
-
-                </div>
-            ))}
-            
-        </div>
+          {sortedSubscriptions.map((subscription: ISubscriptionPackage, index: number) => (
+            <CardPlan
+              key={subscription.id}
+              isRecommended={index == 1}
+              subscription={subscription}
+              hasSubscription={hasSubscription}
+            />
+          ))}
         </>
-    )
+      ) : (
+        <EmptyState />
+      )}
+    </div>
+  );
 }

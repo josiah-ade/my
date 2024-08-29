@@ -1,12 +1,12 @@
-// components/Tabs.tsx
 
-import React, { useState, ReactNode, ReactElement, useEffect } from "react";
-// import React, { useState, ReactNode } from "react";
+
+import React, { useState, ReactNode,  useEffect } from "react";
 
 type TabProps = {
   label?: ReactNode;
   icon?: ReactNode;
   content?: ReactNode;
+  disabled?: boolean;
 
 };
 
@@ -25,7 +25,6 @@ export default function Tabs({ tabs, searchPlaceholder, onTabChange, defaultTab 
     onTabChange && onTabChange(activeTab);
   }, [activeTab]);
 
-  console.log({ activeTab });
 
   return (
     <div className="w-full ">
@@ -34,11 +33,17 @@ export default function Tabs({ tabs, searchPlaceholder, onTabChange, defaultTab 
           <button
             key={index}
             onClick={() => setActiveTab(index)}
+            // className={`flex items-center py-2 px-4 -mb-px text-sm font-medium text-center border-b-2 transition-all duration-300 ${
+            //   activeTab === index
+            //     ? "text-primary border-primary"
+            //     : "text-gray-500 border-transparent hover:text-gray-700 hover:border-white"
+            // }`}
             className={`flex items-center py-2 px-4 -mb-px text-sm font-medium text-center border-b-2 transition-all duration-300 ${
               activeTab === index
                 ? "text-primary border-primary"
-                : "text-gray-500 border-transparent hover:text-gray-700 hover:border-white"
+                : `text-gray-500 border-transparent ${tab.disabled ? 'cursor-not-allowed opacity-50' : 'hover:text-gray-700 hover:border-white'}`
             }`}
+            disabled={tab.disabled}
           >
             {tab.icon}
             <span className="ml-2">{tab.label}</span>

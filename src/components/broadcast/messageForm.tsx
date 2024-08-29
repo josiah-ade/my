@@ -47,6 +47,7 @@ export default function MessageForm(props: MessageFormProps) {
           ref={textInputRef}
           onChange={handleInputChange}
           value={formValue}
+          placeholder="Select"
           className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none"
           rows={8}
         ></textarea>

@@ -1,33 +1,25 @@
 import { Data } from "@/core/types/data.interface";
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment, useState } from "react";
-
+import { Fragment } from "react";
 import { Bin, Userg, Pencil, Usercancel } from "@/core/const/icons/icons";
 import { TableHeaderActionProp } from "@/typings/interface/component/table";
-import { IBroadcastLists } from "@/typings/interface/broadcasts";
-import { ConfirmationProp } from "@/typings/interface/component/modal/confirmation";
-import { useEmptyBroadcastList } from "@/providers/hooks/mutate/broadcast";
-import ConfirmationModal from "../account/deleteConfirmationModal";
 import { IFormList } from "@/typings/interface/form";
-
-interface ModalItems {
-  confirmation: boolean;
-  edit: boolean;
-}
+import { FormTableAction } from "@/core/enum/form";
 
 interface IDPRops extends Data {
   action: string;
 }
 
 const actions: IDPRops[] = [
-  { text: "Copy Form Code (iFrame)", action: "import", icon: <Userg className="h-4 w-4" /> },
-  { text: "Copy Raw HTML Code", action: "edit", icon: <Pencil className="h-4 w-4" /> },
-  { text: "Archive Form", action: "empty", icon: <Usercancel className="h-4 w-4" /> },
-  { text: "Delete", action: "delete", icon: <Bin className="h-4 w-4 text-red-600" /> },
+  { text: "Copy Form Code (iFrame)", action: FormTableAction.copyFormIframeCode, icon: <Userg className="h-4 w-4" /> },
+  { text: "Copy Raw HTML Code", action: FormTableAction.copyRawHtmlCode, icon: <Pencil className="h-4 w-4" /> },
+  { text: "Archive Form", action: FormTableAction.archiveForm, icon: <Usercancel className="h-4 w-4" /> },
+  { text: "Delete", action: FormTableAction.delete, icon: <Bin className="h-4 w-4 text-red-600" /> },
 ];
 
-export default function AccountTableActionComponent({ item, clickHandler }: TableHeaderActionProp<IFormList>) {
+
+export default function FormTableActionComponent({ item, clickHandler }: TableHeaderActionProp<IFormList>) {
   return (
     <>
       <Menu as="div" className="relative inline-block text-left">

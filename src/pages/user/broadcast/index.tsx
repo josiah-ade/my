@@ -21,13 +21,14 @@ import useNotificationStore from "@/providers/stores/notificationStore";
 import { BroadcastTableAction } from "@/core/enum/broadcast";
 import GoogleSignInButton from "@/components/contacts/googleSignInButton";
 import { useLimitsStore } from "@/providers/stores/statisticsStore";
+import DataUpgrade from "@/components/stateupgrade/upgrade";
 
 interface ModalItems {
   confirmation: boolean;
   edit: boolean;
 }
 
-let confirmationProp: ConfirmationProp = { onConfirm: () => {} };
+let confirmationProp: ConfirmationProp = { onConfirm: () => { } };
 
 export default function BroadcastListPage() {
   const setNotification = useNotificationStore((state) => state.displayNotification);
@@ -37,8 +38,8 @@ export default function BroadcastListPage() {
   const [modal, setModal] = useState<ModalItems>({ edit: false, confirmation: false });
   const stats = useLimitsStore((state) => state.limit);
   const { mutate: deleteBroadcast } = useDeleteBroadcast({
-    onSuccess: () => handleSuccess("Account deleted successfully", "Your account was deleted successfully"),
-    options: { errorConfig: { title: "Failed to delete account" } },
+    onSuccess: () => handleSuccess("Broadcast Deleted", "Your broadcast was successfully removed."),
+    options: { errorConfig: { title: "Failed to Delete Broadcast, The broadcast could not be deleted. Please try again." } },
   });
 
   const actionLookup = {
@@ -85,11 +86,11 @@ export default function BroadcastListPage() {
   const handleEmpty = (item: IBroadcastLists) => {
     item.contacts > 0
       ? openConfirmationModal(
-          "Empty Broadcast Contact List",
-          "Are you certain you want to empty this broadcastList? This will permanently erase all related contacts associated with this list",
-          "Empty List",
-          () => emptyList(item.id)
-        )
+        "Empty Broadcast Contact List",
+        "Are you certain you want to empty this broadcastList? This will permanently erase all related contacts associated with this list",
+        "Empty List",
+        () => emptyList(item.id)
+      )
       : openConfirmationModal("Prompt", "Your list is already empty", "Close", () => handleCloseModal("confirmation"));
   };
 
@@ -142,26 +143,8 @@ export default function BroadcastListPage() {
             </Button>
           </section>
         </div>
-        <section className="border border-gray-200">
-          <div className="border-l-8 border-warning-500  rounded-lg p-6 flex justify-between items-center">
-            <div className="flex items-center">
-              <div className="bg-yellow-100 text-yellow-500 p-3 rounded-full mr-4">
-                <Image src="/warning.jpg" alt="waring" width={30} height={30} />
-              </div>
-              <div>
-                <h3 className="font-medium">
-                  Broadcast List Usage {stats?.total_broadcastLists ?? 0}/{stats?.broadcastLists ?? 0}
-                </h3>
-                <p className="text-gray-500">
-                  Your current plan limits you to {broadcastList?.length} broadcast list, upgrade to create more lists
-                </p>
-              </div>
-            </div>
-            <Button primary className="px-4 py-2 rounded-lg">
-              Upgrade
-            </Button>
-          </div>
-        </section>
+        <DataUpgrade heading={`Broadcast List Usage (${stats?.total_broadcastLists ?? 0}/${stats?.broadcastLists ?? 0})`}
+         description={`your current plan limits you to ${stats?.broadcastLists ?? 0} broadcast list, upgrade to create more lists`} />
       </div>
 
       {broadcastList ? (

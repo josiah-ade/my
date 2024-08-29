@@ -27,7 +27,7 @@ export const AutomationMenus: Menu[] = [
     id: "3",
     icon: CiStickyNote,
     path: `${UserRoutes.GROUP_TEMPLATE}`,
-    disabled: true,
+    disabled: false,
   },
 ];
 

@@ -20,6 +20,7 @@ import { FaRegCircleQuestion } from "react-icons/fa6";
 import { LuRefreshCcw } from "react-icons/lu";
 import { GoCopy } from "react-icons/go";
 import { MdOutlineArrowRightAlt } from "react-icons/md";
+import { RiDeleteBin5Line } from "react-icons/ri";
 // import { FaTrashAlt } from "react-icons/fa";
 
 interface Icon {
@@ -32,7 +33,7 @@ export const Circle = (props: React.SVGProps<SVGSVGElement>) => <FiMinusCircle {
 export const Message = (props: React.SVGProps<SVGSVGElement>) => <BiMessageDetail {...props} />;
 export const Hash = (props: React.SVGProps<SVGSVGElement>) => <LuHash {...props} />;
 export const Repeat = (props: React.SVGProps<SVGSVGElement>) => <IoRepeat {...props} />;
-export const Bin = (props: React.SVGProps<SVGSVGElement>) => <ImBin {...props} />;
+export const Bin = (props: React.SVGProps<SVGSVGElement>) => <RiDeleteBin5Line {...props} />;
 export const Home = (props: React.SVGProps<SVGSVGElement>) => <CiHome {...props} />;
 export const Plus = (props: React.SVGProps<SVGSVGElement>) => <GoPlus {...props} />;
 export const Userg = (props: React.SVGProps<SVGSVGElement>) => <FaUsers {...props} />;
