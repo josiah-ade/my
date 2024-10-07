@@ -1,0 +1,22 @@
+export const AdminRoutes = {
+    DASHBOARD: "/admin",
+    CONTACTS: "/admin/contacts",
+    BROADCAST: "/admin/broadcast",
+    BROADCAST_MESSAGE: "/admin/broadcast/message",
+    BROADCAST_TEMPLATE: "/admin/broadcast/template",
+    BROADCAST_MESSAGE_SEND: "/admin/broadcast/message/send",
+    USER_CONTACTS_INDEX: "/admin/contacts",
+    ACCOUNT: "/admin/account",
+    LIST_AUTOMATION: "/admin/automation",
+    GROUP_AUTOMATION: "/admin/automation/group",
+    GROUP_TEMPLATE: "/admin/automation/template",
+    FORM: "/admin/form",
+    FORM_CREATE: "/admin/form/create",
+    FORM_ENTRIES: "/admin/form/entries",
+    SUBSCRIPTION: "/admin/subscriptions",
+    CHAT_BOT: "/admin/chatbot",
+    TEAMS: "/admin/teams",
+    SIGNUP: "/signup",
+    LOGIN: "/",
+  };
+  
