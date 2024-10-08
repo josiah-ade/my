@@ -1,5 +1,6 @@
 export const AdminRoutes = {
     DASHBOARD: "/admin",
+    USERS:"/admin/users",
     CONTACTS: "/admin/contacts",
     BROADCAST: "/admin/broadcast",
     BROADCAST_MESSAGE: "/admin/broadcast/message",

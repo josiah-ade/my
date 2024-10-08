@@ -14,10 +14,10 @@ export const AdminMenus: Menu[] = [
     path: `${AdminRoutes.DASHBOARD}`,
   },
   {
-    title: "USers",
+    title: "Users",
     id: "2",
     icon: MdOutlineAccountCircle,
-    path: `${AdminRoutes.ACCOUNT}`,
+    path: `${AdminRoutes.USERS}`,
   },
   {
     title: "Payment",

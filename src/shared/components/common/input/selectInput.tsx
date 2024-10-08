@@ -41,7 +41,7 @@ export default function Select<T>(props: IProps<T>) {
       <select
         className={`w-full border mt-2 bg-white ${
           isSelected ? "text-gray-900" : "text-gray-400"
-        } border-gray-300 rounded focus:outline-none ${props.inputClass ?? "py-4 px-4"}`}
+        } border-gray-300 rounded focus:outline-none ${props.inputClass ?? "py-3 px-4"}`}
         name={props.name}
         onChange={handleChange}
         value={props.value ?? value}
