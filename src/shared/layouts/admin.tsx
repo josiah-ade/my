@@ -34,13 +34,13 @@ export default function AdminLayout(props: PropsWithChildren) {
   return (
     <>
       {islLoggedIn ? (
-        <div className="h-screen w-full">
+        <div className="h-screen w-full flex flex-row">
           <div className="">
-            <AppBar onLogout={toggleLogOutModal} onToggle={toggleDrawer} />
-          </div>
-          <div className=" bg-background text-gray-900 flex flex-row gap-y-1 w-full   ">
             <AppDrawer onLogout={toggleLogOutModal} display={showDrawer} onToggle={toggleDrawer} />
-            <div className="flex-col mt-[5.3rem] lg:pl-[19rem]  bg-background flex gap-y-1 w-full p-5 md:p-7">
+          </div>
+          <div className=" bg-background text-gray-900 flex flex-col gap-y-1 w-full   ">
+            <AppBar onLogout={toggleLogOutModal} onToggle={toggleDrawer} />
+            <div className="flex-col mt-[4rem] lg:pl-[19rem]  bg-background flex gap-y-1 w-full p-5 md:p-7">
               {props.children}
             </div>
           </div>

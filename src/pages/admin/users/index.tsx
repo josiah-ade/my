@@ -1,12 +1,12 @@
 import UserPageComponent from "@/shared/components/user";
 import AdminLayout from "@/shared/layouts/admin";
 
-export default function DashboardPage() {
+export default function UsersPage() {
   return (
     <div>
-      <h1>Welcome</h1>
+      <UserPageComponent />
     </div>
   );
 }
 
-DashboardPage.Layout = AdminLayout;
+UsersPage.Layout = AdminLayout;

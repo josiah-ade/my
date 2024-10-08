@@ -17,7 +17,7 @@ export const AdminMenus: Menu[] = [
     title: "Users",
     id: "2",
     icon: MdOutlineAccountCircle,
-    path: `${AdminRoutes.ACCOUNT}`,
+    path: `${AdminRoutes.USERS}`,
   },
   {
     title: "Payment",
