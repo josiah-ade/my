@@ -14,7 +14,7 @@ export const AdminMenus: Menu[] = [
     path: `${AdminRoutes.DASHBOARD}`,
   },
   {
-    title: "USers",
+    title: "Users",
     id: "2",
     icon: MdOutlineAccountCircle,
     path: `${AdminRoutes.ACCOUNT}`,
@@ -23,7 +23,7 @@ export const AdminMenus: Menu[] = [
     title: "Payment",
     id: "3",
     icon: GrContactInfo,
-    path: `${AdminRoutes.CONTACTS}`,
+    path: `${AdminRoutes.PAYMENT}`,
   },
   {
     title: "Admin Team",

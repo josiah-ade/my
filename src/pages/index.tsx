@@ -53,8 +53,8 @@ export default function LoginPage() {
      px-6 md:px-0 "
       >
         <div className="w-full max-w-[500px] mx-auto align-center">
-          <div className="text-[2rem] text-center font-bold">Log In</div>
-          <p className="text-[1.2rem] mt-5 text-center text-gray-400">Enter your credentials to access your account </p>
+          <div className="text-[1.6rem] text-center font-bold">Super Administrator Portal</div>
+          <p className="text-[1.1rem] mt-1 text-center text-gray-400">Enter your credentials to access your account </p>
           <div className="mt-2">
             {error?.length ? (
               <div className="flex flex-col">
