@@ -15,6 +15,7 @@ export const AdminRoutes = {
     FORM_CREATE: "/admin/form/create",
     FORM_ENTRIES: "/admin/form/entries",
     SUBSCRIPTION: "/admin/subscriptions",
+    SUBSCRIPTION_CREATE: "/admin/subscriptions/create",
     PAYMENT: "/admin/payment",
     CHAT_BOT: "/admin/chatbot",
     TEAMS: "/admin/teams",

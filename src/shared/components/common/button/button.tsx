@@ -43,7 +43,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button type={type} className={buttonClasses} onClick={onClick} disabled={disabled ?? isLoading} {...props}>
-      {isLoading ? (
+      {!isLoading ? (
         <>
           {icon && <span className="mr-2 ">{icon}</span>}
           {children}

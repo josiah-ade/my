@@ -3,7 +3,7 @@ import React, { useState, Fragment, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { SearchIcon } from "../../../core/const/icons/icons";
 // import Pagination from "../pagination/pagination";
-import { TableHeader, TablePagination } from "../../../core/types/interfaces/components/table" ;
+import { TableHeader, TablePagination } from "../../../core/types/interfaces/components/table";
 import TableLoading from "../common/tableloader";
 import Chip from "../chip";
 import { ISelectableData } from "../../../core/types/interfaces/components/table/selects";
@@ -26,7 +26,7 @@ interface TableProps<T = unknown> {
 type Selectable<T> = T & ISelectableData;
 
 export default function Table<T>(props: TableProps<T>) {
-  const router =useRouter()
+  const router = useRouter();
   const { headers, data, action, isOpen, setIsOpen, loading, search, checkboxAction, pagination } = props;
   const [selectAll, setSelectAll] = useState(false);
   const [selectableData, setSelectableData] = useState<Selectable<T>[]>([]);
@@ -116,7 +116,7 @@ export default function Table<T>(props: TableProps<T>) {
   const handleRedirect = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>, rowIndex: any) => {
     e.preventDefault();
     router.push(`/admin/users/${rowIndex}`);
-}
+  };
 
   return (
     <section>
@@ -177,9 +177,11 @@ export default function Table<T>(props: TableProps<T>) {
             ) : (
               <tbody className="bg-white ">
                 {currentItems?.map((row, rowIndex) => (
-                  <tr key={`table_row_index_${rowIndex}`}
-                  onClick={(e) => props.clickable && handleRedirect(e, rowIndex)}
-                  className={`relative ${props.clickable ? 'cursor-pointer' : ''}`}>
+                  <tr
+                    key={`table_row_index_${rowIndex}`}
+                    onClick={(e) => props.clickable && handleRedirect(e, rowIndex)}
+                    className={`relative ${props.clickable ? "cursor-pointer" : ""}`}
+                  >
                     {headers.map((header, index) => (
                       <td key={header.field} className="px-6 py-6 whitespace-nowrap text-sm text-gray-900">
                         <section className="flex space-x-1">
@@ -211,7 +213,7 @@ export default function Table<T>(props: TableProps<T>) {
             )}
           </table>
         </div>
-          {/* {totalPages > 1 && (
+        {/* {totalPages > 1 && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -231,6 +233,10 @@ function getDataComponent<T>(header: TableHeader<T>, data: T) {
   switch (header.type?.toLowerCase()) {
     case "chip":
       return <Chip text={text} />;
+    // case "success":
+    //   return <div className="text-success">{`+${text}`}</div>;
+    // case "error":
+    //   return <div className="text-error">{`-${text}`}</div>;
     default:
       return <div> {text} </div>;
   }
